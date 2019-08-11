@@ -23,7 +23,8 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": false
+    "emitDecoratorMetadata": false,
+    "plugins": [{ "name": "typescript-eslint-language-service" }]
   },
   "include": ["src/**/*", "types/**/*.d.ts"],
   "exclude": ["node_modules"]
