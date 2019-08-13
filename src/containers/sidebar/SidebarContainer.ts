@@ -25,7 +25,7 @@ export const SidebarContainer = createContainer<SidebarValue>(() => {
   const defaultNewItems = toStructualItems(entities.newItems);
   const defaultPassedItems = toStructualItems(entities.passedItems);
   const defaultFailedItems = toStructualItems(entities.failedItems);
-  const defaultDeletedItems = toStructualItems(entities.deletedItems);
+  const defaultDeletedItems = useMemo(() => toStructualItems(entities.deletedItems), [entities.deletedItems]);
 
   const [newItems, setNewItems] = useState(defaultNewItems);
   const [passedItems, setPassedItems] = useState(defaultPassedItems);
