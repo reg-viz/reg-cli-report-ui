@@ -22,10 +22,15 @@ export const SidebarContainer = createContainer<SidebarValue>(() => {
   const worker = useContext(WorkerContext);
   const entities = EntityContainer.useContainer();
 
-  const [newItems, setNewItems] = useState(toStructualItems(entities.newItems));
-  const [passedItems, setPassedItems] = useState(toStructualItems(entities.passedItems));
-  const [failedItems, setFailedItems] = useState(toStructualItems(entities.failedItems));
-  const [deletedItems, setDeletedItems] = useState(toStructualItems(entities.deletedItems));
+  const defaultNewItems = toStructualItems(entities.newItems);
+  const defaultPassedItems = toStructualItems(entities.passedItems);
+  const defaultFailedItems = toStructualItems(entities.failedItems);
+  const defaultDeletedItems = toStructualItems(entities.deletedItems);
+
+  const [newItems, setNewItems] = useState(defaultNewItems);
+  const [passedItems, setPassedItems] = useState(defaultPassedItems);
+  const [failedItems, setFailedItems] = useState(defaultFailedItems);
+  const [deletedItems, setDeletedItems] = useState(defaultDeletedItems);
 
   const [isOpen, setOpen] = useState(true);
   const open = () => setOpen(true);
@@ -37,21 +42,13 @@ export const SidebarContainer = createContainer<SidebarValue>(() => {
     }
 
     const value = input.trim();
-
-    if (value !== '') {
-      worker.requestFilter({
-        input,
-        newItems,
-        passedItems,
-        failedItems,
-        deletedItems,
-      });
-    } else {
-      setNewItems(toStructualItems(entities.newItems));
-      setPassedItems(toStructualItems(entities.passedItems));
-      setFailedItems(toStructualItems(entities.failedItems));
-      setDeletedItems(toStructualItems(entities.deletedItems));
-    }
+    worker.requestFilter({
+      input: value,
+      newItems: defaultNewItems,
+      passedItems: defaultPassedItems,
+      failedItems: defaultFailedItems,
+      deletedItems: defaultDeletedItems,
+    });
   };
 
   useEffect(() => {

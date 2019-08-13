@@ -37,6 +37,13 @@ const calc = ({
 const filter = ({
   payload: { input, newItems, passedItems, failedItems, deletedItems },
 }: WorkerEventData<WorkerEventType.REQUEST_FILTER>) => {
+  // Return all items when empty input
+  if (!input) {
+    return _self.postMessage({
+      type: WorkerEventType.RESULT_FILTER,
+      payload: { newItems, passedItems, failedItems, deletedItems },
+    });
+  }
   const keys = ['path', 'name'];
   const opts = { caseSensitive: true };
 
