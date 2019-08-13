@@ -1,5 +1,5 @@
 import { createContainer } from 'unstated-next';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useMemo } from 'react';
 import { toStructualItems } from '../../utils/transformer';
 import { RegStructualItem } from '../../types/reg';
 import { EntityContainer } from '../entity/EntityContainer';
@@ -22,9 +22,9 @@ export const SidebarContainer = createContainer<SidebarValue>(() => {
   const worker = useContext(WorkerContext);
   const entities = EntityContainer.useContainer();
 
-  const defaultNewItems = toStructualItems(entities.newItems);
-  const defaultPassedItems = toStructualItems(entities.passedItems);
-  const defaultFailedItems = toStructualItems(entities.failedItems);
+  const defaultNewItems = useMemo(() => toStructualItems(entities.newItems), [entities.newItems]);
+  const defaultPassedItems = useMemo(() => toStructualItems(entities.passedItems), [entities.passedItems]);
+  const defaultFailedItems = useMemo(() => toStructualItems(entities.failedItems), [entities.failedItems]);
   const defaultDeletedItems = useMemo(() => toStructualItems(entities.deletedItems), [entities.deletedItems]);
 
   const [newItems, setNewItems] = useState(defaultNewItems);
