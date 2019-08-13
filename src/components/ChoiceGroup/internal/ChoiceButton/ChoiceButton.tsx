@@ -9,6 +9,7 @@ const Wrapper = styled(BaseButton)<{ active: boolean }>`
   position: relative;
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
   height: ${SIZE}px;
   padding: 0 ${Space * 2}px;
