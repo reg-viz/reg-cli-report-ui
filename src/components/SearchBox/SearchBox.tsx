@@ -11,7 +11,6 @@ const Icon = styled.span`
   position: absolute;
   top: 50%;
   left: ${Space * 2}px;
-  z-index: 1;
   display: block;
   transform: translateY(-50%);
   line-height: 0;
@@ -19,7 +18,6 @@ const Icon = styled.span`
 
 const TextField = styled.input`
   position: relative;
-  z-index: 2;
   display: block;
   width: 100%;
   height: 60px;
