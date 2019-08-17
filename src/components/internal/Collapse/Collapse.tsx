@@ -38,7 +38,7 @@ const Wrapper = styled('div')<{ duration: { enter: number; exit: number } }>`
   }
 `;
 
-export type Props = Omit<React.HTMLAttributes<HTMLDivElement>, 'aria-hidden'> & {
+export type Props = Omit<React.ComponentPropsWithoutRef<'div'>, 'aria-hidden'> & {
   open: boolean;
   duration: { enter: number; exit: number };
 };

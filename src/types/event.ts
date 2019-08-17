@@ -1,4 +1,4 @@
-import { RegStructualItem } from './reg';
+import { RegEntity } from './reg';
 
 export enum WorkerEventType {
   // calculate
@@ -29,17 +29,17 @@ type WorkerEventDataPayloadMap = {
   };
 
   [WorkerEventType.REQUEST_FILTER]: {
-    newItems: RegStructualItem[];
-    passedItems: RegStructualItem[];
-    failedItems: RegStructualItem[];
-    deletedItems: RegStructualItem[];
+    newItems: RegEntity[];
+    passedItems: RegEntity[];
+    failedItems: RegEntity[];
+    deletedItems: RegEntity[];
     input: string;
   };
   [WorkerEventType.RESULT_FILTER]: {
-    newItems: RegStructualItem[];
-    passedItems: RegStructualItem[];
-    failedItems: RegStructualItem[];
-    deletedItems: RegStructualItem[];
+    newItems: RegEntity[];
+    passedItems: RegEntity[];
+    failedItems: RegEntity[];
+    deletedItems: RegEntity[];
   };
 };
 

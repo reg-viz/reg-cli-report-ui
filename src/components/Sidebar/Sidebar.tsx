@@ -15,6 +15,7 @@ import { SignDeletedIcon } from '../icons/SignDeletedIcon';
 import { SidebarContainer } from '../../containers/sidebar/SidebarContainer';
 import { tryNextFocus, tryPreviousFocus } from '../../utils/focus';
 import { useMousetrap } from '../../hooks/useMousetrap';
+import { EntityContainer } from '../../containers/entity/EntityContainer';
 import { Toggle } from './internal/Toggle';
 
 const DEFAULT_WIDTH = 300;
@@ -198,6 +199,7 @@ const Summary: React.FC<{ forceOpen: boolean; label: string; icon: React.ReactNo
 };
 
 export const Sidebar: React.FC<Props> = ({ inputRef, listRef }) => {
+  const entities = EntityContainer.useContainer();
   const sidebar = SidebarContainer.useContainer();
 
   const innerRef = useRef<HTMLDivElement>(null);
@@ -231,9 +233,9 @@ export const Sidebar: React.FC<Props> = ({ inputRef, listRef }) => {
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      sidebar.filter(e.target.value);
+      entities.filter(e.target.value);
     },
-    [sidebar],
+    [entities],
   );
 
   useMousetrap(['up', 'k'], innerRef.current, (e) => {
@@ -294,25 +296,25 @@ export const Sidebar: React.FC<Props> = ({ inputRef, listRef }) => {
           <div ref={listRef}>
             <List header="SUMMARY">
               <Summary
-                forceOpen={sidebar.isFiltering}
+                forceOpen={entities.filtering}
                 label="CHANGED"
                 icon={<SignChangedIcon fill={Color.SIGN_CHANGED} />}
                 items={sidebar.failedItems}
               />
               <Summary
-                forceOpen={sidebar.isFiltering}
+                forceOpen={entities.filtering}
                 label="NEW"
                 icon={<SignNewIcon fill={Color.SIGN_NEW} />}
                 items={sidebar.newItems}
               />
               <Summary
-                forceOpen={sidebar.isFiltering}
+                forceOpen={entities.filtering}
                 label="DELETED"
                 icon={<SignDeletedIcon fill={Color.SIGN_DELETED} />}
                 items={sidebar.deletedItems}
               />
               <Summary
-                forceOpen={sidebar.isFiltering}
+                forceOpen={entities.filtering}
                 label="PASSED"
                 icon={<SignPassedIcon fill={Color.SIGN_PASSED} />}
                 items={sidebar.passedItems}

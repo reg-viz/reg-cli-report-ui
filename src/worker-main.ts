@@ -44,7 +44,8 @@ const filter = ({
       payload: { newItems, passedItems, failedItems, deletedItems },
     });
   }
-  const keys = ['path', 'name'];
+
+  const keys = ['name'];
   const opts = { caseSensitive: true };
 
   const newSearcher = new FuzzySearch(newItems, keys, opts);
