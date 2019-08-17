@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import SwitchTransition from 'react-transition-group/SwitchTransition';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
 import styled, { css } from 'styled-components';
 import focusTrap, { FocusTrap } from 'focus-trap';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
@@ -234,7 +234,7 @@ export const Viewer: React.FC<Props> = ({ total, current, entity, onPrevious, on
 
   return (
     <Portal>
-      <SwitchTransition>
+      <TransitionGroup>
         <CSSTransition
           key={entity != null ? 'open' : 'close'}
           classNames="viewer"
@@ -282,7 +282,7 @@ export const Viewer: React.FC<Props> = ({ total, current, entity, onPrevious, on
             )}
           </div>
         </CSSTransition>
-      </SwitchTransition>
+      </TransitionGroup>
     </Portal>
   );
 };

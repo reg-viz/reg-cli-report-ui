@@ -77,7 +77,7 @@ export const useComparisonImage = (before: string, after: string) => {
 
   return {
     canvas: {
-      width: width,
+      width: Math.min(width, w),
       height: h,
     },
     image: {
