@@ -115,12 +115,13 @@ export class Expandable extends React.Component<Props, State> {
 
   private handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    e.stopPropagation();
+
+    if (this.props.open == null) {
+      this.setState({ open: !this.state.open });
+    }
 
     if (this.props.onChange != null) {
       this.props.onChange(!this.props.open);
-    } else {
-      this.setState({ open: !this.state.open });
     }
   };
 }

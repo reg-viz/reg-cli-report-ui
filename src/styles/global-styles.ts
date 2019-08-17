@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { Color, FontSize, LineHeight, Space } from './variables';
+import { Color, FontSize, LineHeight, Space, FontFamily } from './variables';
 
 export const GlobalStyle = createGlobalStyle`
   *,
@@ -14,7 +14,7 @@ export const GlobalStyle = createGlobalStyle`
     color: ${Color.DEFAULT};
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
-    font-family: Avenir,"Lucida Grande","Helvetica Neue","游ゴシック","YuGothic","Hiragino Kaku Gothic ProN","メイリオ",meiryo,sans-serif;
+    font-family: ${FontFamily.SANS_SERIF};
     line-height: ${LineHeight.MEDIUM};
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;

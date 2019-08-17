@@ -35,15 +35,17 @@ const TextField = styled.input`
   }
 `;
 
-export type Props = React.ComponentPropsWithoutRef<'input'>;
+export type Props = React.ComponentPropsWithoutRef<'input'> & {
+  inputRef?: React.Ref<HTMLInputElement>;
+};
 
-export const SearchBox: React.FC<Props> = ({ children, ...rest }) => {
+export const SearchBox: React.FC<Props> = ({ inputRef, children, ...rest }) => {
   return (
     <Wrapper>
       <Icon aria-hidden="true">
         <SearchIcon fill={Color.GRAY} />
       </Icon>
-      <TextField type="text" {...rest} />
+      <TextField ref={inputRef} type="text" {...rest} />
     </Wrapper>
   );
 };

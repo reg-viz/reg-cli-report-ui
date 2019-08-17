@@ -6,7 +6,8 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import debounce from 'debounce';
 import { Portal } from '../internal/Portal';
 import { Space, Duration, Easing, Color, Depth, Shadow } from '../../styles/variables';
-import { tryFocus, findFocusable } from '../../utils/selector';
+import { findFocusable } from '../../utils/selector';
+import { tryFocus } from '../../utils/focus';
 import { Item } from './Item';
 
 const RESIZE_DEBOUNCE_MS = 192;

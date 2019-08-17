@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import { Sidebar } from '../components/Sidebar';
 import { GlobalStyle } from '../styles/global-styles';
@@ -10,11 +10,16 @@ import { Viewer } from '../components/Viewer';
 import { Notification } from '../components/Notification';
 import { IconButton } from '../components/IconButton';
 import { HelpIcon } from '../components/icons/HelpIcon';
+import { HelpDialog } from '../components/HelpDialog';
+import { SidebarContainer } from '../containers/sidebar/SidebarContainer';
+import { findFirstFocusable } from '../utils/selector';
+import { useMousetrap } from '../hooks/useMousetrap';
+import { EntityContainer } from '../containers/entity/EntityContainer';
 
 const Layout = styled.main`
-  isolation: isolate;
   display: flex;
   height: 100%;
+  isolation: isolate;
 `;
 
 const Content = styled.div`
@@ -33,34 +38,135 @@ const Help = styled.span`
   right: ${Space * 3}px;
   bottom: ${Space * 3}px;
   border-radius: 50%;
+  background: ${Color.GRAY_DARK};
   box-shadow: ${Shadow.LEVEL2};
+  z-index: 10;
 `;
 
 export type Props = {};
 
-export const App: React.FC<Props> = () => (
-  <>
-    <GlobalStyle />
+export const App: React.FC<Props> = () => {
+  const sidebar = SidebarContainer.useContainer();
+  const { newItems, failedItems, deletedItems, passedItems } = EntityContainer.useContainer();
 
-    <Brand>
-      <Logo size={20} />
-    </Brand>
+  const [helpDialogOpen, setHelpDialogOpen] = useState(false);
 
-    <Layout>
-      <Sidebar />
-      <Content>
-        <Main />
-        <Footer />
-      </Content>
-    </Layout>
+  const filterRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
-    <Viewer />
-    <Notification />
+  const handleHelpClick = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setHelpDialogOpen(true);
+  }, []);
 
-    <Help>
-      <IconButton variant="black">
-        <HelpIcon fill={Color.WHITE} />
-      </IconButton>
-    </Help>
-  </>
-);
+  const handleHelpClose = useCallback(() => {
+    setHelpDialogOpen(false);
+  }, []);
+
+  useMousetrap(['/', 's'], null, (e) => {
+    e.preventDefault();
+
+    if (filterRef.current != null) {
+      filterRef.current.focus();
+    }
+  });
+
+  useMousetrap('g s', null, () => {
+    const { current: list } = listRef;
+    if (list == null) {
+      return;
+    }
+
+    const first = findFirstFocusable(list);
+    if (first == null) {
+      return;
+    }
+
+    first.focus();
+  });
+
+  useMousetrap(
+    'g c',
+    null,
+    () => {
+      if (failedItems.length > 0) {
+        window.location.hash = 'changed';
+      }
+    },
+    [failedItems],
+  );
+
+  useMousetrap(
+    'g n',
+    null,
+    () => {
+      if (newItems.length > 0) {
+        window.location.hash = 'new';
+      }
+    },
+    [newItems],
+  );
+
+  useMousetrap(
+    'g d',
+    null,
+    () => {
+      if (deletedItems.length > 0) {
+        window.location.hash = 'deleted';
+      }
+    },
+    [deletedItems],
+  );
+
+  useMousetrap(
+    'g p',
+    null,
+    () => {
+      if (passedItems.length > 0) {
+        window.location.hash = 'passed';
+      }
+    },
+    [passedItems],
+  );
+
+  useMousetrap(
+    'f',
+    null,
+    () => {
+      sidebar.toggle();
+    },
+    [sidebar],
+  );
+
+  useMousetrap('?', null, () => {
+    setHelpDialogOpen(true);
+  });
+
+  return (
+    <>
+      <GlobalStyle />
+
+      <Brand>
+        <Logo size={20} />
+      </Brand>
+
+      <Layout>
+        <Sidebar inputRef={filterRef} listRef={listRef} />
+        <Content>
+          <Main />
+          <Footer />
+        </Content>
+      </Layout>
+
+      <Help>
+        <IconButton variant="dark" onClick={handleHelpClick}>
+          <HelpIcon fill={Color.WHITE} />
+        </IconButton>
+      </Help>
+      <HelpDialog open={helpDialogOpen} onRequestClose={handleHelpClose} />
+
+      <Viewer />
+      <Notification />
+    </>
+  );
+};

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { Resizable } from 're-resizable';
@@ -13,6 +13,8 @@ import { PoweredBy } from '../PoweredBy';
 import { RegStructualItem } from '../../types/reg';
 import { SignDeletedIcon } from '../icons/SignDeletedIcon';
 import { SidebarContainer } from '../../containers/sidebar/SidebarContainer';
+import { tryNextFocus, tryPreviousFocus } from '../../utils/focus';
+import { useMousetrap } from '../../hooks/useMousetrap';
 import { Toggle } from './internal/Toggle';
 
 const DEFAULT_WIDTH = 300;
@@ -130,7 +132,10 @@ const ToggleWrapper = styled.div`
   left: calc(100% + ${Space * 2}px);
 `;
 
-export type Props = {};
+export type Props = {
+  inputRef?: React.Ref<HTMLInputElement>;
+  listRef?: React.Ref<HTMLDivElement>;
+};
 
 const renderItem = (label: string, depth: number, item: RegStructualItem) => {
   if (item.child != null) {
@@ -160,8 +165,10 @@ const renderItems = (label: string, icon: React.ReactNode, items: RegStructualIt
   );
 };
 
-export const Sidebar: React.FC<Props> = () => {
+export const Sidebar: React.FC<Props> = ({ inputRef, listRef }) => {
   const sidebar = SidebarContainer.useContainer();
+
+  const innerRef = useRef<HTMLDivElement>(null);
 
   const mql = window.matchMedia(`(max-width: ${BreakPoint.SMALL - 1}px)`);
   const [mobile, setMobile] = useState(mql.matches);
@@ -196,6 +203,18 @@ export const Sidebar: React.FC<Props> = () => {
     },
     [sidebar],
   );
+
+  useMousetrap(['up', 'k'], innerRef.current, (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    tryPreviousFocus(innerRef.current);
+  });
+
+  useMousetrap(['down', 'j'], innerRef.current, (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    tryNextFocus(innerRef.current);
+  });
 
   return (
     <CSSTransition
@@ -235,17 +254,19 @@ export const Sidebar: React.FC<Props> = () => {
           bottomRight: 'handle-bottom-right',
           bottomLeft: 'handle-bottom-left',
         }}>
-        <Inner id="sidebar">
-          <SearchBox placeholder="Filter by file name" onChange={handleChange} />
+        <Inner ref={innerRef} id="sidebar">
+          <SearchBox inputRef={inputRef} placeholder="Filter by file name" onChange={handleChange} />
 
           <Spacer variant="margin" x={3} />
 
-          <List header="SUMMARY">
-            {renderItems('CHANGED', <SignChangedIcon fill={Color.SIGN_CHANGED} />, sidebar.failedItems)}
-            {renderItems('NEW', <SignNewIcon fill={Color.SIGN_NEW} />, sidebar.newItems)}
-            {renderItems('DELETED', <SignDeletedIcon fill={Color.SIGN_DELETED} />, sidebar.deletedItems)}
-            {renderItems('PASSED', <SignPassedIcon fill={Color.SIGN_PASSED} />, sidebar.passedItems)}
-          </List>
+          <div ref={listRef}>
+            <List header="SUMMARY">
+              {renderItems('CHANGED', <SignChangedIcon fill={Color.SIGN_CHANGED} />, sidebar.failedItems)}
+              {renderItems('NEW', <SignNewIcon fill={Color.SIGN_NEW} />, sidebar.newItems)}
+              {renderItems('DELETED', <SignDeletedIcon fill={Color.SIGN_DELETED} />, sidebar.deletedItems)}
+              {renderItems('PASSED', <SignPassedIcon fill={Color.SIGN_PASSED} />, sidebar.passedItems)}
+            </List>
+          </div>
 
           <Spacer variant="margin" x={3} />
 

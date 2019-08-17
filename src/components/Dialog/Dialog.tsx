@@ -1,12 +1,20 @@
-import React, { useRef, useCallback, useEffect } from 'react';
+import React, { useRef, useCallback, useEffect, useState } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
-import createFocusTrap, { FocusTrap } from 'focus-trap';
 import { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock';
-import { Space, Duration, Color, Depth, Easing, Focus } from '../../styles/variables';
+import focusTrap, { FocusTrap } from 'focus-trap';
+import { Space, Duration, Color, Depth, Easing, Focus, BreakPoint } from '../../styles/variables';
 import { Portal } from '../internal/Portal';
 import { IconButton } from '../IconButton';
 import { CloseIcon } from '../icons/CloseIcon';
+import { useMousetrap } from '../../hooks/useMousetrap';
+
+const Delay = {
+  ENTER: 120,
+  EXIT: 80,
+};
+
+const allowOutsideClick = () => true;
 
 const Wrapper = styled.div`
   position: fixed;
@@ -15,6 +23,27 @@ const Wrapper = styled.div`
   bottom: 0;
   left: 0;
   z-index: ${Depth.DIALOG};
+  transition-property: opacity;
+  transition-timing-function: ease-out;
+
+  .dialog-enter & {
+    opacity: 0;
+    transition-duration: ${Duration.FADE_IN}ms;
+  }
+
+  .dialog-enter-active & {
+    opacity: 1;
+  }
+
+  .dialog-exit & {
+    opacity: 1;
+    transition-duration: ${Duration.FADE_OUT}ms;
+    transition-delay: ${Delay.EXIT}ms;
+  }
+
+  .dialog-exit-active & {
+    opacity: 0;
+  }
 `;
 
 const Body = styled.div`
@@ -37,13 +66,22 @@ const Body = styled.div`
 const Inner = styled.div`
   position: relative;
   z-index: 2;
-  margin: auto ${Space * 3}px;
+  width: 100%;
+  margin: auto ${Space * 2}px;
+
+  @media (min-width: ${BreakPoint.MEDIUM}px) {
+    min-width: 600px;
+    max-width: 1000px;
+    width: auto;
+  }
 `;
 
 const Content = styled.div`
   position: relative;
   margin-bottom: ${Space * 3}px;
+  padding: ${Space * 5}px;
   background: ${Color.WHITE};
+  border-radius: 4px;
   transition-property: opacity, transform;
   -webkit-tap-highlight-color: transparent;
 
@@ -55,12 +93,47 @@ const Content = styled.div`
   & > * {
     -webkit-tap-highlight-color: initial;
   }
+
+  & > div {
+    & > h2:first-child {
+      margin: 0 0 ${Space * 5}px;
+    }
+
+    & > *:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  .dialog-enter & {
+    opacity: 0;
+    transform: scale(1.03);
+    transition-duration: ${Duration.FADE_IN}ms;
+    transition-delay: ${Delay.ENTER}ms;
+  }
+
+  .dialog-enter-active & {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .dialog-exit & {
+    opacity: 1;
+    transition-duration: ${Duration.FADE_OUT}ms;
+  }
+
+  .dialog-exit-active & {
+    opacity: 0;
+  }
 `;
 
-const Close = styled.div``;
+const Close = styled.div`
+  position: absolute;
+  top: ${Space * 2}px;
+  right: ${Space * 2}px;
+`;
 
 const Backdrop = styled.button`
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
@@ -81,21 +154,45 @@ const Backdrop = styled.button`
 export type Props = Omit<React.ComponentPropsWithoutRef<'div'>, 'id'> & {
   id: string;
   open: boolean;
+  title: React.ReactNode;
   onRequestClose: () => void;
 };
 
-export const Dialog: React.FC<Props> = ({ id, open, children, onRequestClose, ...rest }) => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
+export const Dialog: React.FC<Props> = ({ id, title, open, children, onRequestClose, ...rest }) => {
+  const [mounted, setMounted] = useState(false);
+
+  const bodyRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const focusRef = useRef<FocusTrap | null>(null);
 
-  const handleMounted = useCallback(() => {
-    const { current: content } = innerRef;
-    if (content == null) {
+  const handleEnter = useCallback(() => {
+    const { current: body } = bodyRef;
+    const { current: inner } = innerRef;
+
+    if (body == null || inner == null) {
       return;
     }
 
-    focusRef.current = createFocusTrap(content, {});
+    focusRef.current = focusTrap(inner, { allowOutsideClick });
+    focusRef.current.activate();
+
+    disableBodyScroll(body);
+
+    setMounted(true);
+  }, []);
+
+  const handleExit = useCallback(() => {
+    const { current: body } = bodyRef;
+    const { current: focus } = focusRef;
+
+    if (body == null || focus == null) {
+      return;
+    }
+
+    focus.deactivate();
+    enableBodyScroll(body);
+
+    setMounted(false);
   }, []);
 
   const handleCloseClick = useCallback(
@@ -106,42 +203,45 @@ export const Dialog: React.FC<Props> = ({ id, open, children, onRequestClose, ..
     [onRequestClose],
   );
 
-  useEffect(() => {
-    const { current: wrapper } = wrapperRef;
-    const { current: focus } = focusRef;
-
-    if (open) {
-      if (focus != null) {
-        focus.activate();
+  useEffect(
+    () => () => {
+      const { current: body } = bodyRef;
+      if (body != null) {
+        enableBodyScroll(body);
       }
 
-      if (wrapper != null) {
-        enableBodyScroll(wrapper);
-      }
-    } else {
+      const { current: focus } = focusRef;
       if (focus != null) {
         focus.deactivate();
       }
+    },
+    [],
+  );
 
-      if (wrapper != null) {
-        disableBodyScroll(wrapper);
-      }
-    }
-  }, [open]);
+  useMousetrap(
+    'esc',
+    bodyRef.current,
+    () => {
+      onRequestClose();
+    },
+    [mounted, onRequestClose],
+  );
 
   return (
-    <Portal onRendered={handleMounted}>
+    <Portal>
       <CSSTransition
         classNames="dialog"
         in={open}
         mountOnEnter
         unmountOnExit
         timeout={{
-          enter: Duration.MEDIUM_IN,
-          exit: Duration.MEDIUM_OUT,
-        }}>
-        <Wrapper ref={wrapperRef}>
-          <Body>
+          enter: Duration.MEDIUM_IN + Delay.ENTER,
+          exit: Duration.MEDIUM_OUT + Delay.EXIT,
+        }}
+        onEnter={handleEnter}
+        onExit={handleExit}>
+        <Wrapper>
+          <Body ref={bodyRef}>
             <Inner ref={innerRef}>
               <Content
                 {...rest}
@@ -149,18 +249,20 @@ export const Dialog: React.FC<Props> = ({ id, open, children, onRequestClose, ..
                 tabIndex={open ? 0 : -1}
                 role="dialog"
                 aria-modal="true"
-                aria-hidden={open ? 'false' : 'true'}
-                onKeyDown={console.log}>
-                <div role="document">{children}</div>
+                aria-hidden={open ? 'false' : 'true'}>
+                <div role="document">
+                  <h2>{title}</h2>
+                  {children}
+                </div>
                 <Close>
-                  <IconButton aria-controls={id} aria-label="ダイアログを閉じる" onClick={handleCloseClick}>
-                    <CloseIcon color={Color.WHITE} />
+                  <IconButton aria-controls={id} aria-label="Close dialog" onClick={handleCloseClick}>
+                    <CloseIcon fill={Color.GRAY} />
                   </IconButton>
                 </Close>
               </Content>
             </Inner>
 
-            <Backdrop type="button" aria-controls={id} aria-label="ダイアログを閉じる" onClick={handleCloseClick} />
+            <Backdrop type="button" aria-controls={id} aria-label="Close dialog" onClick={handleCloseClick} />
           </Body>
         </Wrapper>
       </CSSTransition>

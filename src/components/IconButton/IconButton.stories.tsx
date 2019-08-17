@@ -22,9 +22,5 @@ storiesOf('IconButton', module)
       <IconButton variant="dark">
         <HelpIcon fill={Color.GRAY} />
       </IconButton>
-
-      <IconButton variant="black">
-        <HelpIcon fill={Color.WHITE} />
-      </IconButton>
     </>
   ));
