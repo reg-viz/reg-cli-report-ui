@@ -178,7 +178,7 @@ export class Menu extends React.Component<Props, State> {
   };
 
   private wrapper = React.createRef<HTMLDivElement>();
-  private focusIndex: number = 0;
+  private focusIndex = 0;
   private focusable: HTMLElement[] = [];
   private originalActiveElement: HTMLElement | null = null;
 
