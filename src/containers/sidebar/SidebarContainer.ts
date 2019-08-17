@@ -8,6 +8,7 @@ import { WorkerEventType } from '../../types/event';
 
 export type SidebarValue = {
   isOpen: boolean;
+  isFiltering: boolean;
   open: () => void;
   close: () => void;
   toggle: () => void;
@@ -33,6 +34,7 @@ export const SidebarContainer = createContainer<SidebarValue>(() => {
   const [deletedItems, setDeletedItems] = useState(defaultDeletedItems);
 
   const [isOpen, setOpen] = useState(true);
+  const [isFiltering, setFiltering] = useState(false);
   const open = () => setOpen(true);
   const close = () => setOpen(false);
   const toggle = () => setOpen(!isOpen);
@@ -42,6 +44,9 @@ export const SidebarContainer = createContainer<SidebarValue>(() => {
     }
 
     const value = input.trim();
+
+    setFiltering(value !== '');
+
     worker.requestFilter({
       input: value,
       newItems: defaultNewItems,
@@ -66,6 +71,7 @@ export const SidebarContainer = createContainer<SidebarValue>(() => {
 
   return {
     isOpen,
+    isFiltering,
     open,
     close,
     toggle,
