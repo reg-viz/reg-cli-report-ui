@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Image } from '../../../Image';
 import { Color } from '../../../../styles/variables';
@@ -55,7 +55,7 @@ const Handle = styled.span`
   bottom: 0;
   margin-left: -22px;
   width: 44px;
-  z-index: 3;
+  z-index: 5;
   cursor: ew-resize;
 `;
 
@@ -99,16 +99,64 @@ export type Props = {
 export const Slide: React.FC<Props> = ({ before, after }) => {
   const { canvas, image } = useComparisonImage(before, after);
 
+  const innerRef = useRef<HTMLDivElement>(null);
+  const rangeRef = useRef<HTMLInputElement>(null);
+
   const [position, setPosition] = useState(50);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPosition(parseInt(e.target.value, 10));
   };
 
+  useEffect(() => {
+    const inner = innerRef.current as HTMLDivElement;
+
+    const handleMousemove = (e: MouseEvent | TouchEvent) => {
+      const pageX = ('touches' in e ? e.touches[0].pageX : e.pageX) - window.pageXOffset;
+      const { left } = inner.getBoundingClientRect();
+      const x = Math.min(Math.max(0, pageX - left), image.width);
+
+      setPosition((x / image.width) * 100);
+    };
+
+    const handleMousedown = (e: MouseEvent | TouchEvent) => {
+      if (!('touches' in e)) {
+        e.preventDefault();
+
+        if (rangeRef.current != null) {
+          rangeRef.current.focus();
+        }
+      }
+
+      window.addEventListener('mousemove', handleMousemove, false);
+      window.addEventListener('touchmove', handleMousemove, false);
+    };
+
+    const handleMouseup = () => {
+      window.removeEventListener('mousemove', handleMousemove, false);
+      window.removeEventListener('touchmove', handleMousemove, false);
+    };
+
+    inner.addEventListener('mousedown', handleMousedown, false);
+    inner.addEventListener('touchstart', handleMousedown, false);
+    window.addEventListener('mouseup', handleMouseup, false);
+    window.addEventListener('touchend', handleMouseup, false);
+
+    return () => {
+      inner.removeEventListener('mousedown', handleMousedown, false);
+      inner.removeEventListener('touchstart', handleMousedown, false);
+      window.removeEventListener('mouseup', handleMouseup, false);
+      window.removeEventListener('touchend', handleMouseup, false);
+      window.removeEventListener('mousemove', handleMousemove, false);
+      window.removeEventListener('touchmove', handleMousemove, false);
+    };
+  }, [image.width]);
+
   return (
     <Wrapper style={{ visibility: image.loaded ? 'visible' : 'hidden' }}>
-      <Inner style={canvas}>
+      <Inner ref={innerRef} style={canvas}>
         <Range
+          ref={rangeRef}
           type="range"
           min={0}
           max={100}

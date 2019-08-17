@@ -4,10 +4,13 @@ import { Image } from '../../../Image';
 import { useComparisonImage } from './useComparisonImage';
 
 const Wrapper = styled.div`
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const Inner = styled.div`
+  position: relative;
 `;
 
 const Before = styled.div`
@@ -34,25 +37,23 @@ export const Blend: React.FC<Props> = ({ before, after, value }) => {
   const { canvas, image } = useComparisonImage(before, after);
 
   return (
-    <Wrapper
-      style={{
-        visibility: image.loaded ? 'visible' : 'hidden',
-        ...canvas,
-      }}>
-      <Before>
-        <Image ref={image.before.ref} src={before} onLoad={image.before.handleLoad} />
-      </Before>
+    <Wrapper style={{ visibility: image.loaded ? 'visible' : 'hidden' }}>
+      <Inner style={canvas}>
+        <Before>
+          <Image ref={image.before.ref} src={before} onLoad={image.before.handleLoad} />
+        </Before>
 
-      <After
-        style={{
-          top: canvas.height / 2 - image.after.height / 2,
-          left: canvas.width / 2 - image.after.width / 2,
-          width: image.after.width,
-          height: image.after.height,
-          opacity: value,
-        }}>
-        <Image ref={image.after.ref} src={after} onLoad={image.after.handleLoad} />
-      </After>
+        <After
+          style={{
+            top: canvas.height / 2 - image.after.height / 2,
+            left: canvas.width / 2 - image.after.width / 2,
+            width: image.after.width,
+            height: image.after.height,
+            opacity: value,
+          }}>
+          <Image ref={image.after.ref} src={after} onLoad={image.after.handleLoad} />
+        </After>
+      </Inner>
     </Wrapper>
   );
 };
