@@ -12,6 +12,7 @@ import { IconButton } from '../components/IconButton';
 import { HelpIcon } from '../components/icons/HelpIcon';
 
 const Layout = styled.main`
+  isolation: isolate;
   display: flex;
   height: 100%;
 `;
@@ -53,13 +54,13 @@ export const App: React.FC<Props> = () => (
       </Content>
     </Layout>
 
+    <Viewer />
+    <Notification />
+
     <Help>
       <IconButton variant="black">
         <HelpIcon fill={Color.WHITE} />
       </IconButton>
     </Help>
-
-    <Viewer />
-    <Notification />
   </>
 );
