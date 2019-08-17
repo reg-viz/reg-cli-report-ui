@@ -128,6 +128,29 @@ const ControlSlider = styled.span`
   padding: 0 ${Space * 2}px;
 `;
 
+const modes = [
+  {
+    value: 'diff',
+    label: 'Diff',
+  },
+  {
+    value: 'slide',
+    label: 'Slide',
+  },
+  {
+    value: '2up',
+    label: '2up',
+  },
+  {
+    value: 'blend',
+    label: 'Blend',
+  },
+  {
+    value: 'toggle',
+    label: 'Toggle',
+  },
+];
+
 export type Props = {
   entity: RegEntity;
 };
@@ -207,32 +230,7 @@ export const ComparisonView: React.FC<Props> = ({ entity }) => {
             </CSSTransition>
           </SwitchTransition>
 
-          <ChoiceGroup
-            options={[
-              {
-                value: 'diff',
-                label: 'Diff',
-              },
-              {
-                value: 'slide',
-                label: 'Slide',
-              },
-              {
-                value: '2up',
-                label: '2up',
-              },
-              {
-                value: 'blend',
-                label: 'Blend',
-              },
-              {
-                value: 'toggle',
-                label: 'Toggle',
-              },
-            ]}
-            value={mode}
-            onChange={handleModeChange}
-          />
+          <ChoiceGroup options={modes} value={mode} onChange={handleModeChange} />
         </ComparisonMode>
       )}
     </Wrapper>

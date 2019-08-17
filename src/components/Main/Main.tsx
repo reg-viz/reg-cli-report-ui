@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
-import styled from 'styled-components';
-import { Space, BreakPoint } from '../../styles/variables';
+import { Space } from '../../styles/variables';
 import { RegVariant, RegEntity } from '../../types/reg';
 import { Container } from '../Container';
 import { Card } from '../Card';
 import { EntityContainer } from '../../containers/entity/EntityContainer';
 import { ViewerContainer } from '../../containers/viewer/ViewerContainer';
 import { NotificationContainer } from '../../containers/notification/NotificationContainer';
+import { Grid } from '../Grid';
 
 const titles: { [K in RegVariant]: string } = {
   new: 'NEW ITEMS',
@@ -14,19 +14,6 @@ const titles: { [K in RegVariant]: string } = {
   changed: 'CHANGED ITEMS',
   deleted: 'DELETED ITEMS',
 };
-
-const CardList = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-gap: ${Space * 5}px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  @media (min-width: ${BreakPoint.X_LARGE}px) {
-    grid-template-columns: repeat(auto-fill, 540px);
-  }
-`;
 
 export type Props = {};
 
@@ -54,13 +41,13 @@ const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({ var
   return (
     <>
       <h2 id={variant}>{title}</h2>
-      <CardList>
+      <Grid component="ul" xs={{ gap: Space * 5, columns: 'repeat(auto-fill, minmax(540px, 1fr))' }}>
         {entities.map((entity) => (
-          <li key={entity.id}>
+          <Grid.Cell key={entity.id} component="li">
             <Card entity={entity} menus={[]} onClick={handleClick} onCopy={handleCopy} />
-          </li>
+          </Grid.Cell>
         ))}
-      </CardList>
+      </Grid>
     </>
   );
 };

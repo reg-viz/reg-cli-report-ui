@@ -6,7 +6,6 @@ export enum Color {
   GRAY = '#8086a1',
   GRAY_LIGHTER = '#ececec',
   GRAY_DARK = '#2e3241',
-  GRAY_DARK_HOVER = '#61656f',
   HOVER_WHITE = 'rgba(255, 255, 255, 0.3)',
   HOVER_BLACK = 'rgba(0, 0, 0, 0.1)',
   BACKGROUND = '#edeef2',
@@ -23,6 +22,11 @@ export const Focus = `0 0 0 4px rgba(121, 149, 240, 0.4)`;
 export enum Shadow {
   LEVEL1 = '0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.12)',
   LEVEL2 = '0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.12)',
+}
+
+export enum FontFamily {
+  SANS_SERIF = 'Avenir,"Lucida Grande","Helvetica Neue","游ゴシック","YuGothic","Hiragino Kaku Gothic ProN","メイリオ",meiryo,sans-serif',
+  MONOSPACE = 'SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace',
 }
 
 // base size = 16px (browser default)

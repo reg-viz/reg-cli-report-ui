@@ -14,10 +14,6 @@ const variants = {
     normal: 'transparent',
     hover: Color.HOVER_WHITE,
   },
-  black: {
-    normal: Color.GRAY_DARK,
-    hover: Color.GRAY_DARK_HOVER,
-  },
 };
 
 type Variant = keyof typeof variants;

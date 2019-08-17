@@ -14,20 +14,7 @@ const FOCUSABLE_SELECTOR = [
   'video',
 ].join(',');
 
-export function tryFocus(element: HTMLElement | null): void {
-  if (element == null) {
-    return;
-  }
-
-  element.focus();
-
-  if (document.activeElement !== element) {
-    element.setAttribute('tabindex', '0');
-    element.focus();
-  }
-}
-
-export function findFocusable(element: HTMLElement): HTMLElement[] {
+export const findFocusable = (element: HTMLElement): HTMLElement[] => {
   const { childNodes } = element;
   let nodes: HTMLElement[] = [];
 
@@ -46,9 +33,9 @@ export function findFocusable(element: HTMLElement): HTMLElement[] {
   }
 
   return nodes;
-}
+};
 
-export function findFirstFocusable(element: HTMLElement): HTMLElement | null {
+export const findFirstFocusable = (element: HTMLElement): HTMLElement | null => {
   const { childNodes } = element;
 
   for (let i = 0; i < childNodes.length; i += 1) {
@@ -69,9 +56,9 @@ export function findFirstFocusable(element: HTMLElement): HTMLElement | null {
   }
 
   return null;
-}
+};
 
-export function findLastFocusable(element: HTMLElement): HTMLElement | null {
+export const findLastFocusable = (element: HTMLElement): HTMLElement | null => {
   const { childNodes } = element;
 
   for (let i = childNodes.length - 1; i >= 0; i -= 1) {
@@ -92,4 +79,4 @@ export function findLastFocusable(element: HTMLElement): HTMLElement | null {
   }
 
   return null;
-}
+};

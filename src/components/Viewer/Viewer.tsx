@@ -1,8 +1,9 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useCallback, useState } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import SwitchTransition from 'react-transition-group/SwitchTransition';
 import styled, { css } from 'styled-components';
-import createFocusTrap, { FocusTrap } from 'focus-trap';
+import focusTrap, { FocusTrap } from 'focus-trap';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { Space, Color, Depth, Size, Duration, Easing } from '../../styles/variables';
 import { IconButton } from '../IconButton';
 import { ArrowLeftIcon } from '../icons/ArrowLeftIcon';
@@ -11,6 +12,7 @@ import { Transparent } from '../internal/Transparent';
 import { Header } from '../Header';
 import { Portal } from '../internal/Portal';
 import { RegEntity } from '../../types/reg';
+import { useMousetrap } from '../../hooks/useMousetrap';
 import { ComparisonView } from './internal/ComparisonView';
 import { OPEN_DELAY } from './constants';
 
@@ -26,7 +28,7 @@ const Wrapper = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
   transition-property: opacity;
-  transition-timing-function: ${Easing.STANDARD};
+  transition-timing-function: ease-out;
 
   .viewer-enter & {
     opacity: 0;
@@ -140,18 +142,36 @@ export type Props = {
 };
 
 export const Viewer: React.FC<Props> = ({ total, current, entity, onPrevious, onNext, onRequestClose }) => {
+  const [mounted, setMounted] = useState(false);
+
   const rootRef = useRef<HTMLDivElement>(null);
   const focusRef = useRef<FocusTrap | null>(null);
 
-  const handleMounted = useCallback(() => {
+  const handleEnter = useCallback(() => {
     const { current: root } = rootRef;
-    if (root == null) {
+    if (entity == null || root == null) {
       return;
     }
 
-    focusRef.current = createFocusTrap(root, {});
+    focusRef.current = focusTrap(root, {});
     focusRef.current.activate();
-  }, []);
+    disableBodyScroll(root);
+
+    setMounted(true);
+  }, [entity]);
+
+  const handleExit = useCallback(() => {
+    const { current: root } = rootRef;
+    const { current: focus } = focusRef;
+    if (entity == null || root == null || focus == null) {
+      return;
+    }
+
+    focus.deactivate();
+    enableBodyScroll(root);
+
+    setMounted(false);
+  }, [entity]);
 
   const handlePreviousClick = useCallback(
     (e: React.MouseEvent) => {
@@ -179,20 +199,56 @@ export const Viewer: React.FC<Props> = ({ total, current, entity, onPrevious, on
     [],
   );
 
+  useMousetrap(
+    'esc',
+    rootRef.current,
+    () => {
+      if (mounted) {
+        onRequestClose();
+      }
+    },
+    [mounted, onRequestClose],
+  );
+
+  useMousetrap(
+    ['right', 'l'],
+    rootRef.current,
+    () => {
+      if (mounted) {
+        onNext();
+      }
+    },
+    [mounted, onNext],
+  );
+
+  useMousetrap(
+    ['left', 'h'],
+    rootRef.current,
+    () => {
+      if (mounted) {
+        onPrevious();
+      }
+    },
+    [mounted, onPrevious],
+  );
+
   return (
-    <Portal onRendered={handleMounted}>
+    <Portal>
       <SwitchTransition>
         <CSSTransition
-          key={entity == null ? 'close' : 'open'}
+          key={entity != null ? 'open' : 'close'}
           classNames="viewer"
+          mountOnEnter
           unmountOnExit
           timeout={{
             enter: Duration.LARGE_IN + OPEN_DELAY,
             exit: Duration.LARGE_OUT,
-          }}>
-          <div role="dialog" aria-modal="true" aria-hidden={entity != null ? 'false' : 'true'}>
+          }}
+          onEnter={handleEnter}
+          onExit={handleExit}>
+          <div ref={rootRef} role="dialog" aria-modal="true" aria-hidden={entity != null ? 'false' : 'true'}>
             {entity == null ? null : (
-              <Wrapper ref={rootRef}>
+              <Wrapper>
                 <HeaderWrapper>
                   <Header
                     variant={entity.variant}

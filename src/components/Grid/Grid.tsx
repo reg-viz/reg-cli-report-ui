@@ -18,7 +18,10 @@ const styles = (config: GridConfig | undefined) =>
 
 const Wrapper = styled.div<Props>`
   display: grid;
-  ${(props) => styles(props.xs)}
+  ${(props) => styles(props.xs)};
+  padding: 0;
+  margin: 0;
+  list-style: none;
 `;
 
 export type GridConfig = {
@@ -28,6 +31,7 @@ export type GridConfig = {
 };
 
 export type Props = {
+  component?: keyof JSX.IntrinsicElements;
   xs: GridConfig;
   sm?: GridConfig;
   md?: GridConfig;
@@ -37,11 +41,16 @@ export type Props = {
 
 export const Grid: React.FC<Props> & {
   Cell: typeof Cell;
-} = ({ children, ...rest }) => <Wrapper {...rest}>{children}</Wrapper>;
+} = ({ component, children, ...rest }) => (
+  <Wrapper as={component as any} {...rest}>
+    {children}
+  </Wrapper>
+);
 
 Grid.Cell = Cell;
 
 Grid.defaultProps = {
+  component: 'div',
   xs: {
     columns: 12,
     gap: DEFAULT_GAP,

@@ -5,6 +5,7 @@ import { ViewerContainer } from '../containers/viewer/ViewerContainer';
 import { NotificationContainer } from '../containers/notification/NotificationContainer';
 import { WorkerClient } from '../worker-client';
 import { WorkerContext } from '../context/WorkerContext';
+import { SidebarContainer } from '../containers/sidebar/SidebarContainer';
 import { App as Component } from './App';
 
 export type Props = {
@@ -16,9 +17,11 @@ export const App: React.FC<Props> = ({ data, worker }) => (
   <WorkerContext.Provider value={worker}>
     <NotificationContainer.Provider>
       <EntityContainer.Provider initialState={data}>
-        <ViewerContainer.Provider>
-          <Component />
-        </ViewerContainer.Provider>
+        <SidebarContainer.Provider>
+          <ViewerContainer.Provider>
+            <Component />
+          </ViewerContainer.Provider>
+        </SidebarContainer.Provider>
       </EntityContainer.Provider>
     </NotificationContainer.Provider>
   </WorkerContext.Provider>
