@@ -1,27 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, Shadow } from '../../styles/variables';
+import { Space, Shadow, Color } from '../../styles/variables';
 import { ChoiceButton } from './internal/ChoiceButton';
 
 const List = styled.ul`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  grid-gap: ${Space * 0.5}px;
   margin: 0;
   padding: ${Space * 0.5}px;
-  border-radius: 52px;
-  background: #fff;
+  border-radius: 26px;
+  background: ${Color.WHITE};
   box-shadow: ${Shadow.LEVEL1};
   list-style: none;
 `;
 
-const ListItem = styled.li`
-  flex: 1 1 auto;
-  margin-left: ${Space * 0.5}px;
-
-  &:first-child {
-    margin-left: 0;
-  }
-`;
+const ListItem = styled.li``;
 
 export type ChoiceOption = {
   value: string;

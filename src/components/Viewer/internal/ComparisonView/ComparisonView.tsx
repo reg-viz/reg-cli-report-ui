@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import SwitchTransition from 'react-transition-group/SwitchTransition';
-import { Space, Color, Shadow, Duration, Easing, FontSize } from '../../../../styles/variables';
+import { Space, Color, Shadow, Duration, Easing, FontSize, BreakPoint } from '../../../../styles/variables';
 import { ChoiceGroup } from '../../../ChoiceGroup';
 import { Slider } from '../../../Slider';
 import { Switch } from '../../../Switch';
@@ -40,18 +40,23 @@ const ComparisonImage = styled.div`
 `;
 
 const ComparisonImageInnerV = styled.div`
-  margin: auto ${Space * 5}px;
+  margin: auto ${Space * 1}px;
   width: 100%;
+
+  @media (min-width: ${BreakPoint.MEDIUM}px) {
+    margin-right: ${Space * 5}px;
+    margin-left: ${Space * 5}px;
+  }
 `;
 
 const ComparisonImageInnerH = styled.div`
   position: relative;
-  margin: ${Space * 3}px auto;
+  margin: ${Space * 3}px auto ${Space * 17}px;
 `;
 
 const ComparisonMode = styled.div`
   position: absolute;
-  bottom: ${Space * 5}px;
+  bottom: ${Space * 1}px;
   left: 50%;
   z-index: 10;
   max-width: 100%;
@@ -71,6 +76,10 @@ const ComparisonMode = styled.div`
   .viewer-enter-active & {
     opacity: 1;
     transform: translate(-50%, 0);
+  }
+
+  @media (min-width: ${BreakPoint.MEDIUM}px) {
+    bottom: ${Space * 5}px;
   }
 `;
 

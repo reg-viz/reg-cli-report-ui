@@ -1,10 +1,13 @@
 import { createContainer } from 'unstated-next';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { toStructualItems } from '../../utils/transformer';
 import { RegStructualItem } from '../../types/reg';
 import { EntityContainer } from '../entity/EntityContainer';
+import { useMedia } from '../../hooks/useMedia';
+import { BreakPoint } from '../../styles/variables';
 
 export type SidebarValue = {
+  isDesktop: boolean;
   isOpen: boolean;
   open: () => void;
   close: () => void;
@@ -23,12 +26,18 @@ export const SidebarContainer = createContainer<SidebarValue>(() => {
   const failedItems = useMemo(() => toStructualItems(entities.failedItems), [entities.failedItems]);
   const deletedItems = useMemo(() => toStructualItems(entities.deletedItems), [entities.deletedItems]);
 
-  const [isOpen, setOpen] = useState(true);
+  const isDesktop = useMedia(`(min-width: ${BreakPoint.MEDIUM}px)`);
+  const [isOpen, setOpen] = useState(() => isDesktop);
   const open = () => setOpen(true);
   const close = () => setOpen(false);
   const toggle = () => setOpen(!isOpen);
 
+  useEffect(() => {
+    setOpen(isDesktop);
+  }, [isDesktop]);
+
   return {
+    isDesktop,
     isOpen,
     open,
     close,

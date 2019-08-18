@@ -41,7 +41,20 @@ const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({ var
   return (
     <>
       <h2 id={variant}>{title}</h2>
-      <Grid component="ul" xs={{ gap: Space * 5, columns: 'repeat(auto-fill, minmax(540px, 1fr))' }}>
+      <Grid
+        component="ul"
+        xs={{
+          gap: Space * 5,
+          columns: 'repeat(1, 1fr)',
+        }}
+        md={{
+          gap: Space * 5,
+          columns: 'repeat(auto-fill, minmax(360px, 1fr))',
+        }}
+        xl={{
+          gap: Space * 5,
+          columns: 'repeat(auto-fill, minmax(540px, 1fr))',
+        }}>
         {entities.map((entity) => (
           <Grid.Cell key={entity.id} component="li">
             <Card entity={entity} menus={[]} onClick={handleClick} onCopy={handleCopy} />

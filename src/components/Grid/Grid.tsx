@@ -1,20 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space } from '../../styles/variables';
+import { Space, BreakPoint } from '../../styles/variables';
 import { Cell } from './Cell';
 
 const DEFAULT_GAP = Space * 3;
 
 const formatColumnsOrRows = (value: number | string) => (typeof value === 'number' ? `repeat(${value}, 1fr)` : value);
 
-const styles = (config: GridConfig | undefined) =>
-  config == null
-    ? ''
-    : `
-  grid-gap: ${config.gap ? `${config.gap}px` : `${DEFAULT_GAP}px`};
-  ${config.columns && `grid-template-columns: ${formatColumnsOrRows(config.columns)}`};
-  ${config.rows && `grid-template-rows: ${formatColumnsOrRows(config.rows)}`};
-`;
+const styles = (config: GridConfig | undefined) => {
+  if (config == null) {
+    return '';
+  }
+
+  const list = [`grid-gap: ${config.gap ? `${config.gap}px` : `${DEFAULT_GAP}px`}`];
+
+  if (config.columns) {
+    list.push(`grid-template-columns: ${formatColumnsOrRows(config.columns)}`);
+  }
+
+  if (config.rows) {
+    list.push(`grid-template-rows: ${formatColumnsOrRows(config.rows)}`);
+  }
+
+  return list.join(';');
+};
 
 const Wrapper = styled.div<Props>`
   display: grid;
@@ -22,6 +31,22 @@ const Wrapper = styled.div<Props>`
   padding: 0;
   margin: 0;
   list-style: none;
+
+  @media (min-width: ${BreakPoint.SMALL}px) {
+    ${(props) => styles(props.sm)};
+  }
+
+  @media (min-width: ${BreakPoint.MEDIUM}px) {
+    ${(props) => styles(props.md)};
+  }
+
+  @media (min-width: ${BreakPoint.LARGE}px) {
+    ${(props) => styles(props.lg)};
+  }
+
+  @media (min-width: ${BreakPoint.X_LARGE}px) {
+    ${(props) => styles(props.xl)};
+  }
 `;
 
 export type GridConfig = {
