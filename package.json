@@ -5,8 +5,8 @@
   "scripts": {
     "clean": "rimraf dist",
     "start": "webpack-dev-server --hot",
-    "build": "webpack",
-    "prod": "NODE_ENV=production yarn build",
+    "build": "NODE_ENV=production npm-run-all -s clean build:source",
+    "build:source": "webpack",
     "typecheck": "tsc -p .",
     "test": "jest",
     "test:watch": "yarn test --watch",

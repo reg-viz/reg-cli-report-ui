@@ -18,7 +18,7 @@ const common = {
   },
 
   output: {
-    filename: '[name].js',
+    filename: path.join('assets', '[name].js'),
     sourceMapFilename: '[name].js.map',
     path: DIST_PATH,
     publicPath: '/',
@@ -46,19 +46,26 @@ module.exports = [
 
     plugins: [
       ...common.plugins,
-      new HtmlWebpackPlugin({
-        template: 'index.html',
-        excludeChunks: ['worker'],
-      }),
-      new ScriptExtHtmlWebpackPlugin({
-        defer: ['vendor', 'report'],
-        preload: /\.js$/,
-      }),
       new CopyPlugin([
-        { from: 'sample', to: DIST_PATH },
-        { from: 'detector.wasm', to: DIST_PATH },
-        { from: path.join(__dirname, 'node_modules', 'x-img-diff-js', 'build'), to: DIST_PATH },
+        {
+          from: path.join(__dirname, 'node_modules', 'x-img-diff-js', 'build', 'cv-wasm_browser.*'),
+          to: path.join(DIST_PATH, 'assets'),
+          flatten: true,
+        },
+        ...(IS_PRODUCTION ? [] : [{ from: 'detector.wasm', to: DIST_PATH }, { from: 'sample', to: DIST_PATH }]),
       ]),
+      ...(IS_PRODUCTION
+        ? []
+        : [
+            new HtmlWebpackPlugin({
+              template: 'index.html',
+              excludeChunks: ['worker'],
+            }),
+            new ScriptExtHtmlWebpackPlugin({
+              defer: ['vendor', 'report'],
+              preload: /\.js$/,
+            }),
+          ]),
     ],
 
     optimization: {
