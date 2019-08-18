@@ -5,7 +5,13 @@ import { WorkerEvent, WorkerEventType, WorkerEventData } from './types/event';
 const ximgdiffVersionString = require('x-img-diff-js/package.json').version as string;
 /* eslint-enable */
 
+declare function importScripts(...paths: string[]): any;
+
 const _self = self as any;
+
+// TODO Dynamic embed
+_self.wasmUrl = '/detector.wasm';
+// TODO Dynamic embed
 
 function version2number(version: string) {
   const [, major, minor, patch] = version.match(/^(\d*)\.(\d*)\.(\d*)/) as [string, string, string, string];
@@ -14,7 +20,7 @@ function version2number(version: string) {
 }
 
 let loaded = false;
-let lastCalcData: any = null; // TODO typedef
+let lastCalcData: WorkerEventData<WorkerEventType.REQUEST_CALC> | null = null;
 
 const calc = ({
   payload: { raw, img1, img2, actualSrc, expectedSrc, seq },
@@ -23,13 +29,15 @@ const calc = ({
 
   _self.postMessage({
     type: WorkerEventType.RESULT_CALC,
-    seq,
-    raw,
-    actualSrc,
-    expectedSrc,
-    result: {
-      ...diffResult,
-      images: [{ width: img1.width, height: img1.height }, { width: img2.width, height: img2.height }],
+    payload: {
+      seq,
+      raw,
+      actualSrc,
+      expectedSrc,
+      result: {
+        ...diffResult,
+        images: [{ width: img1.width, height: img1.height }, { width: img2.width, height: img2.height }],
+      },
     },
   });
 };
@@ -69,10 +77,10 @@ _self.Module = new ModuleClass({
   wasmUrl: _self.wasmUrl,
   init: () => {
     loaded = true;
-    if (lastCalcData) {
+    if (lastCalcData != null) {
       calc(lastCalcData);
     }
-    _self.postMessage({ type: WorkerEventType.INIT });
+    _self.postMessage({ type: WorkerEventType.INIT_CALC });
   },
 });
 
@@ -91,7 +99,9 @@ _self.addEventListener('message', ({ data }: WorkerEvent) => {
     case WorkerEventType.REQUEST_FILTER:
       filter(data);
       break;
-
-    default:
   }
 });
+
+// TODO Dynamic embed
+importScripts('/cv-wasm_browser.js');
+// TODO Dynamic embed

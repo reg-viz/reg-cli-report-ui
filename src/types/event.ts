@@ -1,8 +1,8 @@
-import { RegEntity } from './reg';
+import { RegEntity, Matching } from './reg';
 
 export enum WorkerEventType {
   // calculate
-  INIT = 'init',
+  INIT_CALC = 'init',
   REQUEST_CALC = 'req_calc',
   RESULT_CALC = 'res_calc',
 
@@ -12,20 +12,24 @@ export enum WorkerEventType {
 }
 
 type WorkerEventDataPayloadMap = {
-  [WorkerEventType.INIT]: void;
+  [WorkerEventType.INIT_CALC]: void;
 
   [WorkerEventType.REQUEST_CALC]: {
+    seq: number;
     raw: string;
     actualSrc: string;
     expectedSrc: string;
-    img1: any; // TODO
-    img2: any; // TODO
-    seq: any; // TODO
+    img1: ImageData;
+    img2: ImageData;
   };
   [WorkerEventType.RESULT_CALC]: {
-    img1: any; // TODO
-    img2: any; // TODO
-    seq: any; // TODO
+    seq: number;
+    raw: string;
+    actualSrc: string;
+    expectedSrc: string;
+    img1: ImageData;
+    img2: ImageData;
+    result: Matching;
   };
 
   [WorkerEventType.REQUEST_FILTER]: {

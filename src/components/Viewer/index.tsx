@@ -26,6 +26,7 @@ const Renderer: React.FC = () => {
       total={allItems.length}
       current={viewer.current.index + 1}
       entity={viewer.current.entity}
+      matching={viewer.current.matching}
       onNext={handleNext}
       onPrevious={handlePrevious}
       onRequestClose={handleClose}

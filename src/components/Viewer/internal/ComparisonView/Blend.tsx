@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Image } from '../../../Image';
+import { Matching } from '../../../../types/reg';
 import { useComparisonImage } from './useComparisonImage';
+import { Markers } from './Markers';
 
 const Wrapper = styled.div`
   display: flex;
@@ -31,9 +33,10 @@ export type Props = {
   before: string;
   after: string;
   value: number;
+  matching: Matching | null;
 };
 
-export const Blend: React.FC<Props> = ({ before, after, value }) => {
+export const Blend: React.FC<Props> = ({ before, after, value, matching }) => {
   const { canvas, image } = useComparisonImage(before, after);
 
   return (
@@ -41,6 +44,7 @@ export const Blend: React.FC<Props> = ({ before, after, value }) => {
       <Inner style={canvas}>
         <Before>
           <Image ref={image.before.ref} src={before} onLoad={image.before.handleLoad} />
+          <Markers variant="before" matching={matching} />
         </Before>
 
         <After
@@ -52,6 +56,7 @@ export const Blend: React.FC<Props> = ({ before, after, value }) => {
             opacity: value,
           }}>
           <Image ref={image.after.ref} src={after} onLoad={image.after.handleLoad} />
+          <Markers variant="after" matching={matching} />
         </After>
       </Inner>
     </Wrapper>

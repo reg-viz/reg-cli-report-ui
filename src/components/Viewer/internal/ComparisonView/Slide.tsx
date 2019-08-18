@@ -2,7 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Image } from '../../../Image';
 import { Color } from '../../../../styles/variables';
+import { Matching } from '../../../../types/reg';
 import { useComparisonImage } from './useComparisonImage';
+import { Markers } from './Markers';
 
 const Wrapper = styled.div`
   display: flex;
@@ -94,9 +96,10 @@ const HandleBar = styled.span`
 export type Props = {
   before: string;
   after: string;
+  matching: Matching | null;
 };
 
-export const Slide: React.FC<Props> = ({ before, after }) => {
+export const Slide: React.FC<Props> = ({ before, after, matching }) => {
   const { canvas, image } = useComparisonImage(before, after);
 
   const innerRef = useRef<HTMLDivElement>(null);
@@ -174,6 +177,7 @@ export const Slide: React.FC<Props> = ({ before, after }) => {
             height: image.before.height,
           }}>
           <Image ref={image.before.ref} src={before} onLoad={image.before.handleLoad} />
+          <Markers variant="before" matching={matching} />
         </Before>
 
         <Frame style={{ width: `${position}%` }}>
@@ -185,6 +189,7 @@ export const Slide: React.FC<Props> = ({ before, after }) => {
               height: image.after.height,
             }}>
             <Image ref={image.after.ref} src={after} onLoad={image.after.handleLoad} />
+            <Markers variant="after" matching={matching} />
           </After>
         </Frame>
 

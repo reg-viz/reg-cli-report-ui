@@ -34,7 +34,7 @@ const loadImage = (src: string): Promise<ImageData> =>
   });
 
 export class WorkerClient {
-  private _cache: { [key: string]: any } = {}; // TODO typedef
+  private _cache: { [key: string]: WorkerEventDataPayload<WorkerEventType.RESULT_CALC> } = {};
   private _seq = 0;
   private _emitter = new EventEmitter();
   private _worker: Worker | null = null;
@@ -47,17 +47,11 @@ export class WorkerClient {
 
     this._worker = new Worker(workerUrl);
 
-    // TODO typedef
     this._worker.addEventListener('message', ({ data }: WorkerEvent) => {
       switch (data.type) {
-        // TODO implement
         case WorkerEventType.RESULT_CALC:
-          // this.pushResult(e.data);
-          // public pushResult<T extends WorkerEventType>(type: T, data: WorkerEventData<T>['payload']) {
-          //   this._cache[
-          //   // this._cache[data.raw] = data;
-          //   // this._emitter.emit('result', data);
-          // }
+          this._cache[data.payload.raw] = data.payload;
+          this._emitter.emit(WorkerEventType.RESULT_CALC, data.payload);
           break;
 
         case WorkerEventType.RESULT_FILTER:
@@ -67,26 +61,30 @@ export class WorkerClient {
     });
   }
 
-  public requestCalc(req: WorkerEventDataPayload<WorkerEventType.REQUEST_CALC>) {
+  public requestCalc(
+    payload: Pick<WorkerEventDataPayload<WorkerEventType.REQUEST_CALC>, 'raw' | 'actualSrc' | 'expectedSrc'>,
+  ) {
     if (this._worker == null) {
-      return;
+      return 0;
     }
 
     const seq = ++this._seq;
 
-    if (this._cache[req.raw]) {
-      setTimeout(() => this._emitter.emit(WorkerEventType.RESULT_CALC, { ...this._cache[req.raw], seq }), 10);
+    if (this._cache[payload.raw]) {
+      setTimeout(() => this._emitter.emit(WorkerEventType.RESULT_CALC, { ...this._cache[payload.raw], seq }), 10);
       return seq;
     }
 
-    Promise.all([loadImage(req.actualSrc), loadImage(req.expectedSrc)]).then(([img1, img2]) => {
+    Promise.all([loadImage(payload.actualSrc), loadImage(payload.expectedSrc)]).then(([img1, img2]) => {
       (this._worker as Worker).postMessage(
         {
           type: WorkerEventType.REQUEST_CALC,
-          img1,
-          img2,
-          seq,
-          ...req,
+          payload: {
+            img1,
+            img2,
+            seq,
+            ...payload,
+          },
         },
         [img1.data.buffer, img2.data.buffer],
       );

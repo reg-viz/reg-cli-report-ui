@@ -54,7 +54,11 @@ module.exports = [
         defer: ['vendor', 'report'],
         preload: /\.js$/,
       }),
-      new CopyPlugin([{ from: 'sample', to: DIST_PATH }]),
+      new CopyPlugin([
+        { from: 'sample', to: DIST_PATH },
+        { from: 'detector.wasm', to: DIST_PATH },
+        { from: path.join(__dirname, 'node_modules', 'x-img-diff-js', 'build'), to: DIST_PATH },
+      ]),
     ],
 
     optimization: {
