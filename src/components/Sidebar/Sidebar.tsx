@@ -15,6 +15,7 @@ import { SignDeletedIcon } from '../icons/SignDeletedIcon';
 import { SidebarContainer } from '../../containers/sidebar/SidebarContainer';
 import { tryNextFocus, tryPreviousFocus } from '../../utils/focus';
 import { useMousetrap } from '../../hooks/useMousetrap';
+import { EntityContainer } from '../../containers/entity/EntityContainer';
 import { Toggle } from './internal/Toggle';
 
 const DEFAULT_WIDTH = 300;
@@ -137,11 +138,34 @@ export type Props = {
   listRef?: React.Ref<HTMLDivElement>;
 };
 
-const renderItem = (label: string, depth: number, item: RegStructualItem) => {
+const useForceOpen = (forceOpen: boolean) => {
+  const [open, setOpen] = useState(forceOpen);
+  const openCache = useRef(open);
+
+  useEffect(() => {
+    if (forceOpen) {
+      openCache.current = open;
+      setOpen(true);
+    } else {
+      setOpen(openCache.current);
+    }
+  }, [forceOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return [open, setOpen] as const;
+};
+
+const SummaryItem: React.FC<{ forceOpen: boolean; label: string; depth: number; item: RegStructualItem }> = ({
+  forceOpen,
+  label,
+  depth,
+  item,
+}) => {
+  const [open, setOpen] = useForceOpen(forceOpen);
+
   if (item.child != null) {
     return (
-      <List.Expandable key={`${label}${item.name}`} depth={depth} label={item.name}>
-        {renderItem(label, depth + 1, item.child)}
+      <List.Expandable key={`${label}${item.name}`} open={open} depth={depth} label={item.name} onChange={setOpen}>
+        <SummaryItem forceOpen={forceOpen} label={label} depth={depth + 1} item={item.child} />
       </List.Expandable>
     );
   }
@@ -153,19 +177,29 @@ const renderItem = (label: string, depth: number, item: RegStructualItem) => {
   );
 };
 
-const renderItems = (label: string, icon: React.ReactNode, items: RegStructualItem[]) => {
+const Summary: React.FC<{ forceOpen: boolean; label: string; icon: React.ReactNode; items: RegStructualItem[] }> = ({
+  forceOpen,
+  label,
+  icon,
+  items,
+}) => {
+  const [open, setOpen] = useForceOpen(forceOpen);
+
   if (items.length < 1) {
     return null;
   }
 
   return (
-    <List.Expandable large label={label} meta={`${items.length} items`} icon={icon}>
-      {items.map((item) => renderItem(label, 1, item))}
+    <List.Expandable large open={open} label={label} meta={`${items.length} items`} icon={icon} onChange={setOpen}>
+      {items.map((item) => (
+        <SummaryItem forceOpen={forceOpen} key={item.id} label={label} depth={1} item={item} />
+      ))}
     </List.Expandable>
   );
 };
 
 export const Sidebar: React.FC<Props> = ({ inputRef, listRef }) => {
+  const entities = EntityContainer.useContainer();
   const sidebar = SidebarContainer.useContainer();
 
   const innerRef = useRef<HTMLDivElement>(null);
@@ -199,9 +233,9 @@ export const Sidebar: React.FC<Props> = ({ inputRef, listRef }) => {
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      sidebar.filter(e.target.value);
+      entities.filter(e.target.value);
     },
-    [sidebar],
+    [entities],
   );
 
   useMousetrap(['up', 'k'], innerRef.current, (e) => {
@@ -261,10 +295,30 @@ export const Sidebar: React.FC<Props> = ({ inputRef, listRef }) => {
 
           <div ref={listRef}>
             <List header="SUMMARY">
-              {renderItems('CHANGED', <SignChangedIcon fill={Color.SIGN_CHANGED} />, sidebar.failedItems)}
-              {renderItems('NEW', <SignNewIcon fill={Color.SIGN_NEW} />, sidebar.newItems)}
-              {renderItems('DELETED', <SignDeletedIcon fill={Color.SIGN_DELETED} />, sidebar.deletedItems)}
-              {renderItems('PASSED', <SignPassedIcon fill={Color.SIGN_PASSED} />, sidebar.passedItems)}
+              <Summary
+                forceOpen={entities.filtering}
+                label="CHANGED"
+                icon={<SignChangedIcon fill={Color.SIGN_CHANGED} />}
+                items={sidebar.failedItems}
+              />
+              <Summary
+                forceOpen={entities.filtering}
+                label="NEW"
+                icon={<SignNewIcon fill={Color.SIGN_NEW} />}
+                items={sidebar.newItems}
+              />
+              <Summary
+                forceOpen={entities.filtering}
+                label="DELETED"
+                icon={<SignDeletedIcon fill={Color.SIGN_DELETED} />}
+                items={sidebar.deletedItems}
+              />
+              <Summary
+                forceOpen={entities.filtering}
+                label="PASSED"
+                icon={<SignPassedIcon fill={Color.SIGN_PASSED} />}
+                items={sidebar.passedItems}
+              />
             </List>
           </div>
 

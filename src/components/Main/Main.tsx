@@ -53,15 +53,28 @@ const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({ var
 };
 
 export const Main: React.FC<Props> = () => {
-  const { failedItems, newItems, deletedItems, passedItems } = EntityContainer.useContainer();
+  const entities = EntityContainer.useContainer();
 
   return (
     <Container>
       <h1>REPORT DETAIL</h1>
-      <Content variant="changed" entities={failedItems} />
-      <Content variant="new" entities={newItems} />
-      <Content variant="deleted" entities={deletedItems} />
-      <Content variant="passed" entities={passedItems} />
+      {entities.filtering && entities.allItems.length === 0 ? (
+        <>
+          <h2>Not found</h2>
+          <p>
+            No items found that match the text entered.
+            <br />
+            Try filtering with different keywords :)
+          </p>
+        </>
+      ) : (
+        <>
+          <Content variant="changed" entities={entities.failedItems} />
+          <Content variant="new" entities={entities.newItems} />
+          <Content variant="deleted" entities={entities.deletedItems} />
+          <Content variant="passed" entities={entities.passedItems} />
+        </>
+      )}
     </Container>
   );
 };

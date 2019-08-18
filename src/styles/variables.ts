@@ -60,8 +60,8 @@ export enum Easing {
 export enum Duration {
   FADE_IN = 150,
   FADE_OUT = 75,
-  SLIDE_IN = 220,
-  SLIDE_OUT = 200,
+  SLIDE_IN = 180,
+  SLIDE_OUT = 160,
   SMALL_IN = 90,
   SMALL_OUT = 140,
   MEDIUM_IN = 280,

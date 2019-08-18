@@ -1,26 +1,27 @@
 import { createContainer } from 'unstated-next';
-import { useMemo } from 'react';
+import { useMemo, useContext, useState, useEffect } from 'react';
 import { toEntities } from '../../utils/transformer';
 import { RegData, RegEntity } from '../../types/reg';
+import { WorkerContext } from '../../context/WorkerContext';
+import { WorkerEventType } from '../../types/event';
 
 export type EntityValue = {
+  filtering: boolean;
   newItems: RegEntity[];
   passedItems: RegEntity[];
   failedItems: RegEntity[];
   deletedItems: RegEntity[];
   allItems: RegEntity[];
+  filter: (input: string) => void;
 };
 
 export const EntityContainer = createContainer<EntityValue, RegData>((initialState) => {
   if (initialState == null) {
-    return {
-      newItems: [],
-      passedItems: [],
-      failedItems: [],
-      deletedItems: [],
-      allItems: [],
-    };
+    throw new Error('Unexpected error occurred');
   }
+
+  const worker = useContext(WorkerContext);
+  const [filtering, setFiltering] = useState(false);
 
   const dirs = {
     diff: initialState.diffDir,
@@ -28,19 +29,23 @@ export const EntityContainer = createContainer<EntityValue, RegData>((initialSta
     actual: initialState.actualDir,
   };
 
-  const newItems = useMemo(() => toEntities('new', dirs, initialState.newItems), [dirs, initialState.newItems]);
-  const passedItems = useMemo(() => toEntities('passed', dirs, initialState.passedItems), [
-    dirs,
+  /* eslint-disable react-hooks/exhaustive-deps */
+  const defaultNewItems = useMemo(() => toEntities('new', dirs, initialState.newItems), [initialState.newItems]);
+  const defaultPassedItems = useMemo(() => toEntities('passed', dirs, initialState.passedItems), [
     initialState.passedItems,
   ]);
-  const failedItems = useMemo(() => toEntities('changed', dirs, initialState.failedItems), [
-    dirs,
+  const defaultFailedItems = useMemo(() => toEntities('changed', dirs, initialState.failedItems), [
     initialState.failedItems,
   ]);
-  const deletedItems = useMemo(() => toEntities('deleted', dirs, initialState.deletedItems), [
-    dirs,
+  const defaultDeletedItems = useMemo(() => toEntities('deleted', dirs, initialState.deletedItems), [
     initialState.deletedItems,
   ]);
+  /* eslint-enable */
+
+  const [newItems, setNewItems] = useState(defaultNewItems);
+  const [passedItems, setPassedItems] = useState(defaultPassedItems);
+  const [failedItems, setFailedItems] = useState(defaultFailedItems);
+  const [deletedItems, setDeletedItems] = useState(defaultDeletedItems);
 
   const allItems = useMemo(() => [...failedItems, ...newItems, ...deletedItems, ...passedItems], [
     newItems,
@@ -49,11 +54,44 @@ export const EntityContainer = createContainer<EntityValue, RegData>((initialSta
     deletedItems,
   ]);
 
+  const filter = (input: string) => {
+    if (worker == null) {
+      return;
+    }
+
+    const value = input.trim();
+
+    setFiltering(value !== '');
+
+    worker.requestFilter({
+      input: value,
+      newItems: defaultNewItems,
+      passedItems: defaultPassedItems,
+      failedItems: defaultFailedItems,
+      deletedItems: defaultDeletedItems,
+    });
+  };
+
+  useEffect(() => {
+    if (worker == null) {
+      return;
+    }
+
+    worker.subscribe(WorkerEventType.RESULT_FILTER, (payload) => {
+      setNewItems(payload.newItems);
+      setPassedItems(payload.passedItems);
+      setFailedItems(payload.failedItems);
+      setDeletedItems(payload.deletedItems);
+    });
+  }, [worker]);
+
   return {
     newItems,
     passedItems,
     failedItems,
     deletedItems,
     allItems,
+    filtering,
+    filter,
   };
 });
