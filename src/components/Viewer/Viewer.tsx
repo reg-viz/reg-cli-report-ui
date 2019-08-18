@@ -11,7 +11,7 @@ import { ArrowRightIcon } from '../icons/ArrowRightIcon';
 import { Transparent } from '../internal/Transparent';
 import { Header } from '../Header';
 import { Portal } from '../internal/Portal';
-import { RegEntity } from '../../types/reg';
+import { RegEntity, Matching } from '../../types/reg';
 import { useMousetrap } from '../../hooks/useMousetrap';
 import { ComparisonView } from './internal/ComparisonView';
 import { OPEN_DELAY } from './constants';
@@ -136,12 +136,13 @@ export type Props = {
   total: number;
   current: number;
   entity: RegEntity | null;
+  matching: Matching | null;
   onNext: () => void;
   onPrevious: () => void;
   onRequestClose: () => void;
 };
 
-export const Viewer: React.FC<Props> = ({ total, current, entity, onPrevious, onNext, onRequestClose }) => {
+export const Viewer: React.FC<Props> = ({ total, current, entity, matching, onPrevious, onNext, onRequestClose }) => {
   const [mounted, setMounted] = useState(false);
 
   const rootRef = useRef<HTMLDivElement>(null);
@@ -277,7 +278,7 @@ export const Viewer: React.FC<Props> = ({ total, current, entity, onPrevious, on
                 </HeaderWrapper>
 
                 <Body>
-                  <ComparisonView entity={entity} />
+                  <ComparisonView entity={entity} matching={matching} />
 
                   <Previous>
                     <IconButton onClick={handlePreviousClick}>

@@ -6,7 +6,7 @@ import { Space, Color, Shadow, Duration, Easing, FontSize, BreakPoint } from '..
 import { ChoiceGroup } from '../../../ChoiceGroup';
 import { Slider } from '../../../Slider';
 import { Switch } from '../../../Switch';
-import { RegEntity } from '../../../../types/reg';
+import { RegEntity, Matching } from '../../../../types/reg';
 import { Image } from '../../../Image';
 import { OPEN_DELAY } from '../../constants';
 import { Diff } from './Diff';
@@ -162,9 +162,10 @@ const modes = [
 
 export type Props = {
   entity: RegEntity;
+  matching: Matching | null;
 };
 
-export const ComparisonView: React.FC<Props> = ({ entity }) => {
+export const ComparisonView: React.FC<Props> = ({ entity, matching }) => {
   const [mode, setMode] = useState('slide');
   const [blendValue, setBlendValue] = useState(0.5);
   const [toggleValue, setToggleValue] = useState(false);
@@ -189,10 +190,14 @@ export const ComparisonView: React.FC<Props> = ({ entity }) => {
             {entity.variant === 'changed' && (
               <>
                 {mode === 'diff' && <Diff src={entity.diff} />}
-                {mode === 'slide' && <Slide before={entity.before} after={entity.after} />}
-                {mode === '2up' && <TwoUp before={entity.before} after={entity.after} />}
-                {mode === 'blend' && <Blend before={entity.before} after={entity.after} value={blendValue} />}
-                {mode === 'toggle' && <Toggle before={entity.before} after={entity.after} checked={toggleValue} />}
+                {mode === 'slide' && <Slide before={entity.before} after={entity.after} matching={matching} />}
+                {mode === '2up' && <TwoUp before={entity.before} after={entity.after} matching={matching} />}
+                {mode === 'blend' && (
+                  <Blend before={entity.before} after={entity.after} value={blendValue} matching={matching} />
+                )}
+                {mode === 'toggle' && (
+                  <Toggle before={entity.before} after={entity.after} checked={toggleValue} matching={matching} />
+                )}
               </>
             )}
 

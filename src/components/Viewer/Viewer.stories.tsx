@@ -19,6 +19,7 @@ const defaultProps = {
   total: 302,
   current: 2,
   entity: defaultEntity,
+  matching: null,
   onPrevious: action('onPrevious') as any,
   onNext: action('onNext') as any,
   onRequestClose: action('onRequestClose') as any,

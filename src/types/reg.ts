@@ -41,3 +41,27 @@ export type RegStructualItem = {
   name: string;
   child?: RegStructualItem;
 };
+
+export type Rect = {
+  width: number;
+  height: number;
+  x: number;
+  y: number;
+};
+
+export type Size = {
+  width: number;
+  height: number;
+};
+
+export type DetectMatch = {
+  bounding: Rect;
+  center: Rect;
+  diffMarkers: Rect[];
+};
+
+export type Matching = {
+  images: Size[];
+  matches: DetectMatch[][];
+  strayingRects: Rect[][];
+};
