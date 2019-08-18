@@ -3,7 +3,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import styled, { css } from 'styled-components';
 import focusTrap, { FocusTrap } from 'focus-trap';
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import { Space, Color, Depth, Size, Duration, Easing } from '../../styles/variables';
 import { IconButton } from '../IconButton';
 import { ArrowLeftIcon } from '../icons/ArrowLeftIcon';
@@ -153,22 +153,14 @@ export const Viewer: React.FC<Props> = ({ total, current, entity, onPrevious, on
       return;
     }
 
-    focusRef.current = focusTrap(root, {});
-    focusRef.current.activate();
-    disableBodyScroll(root);
-
     setMounted(true);
   }, [entity]);
 
   const handleExit = useCallback(() => {
     const { current: root } = rootRef;
-    const { current: focus } = focusRef;
-    if (entity == null || root == null || focus == null) {
+    if (entity == null || root == null) {
       return;
     }
-
-    focus.deactivate();
-    enableBodyScroll(root);
 
     setMounted(false);
   }, [entity]);
@@ -195,9 +187,29 @@ export const Viewer: React.FC<Props> = ({ total, current, entity, onPrevious, on
       if (trap != null) {
         trap.deactivate();
       }
+
+      clearAllBodyScrollLocks();
     },
     [],
   );
+
+  useEffect(() => {
+    const { current: root } = rootRef;
+    if (root == null) {
+      return;
+    }
+
+    if (mounted) {
+      focusRef.current = focusTrap(root, {});
+      focusRef.current.activate();
+      disableBodyScroll(root);
+    } else {
+      if (focusRef.current != null) {
+        focusRef.current.deactivate();
+      }
+      clearAllBodyScrollLocks();
+    }
+  }, [mounted]);
 
   useMousetrap(
     'esc',
@@ -246,7 +258,12 @@ export const Viewer: React.FC<Props> = ({ total, current, entity, onPrevious, on
           }}
           onEnter={handleEnter}
           onExit={handleExit}>
-          <div ref={rootRef} role="dialog" aria-modal="true" aria-hidden={entity != null ? 'false' : 'true'}>
+          <div
+            ref={rootRef}
+            tabIndex={entity == null ? -1 : 0}
+            role="dialog"
+            aria-modal="true"
+            aria-hidden={entity != null ? 'false' : 'true'}>
             {entity == null ? null : (
               <Wrapper>
                 <HeaderWrapper>

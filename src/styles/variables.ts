@@ -39,7 +39,7 @@ export enum FontSize {
 }
 
 export enum LineHeight {
-  SMALL = '1.3',
+  SMALL = '1.2',
   MEDIUM = '1.65',
   LARGE = '1.8',
 }

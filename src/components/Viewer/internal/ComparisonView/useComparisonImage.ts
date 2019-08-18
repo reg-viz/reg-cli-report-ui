@@ -1,18 +1,21 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import debounce from 'debounce';
-import { Space } from '../../../../styles/variables';
+import { Space, BreakPoint } from '../../../../styles/variables';
+import { useMedia } from '../../../../hooks/useMedia';
 
 const RESIZE_DEBOUNCE_MS = 32;
 
 const safe = (n: number) => (Number.isNaN(n) ? 0 : n);
 
 export const useComparisonImage = (before: string, after: string) => {
+  const isDesktop = useMedia(`(min-width: ${BreakPoint.MEDIUM}px)`);
+
   // canvas
   const [width, setWidth] = useState(0);
 
   useEffect(() => {
     const updateWidth = debounce(() => {
-      setWidth(window.innerWidth - Space * 5 * 2);
+      setWidth(window.innerWidth - (isDesktop ? Space * 5 : Space * 1) * 2);
     }, RESIZE_DEBOUNCE_MS);
 
     updateWidth();
@@ -22,7 +25,7 @@ export const useComparisonImage = (before: string, after: string) => {
     return () => {
       window.removeEventListener('resize', updateWidth, false);
     };
-  }, []);
+  }, [isDesktop]);
 
   // images
   const [bLoaded, setBLoaded] = useState(false);

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import * as clipboard from 'clipboard-polyfill';
-import { Space, Color, Shadow, LineHeight, Focus, FontSize } from '../../styles/variables';
+import { Space, Color, Shadow, LineHeight, Focus, FontSize, BreakPoint } from '../../styles/variables';
 import { RegEntity } from '../../types/reg';
 import { Image } from '../Image';
 import { Ellipsis } from '../internal/Ellipsis';
@@ -56,10 +56,14 @@ const CardImageInner = styled.span`
 `;
 
 const CardText = styled.div`
-  padding: ${Space * 3}px;
+  padding: ${Space * 2}px;
   font-size: ${FontSize.SMALL};
   text-align: left;
   line-height: ${LineHeight.SMALL};
+
+  @media (min-width: ${BreakPoint.MEDIUM}px) {
+    padding: ${Space * 3}px;
+  }
 `;
 
 const CardMenu = styled.div`
