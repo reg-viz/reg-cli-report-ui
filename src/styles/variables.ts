@@ -25,7 +25,7 @@ export enum Shadow {
 }
 
 export enum FontFamily {
-  SANS_SERIF = 'Avenir,"Lucida Grande","Helvetica Neue","游ゴシック","YuGothic","Hiragino Kaku Gothic ProN","メイリオ",meiryo,sans-serif',
+  SANS_SERIF = '"Work Sans", sans-serif',
   MONOSPACE = 'SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace',
 }
 
