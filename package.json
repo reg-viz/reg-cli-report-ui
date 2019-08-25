@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "start": "webpack-dev-server --hot",
-    "build": "NODE_ENV=production npm-run-all -s clean build:source",
+    "build": "set NODE_ENV=production npm-run-all -s clean build:source",
     "build:source": "webpack",
     "typecheck": "tsc -p .",
     "test": "jest",
