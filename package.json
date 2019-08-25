@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "start": "webpack-dev-server --hot",
-    "build": "set NODE_ENV=production npm-run-all -s clean build:source",
+    "build": "cross-env NODE_ENV=\"production\" npm-run-all -s clean build:source",
     "build:source": "webpack",
     "typecheck": "tsc -p .",
     "test": "jest",
@@ -48,6 +48,7 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-styled-components": "^1.10.6",
     "copy-webpack-plugin": "^5.0.4",
+    "cross-env": "^5.2.0",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-import": "^2.18.2",
