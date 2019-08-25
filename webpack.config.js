@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 const SRC_PATH = path.join(__dirname, 'src');
@@ -18,7 +17,7 @@ const common = {
   },
 
   output: {
-    filename: path.join('assets', '[name].js'),
+    filename: path.join('[name].js'),
     sourceMapFilename: '[name].js.map',
     path: DIST_PATH,
     publicPath: '/',
@@ -46,43 +45,21 @@ module.exports = [
 
     plugins: [
       ...common.plugins,
-      new CopyPlugin([
-        {
-          from: path.join(__dirname, 'node_modules', 'x-img-diff-js', 'build', 'cv-wasm_browser.*'),
-          to: path.join(DIST_PATH, 'assets'),
-          flatten: true,
-        },
-        ...(IS_PRODUCTION ? [] : [{ from: 'detector.wasm', to: DIST_PATH }, { from: 'sample', to: DIST_PATH }]),
-      ]),
       ...(IS_PRODUCTION
         ? []
         : [
-            new HtmlWebpackPlugin({
-              template: 'index.html',
-              excludeChunks: ['worker'],
-            }),
-            new ScriptExtHtmlWebpackPlugin({
-              defer: ['vendor', 'report'],
-              preload: /\.js$/,
-            }),
+            new CopyPlugin([
+              {
+                from: path.join(__dirname, 'node_modules', 'x-img-diff-js', 'build', 'cv-wasm_browser.*'),
+                to: path.join(DIST_PATH),
+                flatten: true,
+              },
+              { from: 'detector.wasm', to: DIST_PATH },
+              { from: 'sample', to: DIST_PATH },
+            ]),
+            new HtmlWebpackPlugin({ template: 'index.html' }),
           ]),
     ],
-
-    optimization: {
-      splitChunks: {
-        chunks: 'initial',
-        minSize: 1,
-        minChunks: 1,
-        cacheGroups: {
-          commons: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendor',
-            enforce: true,
-          },
-        },
-      },
-      concatenateModules: true,
-    },
 
     devServer: {
       contentBase: DIST_PATH,

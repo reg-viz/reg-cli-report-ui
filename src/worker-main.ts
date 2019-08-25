@@ -9,9 +9,9 @@ declare function importScripts(...paths: string[]): any;
 
 const _self = self as any;
 
-// TODO Dynamic embed
-_self.wasmUrl = '/detector.wasm';
-// TODO Dynamic embed
+// // TODO Dynamic embed
+// _self.wasmUrl = '/detector.wasm';
+// // TODO Dynamic embed
 
 function version2number(version: string) {
   const [, major, minor, patch] = version.match(/^(\d*)\.(\d*)\.(\d*)/) as [string, string, string, string];
@@ -101,7 +101,7 @@ _self.addEventListener('message', ({ data }: WorkerEvent) => {
       break;
   }
 });
-
-// TODO Dynamic embed
-importScripts('/cv-wasm_browser.js');
-// TODO Dynamic embed
+//
+// // TODO Dynamic embed
+// importScripts('/cv-wasm_browser.js');
+// // TODO Dynamic embed
