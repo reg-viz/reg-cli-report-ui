@@ -5,8 +5,6 @@ import { WorkerEvent, WorkerEventType, WorkerEventData } from './types/event';
 const ximgdiffVersionString = require('x-img-diff-js/package.json').version as string;
 /* eslint-enable */
 
-declare function importScripts(...paths: string[]): any;
-
 const _self = self as any;
 
 // // TODO Dynamic embed
