@@ -17,7 +17,7 @@ export const App: React.FC<Props> = ({ data, worker }) => (
   <WorkerContext.Provider value={worker}>
     <NotificationContainer.Provider>
       <EntityContainer.Provider initialState={data}>
-        <SidebarContainer.Provider>
+        <SidebarContainer.Provider initialState={data.links}>
           <ViewerContainer.Provider>
             <Component />
           </ViewerContainer.Provider>
