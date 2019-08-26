@@ -1,6 +1,14 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 
+const portal: {
+  el: HTMLDivElement | null;
+  count: number;
+} = {
+  el: null,
+  count: 0,
+};
+
 export type Props = {
   children: React.ReactNode;
   onRendered?: () => void;
@@ -8,18 +16,25 @@ export type Props = {
 
 export const Portal: React.FC<Props> = ({ children, onRendered }) => {
   const [mounted, setMounted] = React.useState(false);
-  const wrapper: React.MutableRefObject<HTMLDivElement | null> = React.useRef(null);
 
   React.useEffect(() => {
-    wrapper.current = document.createElement('div');
-    wrapper.current.classList.add('portal');
-    document.body.appendChild(wrapper.current);
+    if (portal.el == null) {
+      portal.el = document.createElement('div');
+      portal.el.classList.add('portal');
+      document.body.appendChild(portal.el);
+    }
+
+    portal.count++;
 
     setMounted(true);
 
     return () => {
-      if (wrapper.current != null) {
-        document.body.removeChild(wrapper.current);
+      portal.count--;
+
+      if (portal.count <= 0 && portal.el != null) {
+        document.body.removeChild(portal.el);
+        portal.count = 0;
+        portal.el = null;
       }
     };
   }, []);
@@ -30,9 +45,9 @@ export const Portal: React.FC<Props> = ({ children, onRendered }) => {
     }
   }, [mounted, onRendered]);
 
-  if (!mounted || wrapper.current == null) {
+  if (!mounted || portal.el == null) {
     return null;
   }
 
-  return ReactDOM.createPortal(children, wrapper.current);
+  return ReactDOM.createPortal(children, portal.el);
 };
