@@ -1,7 +1,7 @@
 import { createContainer } from 'unstated-next';
 import { useState, useMemo, useEffect } from 'react';
 import { toStructualItems } from '../../utils/transformer';
-import { RegStructualItem } from '../../types/reg';
+import { RegStructualItem, RegLink } from '../../types/reg';
 import { EntityContainer } from '../entity/EntityContainer';
 import { useMedia } from '../../hooks/useMedia';
 import { BreakPoint } from '../../styles/variables';
@@ -16,9 +16,10 @@ export type SidebarValue = {
   passedItems: RegStructualItem[];
   failedItems: RegStructualItem[];
   deletedItems: RegStructualItem[];
+  links: RegLink[];
 };
 
-export const SidebarContainer = createContainer<SidebarValue>(() => {
+export const SidebarContainer = createContainer<SidebarValue, RegLink[]>((initialState) => {
   const entities = EntityContainer.useContainer();
 
   const newItems = useMemo(() => toStructualItems(entities.newItems), [entities.newItems]);
@@ -46,5 +47,6 @@ export const SidebarContainer = createContainer<SidebarValue>(() => {
     passedItems,
     failedItems,
     deletedItems,
+    links: initialState != null ? initialState : [],
   };
 });

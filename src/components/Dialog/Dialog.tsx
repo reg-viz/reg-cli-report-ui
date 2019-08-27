@@ -11,7 +11,7 @@ import { useMousetrap } from '../../hooks/useMousetrap';
 
 const Delay = {
   ENTER: 120,
-  EXIT: 80,
+  EXIT: 160,
 };
 
 const allowOutsideClick = () => true;
@@ -26,22 +26,22 @@ const Wrapper = styled.div`
   transition-property: opacity;
   transition-timing-function: ease-out;
 
-  .dialog-enter & {
+  &.dialog-enter {
     opacity: 0;
     transition-duration: ${Duration.FADE_IN}ms;
   }
 
-  .dialog-enter-active & {
+  &.dialog-enter-active {
     opacity: 1;
   }
 
-  .dialog-exit & {
+  &.dialog-exit {
     opacity: 1;
     transition-duration: ${Duration.FADE_OUT}ms;
     transition-delay: ${Delay.EXIT}ms;
   }
 
-  .dialog-exit-active & {
+  &.dialog-exit-active {
     opacity: 0;
   }
 `;
@@ -235,8 +235,8 @@ export const Dialog: React.FC<Props> = ({ id, title, open, children, onRequestCl
         mountOnEnter
         unmountOnExit
         timeout={{
-          enter: Duration.MEDIUM_IN + Delay.ENTER,
-          exit: Duration.MEDIUM_OUT + Delay.EXIT,
+          enter: Duration.FADE_IN + Delay.ENTER,
+          exit: Duration.FADE_OUT + Delay.EXIT,
         }}
         onEnter={handleEnter}
         onExit={handleExit}>

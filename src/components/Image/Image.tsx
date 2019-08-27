@@ -2,6 +2,7 @@ import React, { useState, useEffect, forwardRef, useRef } from 'react';
 import styled from 'styled-components';
 import { useIntersection } from 'use-intersection';
 import { Spinner } from '../Spinner';
+import { supportsLoading } from '../../supports';
 
 const srcCache = new Set();
 
@@ -33,7 +34,8 @@ const Loading = styled.span`
   transform: translate(-50%, -50%);
 `;
 
-const Img = styled.img<{ fit: ObjectFitValue | undefined; full: boolean }>`
+// FIXME Remove patch when `loading` is added to the type definition.
+const Img = styled.img<{ fit: ObjectFitValue | undefined; full: boolean; loading?: string }>`
   position: relative;
   z-index: 1;
   max-width: 100%;
@@ -89,7 +91,7 @@ const ImmediatelyImage = forwardRef<HTMLImageElement, InnerProps>(({ src, width,
         width: size2str(width),
         height: size2str(height),
       }}>
-      <Img ref={ref as any} src={src} fit={fit} full={width != null && height != null} {...rest} />
+      <Img ref={ref as any} loading="lazy" src={src} fit={fit} full={width != null && height != null} {...rest} />
 
       {!loaded && (
         <Loading>
@@ -111,7 +113,7 @@ const LazyImage = forwardRef<HTMLImageElement, InnerProps>((props, ref) => {
 });
 
 export const Image = forwardRef<HTMLImageElement, Props>(({ lazy, ...rest }, ref) =>
-  lazy ? <LazyImage ref={ref as any} {...rest} /> : <ImmediatelyImage ref={ref as any} {...rest} />,
+  lazy && !supportsLoading ? <LazyImage ref={ref as any} {...rest} /> : <ImmediatelyImage ref={ref as any} {...rest} />,
 );
 
 Image.defaultProps = {

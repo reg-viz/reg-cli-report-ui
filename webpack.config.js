@@ -16,13 +16,6 @@ const common = {
     modules: [SRC_PATH, 'node_modules'],
   },
 
-  output: {
-    filename: path.join('[name].js'),
-    sourceMapFilename: '[name].js.map',
-    path: DIST_PATH,
-    publicPath: '/',
-  },
-
   module: {
     rules: [
       {
@@ -39,10 +32,13 @@ module.exports = [
   {
     ...common,
     target: 'web',
-    entry: {
-      report: path.join(SRC_PATH, 'index.tsx'),
+    entry: path.join(SRC_PATH, 'index.tsx'),
+    output: {
+      filename: 'report.js',
+      sourceMapFilename: 'report.js.map',
+      path: DIST_PATH,
+      publicPath: '/',
     },
-
     plugins: [
       ...common.plugins,
       ...(IS_PRODUCTION
@@ -54,13 +50,11 @@ module.exports = [
                 to: path.join(DIST_PATH),
                 flatten: true,
               },
-              { from: 'detector.wasm', to: DIST_PATH },
-              { from: 'sample', to: DIST_PATH },
+              { from: 'develop', to: DIST_PATH, ignore: ['index.html'] },
             ]),
-            new HtmlWebpackPlugin({ template: 'index.html' }),
+            new HtmlWebpackPlugin({ template: path.join(__dirname, 'develop', 'index.html') }),
           ]),
     ],
-
     devServer: {
       contentBase: DIST_PATH,
       inline: true,
@@ -72,8 +66,12 @@ module.exports = [
   {
     ...common,
     target: 'webworker',
-    entry: {
-      worker: path.join(SRC_PATH, 'worker-main.ts'),
+    entry: path.join(SRC_PATH, 'worker-main.ts'),
+    output: {
+      filename: IS_PRODUCTION ? 'worker.js' : 'worker-dev.js',
+      sourceMapFilename: IS_PRODUCTION ? 'worker.js.map' : 'worker-dev.js.map',
+      path: DIST_PATH,
+      publicPath: '/',
     },
   },
 ];

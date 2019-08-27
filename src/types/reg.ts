@@ -10,6 +10,11 @@ export type RegItem = {
   encoded: string;
 };
 
+export type RegLink = {
+  href: string;
+  label: string;
+};
+
 export type RegData = {
   type: 'success' | 'danger';
   actualDir: string;
@@ -24,6 +29,7 @@ export type RegData = {
   failedItems: RegItem[];
   deletedItems: RegItem[];
   ximgdiffConfig?: XIMGDiffConfig;
+  links?: RegLink[];
 };
 
 export type RegEntity = {

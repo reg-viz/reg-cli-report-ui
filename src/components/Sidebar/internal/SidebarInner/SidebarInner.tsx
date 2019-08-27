@@ -106,10 +106,15 @@ export const SidebarInner: React.FC<Props> = ({ inputRef, listRef }) => {
 
         <Spacer variant="margin" x={3} />
 
-        <List header="LINKS">
-          <List.Item href="#">Extensible Link 1</List.Item>
-          <List.Item href="#">Extensible Link 2</List.Item>
-        </List>
+        {sidebar.links.length > 0 && (
+          <List header="LINKS">
+            {sidebar.links.map(({ label, href }) => (
+              <List.Item key={label} href={href}>
+                {label}
+              </List.Item>
+            ))}
+          </List>
+        )}
 
         <Spacer variant="margin" x={3} />
 
