@@ -20,10 +20,12 @@ type GridStyle = {
   right: 0;
 };
 
-type Props<T> = {
+type SK<T, K extends keyof T> = T[K] extends string ? K : never;
+
+type Props<T, K extends keyof T> = {
   items: T[];
-  keyFn: (item: T) => string;
-  children: (props: { item: T }) => JSX.Element;
+  itemKey: SK<T, K>;
+  children: (props: { item: T; index: number }) => JSX.Element;
   gridOptions: GridStyleProperty | ({ media: string } & GridStyleProperty)[];
   cellHeight: number;
 };
@@ -55,7 +57,7 @@ const createGridStyleObject = (opt: GridStyleProperty) => {
 
 const prerenderRowsLength = 1;
 
-export class VGrid<T> extends React.Component<Props<T>, State> {
+export class VGrid<T, K extends keyof T> extends React.Component<Props<T, K>, State> {
   static contextType = InitialHashContext;
 
   context!: InitialHashContextValue;
@@ -84,7 +86,7 @@ export class VGrid<T> extends React.Component<Props<T>, State> {
     visibleItemsLength: 20,
   };
 
-  constructor(props: Props<T>) {
+  constructor(props: Props<T, K>) {
     super(props);
 
     this.handleOnScroll = this.handleOnScroll.bind(this);
@@ -158,6 +160,17 @@ export class VGrid<T> extends React.Component<Props<T>, State> {
 
     // Initialize grid information
     this.updateContainerState(containerElement.clientWidth);
+
+    // For direct landing using URL with hash
+    if (!this.context.consumed) {
+      const hit = this.findOffsetIndexFromHash(this.context.hash);
+      if (hit) {
+        // Notify scrolling to the context because we should not check the hash after the scrolling.
+        this.context.consume();
+        this.setState({ offsetIndex: hit.offsetIndex });
+        setTimeout(() => scrollTo(0, this.calculateClientOffsetTop(hit.offsetIndex)));
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -171,6 +184,14 @@ export class VGrid<T> extends React.Component<Props<T>, State> {
     return document.scrollingElement as HTMLElement;
   }
 
+  private get rowHeightUnit() {
+    const { cellHeight } = this.props;
+    const {
+      gridStyle: { gridGap },
+    } = this.state;
+    return cellHeight + gridGap;
+  }
+
   // This function should be invoked when the container element is resized.
   private updateContainerState(containerWidth: number) {
     const { cellHeight } = this.props;
@@ -179,21 +200,8 @@ export class VGrid<T> extends React.Component<Props<T>, State> {
     const allItemsCount = this.props.items.length;
     const containerHeight = Math.ceil(allItemsCount / repeatLength) * rowHeight - gridStyle.gridGap;
     const visibleItemsLength =
-      (~~(this.scrollingElement.clientHeight / (this.props.cellHeight + gridStyle.gridGap)) + 2 + prerenderRowsLength) *
-      repeatLength;
+      (~~(innerHeight / (this.props.cellHeight + gridStyle.gridGap)) + 2 + prerenderRowsLength) * repeatLength;
     this.setState({ containerHeight, repeatLength, visibleItemsLength, gridStyle });
-
-    // For direct landing using URL with hash
-    if (!this.context.consumed) {
-      const hit = this.calculatePositionFromHash(this.context.hash);
-      if (hit) {
-        // Notify scrolling to the context because we should not check the hash after the scrolling.
-        this.context.consume();
-        this.setState({ offsetIndex: hit.offsetIndex });
-        setTimeout(() => scrollTo(0, this.calculateClientOffsetTop(hit.offsetIndex)));
-        return;
-      }
-    }
 
     requestAnimationFrame(() => this.updateCurrentOffsetIndex());
   }
@@ -211,10 +219,13 @@ export class VGrid<T> extends React.Component<Props<T>, State> {
     return { gridStyle, repeatLength, gridGap };
   }
 
-  private calculatePositionFromHash(hash: string) {
-    const { keyFn } = this.props;
+  private findOffsetIndexFromHash(hash: string) {
+    const { itemKey } = this.props;
     const targetName = hash.slice(1);
-    const foundIndex = this.props.items.findIndex((item) => keyFn(item) === targetName);
+    const foundIndex = this.props.items.findIndex((item) => {
+      const key = (item[itemKey] as unknown) as string;
+      return key === targetName;
+    });
     if (foundIndex === -1) return;
     return {
       offsetIndex: foundIndex,
@@ -223,7 +234,7 @@ export class VGrid<T> extends React.Component<Props<T>, State> {
 
   private handleOnHashChange({ newURL }: HashChangeEvent) {
     const { hash } = new URL(newURL);
-    const hit = this.calculatePositionFromHash(hash);
+    const hit = this.findOffsetIndexFromHash(hash);
     if (!hit) return;
     animateScroll.scrollTo(this.calculateClientOffsetTop(hit.offsetIndex));
   }
@@ -250,14 +261,6 @@ export class VGrid<T> extends React.Component<Props<T>, State> {
     return this.props.items.slice(offsetIndex, visibleItemsLength + offsetIndex);
   }
 
-  private get rowHeightUnit() {
-    const { cellHeight } = this.props;
-    const {
-      gridStyle: { gridGap },
-    } = this.state;
-    return cellHeight + gridGap;
-  }
-
   private calculateInnerOffsetTop(offsetIndex: number) {
     const { repeatLength } = this.state;
     return ~~(offsetIndex / repeatLength) * this.rowHeightUnit;
@@ -269,7 +272,7 @@ export class VGrid<T> extends React.Component<Props<T>, State> {
   }
 
   render() {
-    const { children, keyFn, cellHeight } = this.props;
+    const { children, itemKey, cellHeight } = this.props;
     const { containerHeight } = this.state;
     const offsetTop = this.calculateInnerOffsetTop(this.state.offsetIndex);
     const containerStyle = {
@@ -283,9 +286,9 @@ export class VGrid<T> extends React.Component<Props<T>, State> {
     return (
       <div ref={this.containerRef} style={containerStyle}>
         <ul style={innerStyle}>
-          {this.sliceVisibleItems().map((item) => (
-            <li key={keyFn(item)} style={{ height: cellHeight }}>
-              {children({ item })}
+          {this.sliceVisibleItems().map((item, index) => (
+            <li key={(item[itemKey] as unknown) as string} style={{ height: cellHeight }}>
+              {children({ item, index })}
             </li>
           ))}
         </ul>

@@ -17,8 +17,6 @@ const titles: { [K in RegVariant]: string } = {
 
 export type Props = {};
 
-const keyFn = (item: RegEntity) => item.id;
-
 const gridOptions = [
   {
     media: 'screen',
@@ -60,7 +58,7 @@ const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({ var
   return (
     <>
       <h2 id={variant}>{title}</h2>
-      <VGrid items={entities} keyFn={keyFn} cellHeight={Size.CARD_OUTER_HEIGHT} gridOptions={gridOptions}>
+      <VGrid items={entities} itemKey="id" cellHeight={Size.CARD_OUTER_HEIGHT} gridOptions={gridOptions}>
         {({ item: entity }) => <Card entity={entity} menus={[]} onClick={handleClick} onCopy={handleCopy} />}
       </VGrid>
     </>
