@@ -28,7 +28,7 @@ const common = {
   plugins: [new webpack.NamedModulesPlugin()],
 };
 
-module.exports = [
+module.exports = (env = {}) => [
   {
     ...common,
     target: 'web',
@@ -52,7 +52,9 @@ module.exports = [
               },
               { from: 'develop', to: DIST_PATH, ignore: ['index.html'] },
             ]),
-            new HtmlWebpackPlugin({ template: path.join(__dirname, 'develop', 'index.html') }),
+            new HtmlWebpackPlugin({
+              template: path.join(__dirname, 'develop', env.ENABLED_HUGE ? 'index_large_data.html' : 'index.html'),
+            }),
           ]),
     ],
     devServer: {
@@ -60,6 +62,8 @@ module.exports = [
       inline: true,
       hot: true,
       port: 8080,
+      host: '0.0.0.0',
+      disableHostCheck: true,
     },
   },
 

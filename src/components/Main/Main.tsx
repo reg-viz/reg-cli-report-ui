@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
-import { Space } from '../../styles/variables';
+import { Space, BreakPoint, Size } from '../../styles/variables';
 import { RegVariant, RegEntity } from '../../types/reg';
 import { Container } from '../Container';
 import { Card } from '../Card';
 import { EntityContainer } from '../../containers/entity/EntityContainer';
 import { ViewerContainer } from '../../containers/viewer/ViewerContainer';
 import { NotificationContainer } from '../../containers/notification/NotificationContainer';
-import { Grid } from '../Grid';
+import { VGrid } from '../VGrid';
 
 const titles: { [K in RegVariant]: string } = {
   new: 'NEW ITEMS',
@@ -16,6 +16,23 @@ const titles: { [K in RegVariant]: string } = {
 };
 
 export type Props = {};
+
+const gridOptions = [
+  {
+    media: 'screen',
+    gridGap: Space * 5,
+  },
+  {
+    media: `screen and (min-width: ${BreakPoint.MEDIUM}px)`,
+    gridGap: Space * 5,
+    minContentLength: 360,
+  },
+  {
+    media: `screen and (min-width: ${BreakPoint.X_LARGE}px)`,
+    gridGap: Space * 5,
+    minContentLength: 540,
+  },
+];
 
 const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({ variant, entities }) => {
   const notification = NotificationContainer.useContainer();
@@ -41,26 +58,9 @@ const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({ var
   return (
     <>
       <h2 id={variant}>{title}</h2>
-      <Grid
-        component="ul"
-        xs={{
-          gap: Space * 5,
-          columns: 'repeat(1, 1fr)',
-        }}
-        md={{
-          gap: Space * 5,
-          columns: 'repeat(auto-fill, minmax(360px, 1fr))',
-        }}
-        xl={{
-          gap: Space * 5,
-          columns: 'repeat(auto-fill, minmax(540px, 1fr))',
-        }}>
-        {entities.map((entity) => (
-          <Grid.Cell key={entity.id} component="li">
-            <Card entity={entity} menus={[]} onClick={handleClick} onCopy={handleCopy} />
-          </Grid.Cell>
-        ))}
-      </Grid>
+      <VGrid items={entities} itemKey="id" cellHeight={Size.CARD_OUTER_HEIGHT} gridOptions={gridOptions}>
+        {({ item: entity }) => <Card entity={entity} menus={[]} onClick={handleClick} onCopy={handleCopy} />}
+      </VGrid>
     </>
   );
 };
