@@ -1,6 +1,5 @@
 import React from 'react';
 import { animateScroll } from 'react-scroll';
-import { ResizeObserver } from '@juggle/resize-observer';
 import { InitialHashContext, InitialHashContextValue } from '../../context/InitialHashContext';
 
 type GridStyleProperty = {

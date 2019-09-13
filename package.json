@@ -73,7 +73,6 @@
     "webpack-dev-server": "^3.8.0"
   },
   "dependencies": {
-    "@juggle/resize-observer": "^2.3.0",
     "body-scroll-lock": "^2.6.4",
     "clipboard-polyfill": "^2.8.6",
     "debounce": "^1.2.0",
