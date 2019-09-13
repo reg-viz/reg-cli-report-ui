@@ -150,7 +150,7 @@ export class VGrid<T, K extends keyof T> extends React.Component<Props<T, K>, St
     });
     this.resizeObserver.observe(containerElement);
 
-    document.addEventListener('scroll', this.handleOnScroll);
+    document.addEventListener('scroll', this.handleOnScroll, { passive: true });
 
     // Listen to URL hash and update scrolling position if it's changed.
     window.addEventListener('hashchange', this.handleOnHashChange);
