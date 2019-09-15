@@ -3,7 +3,7 @@ import React from 'react';
 import { action } from '@storybook/addon-actions';
 import { withPadding } from '../../styles/storybook-decorators';
 import { createRegEntity } from '../../mocks';
-import { Card } from './';
+import { Card, CardDimmer } from './';
 
 const defaultEntity = createRegEntity({
   id: 'id',
@@ -51,3 +51,9 @@ storiesOf('Card', module)
       }}
     />
   ));
+
+storiesOf('CardDimmer', module)
+  .add('with changed', () => <CardDimmer variant="changed" />) 
+  .add('with new', () => <CardDimmer variant="new" />) 
+  .add('with deleted', () => <CardDimmer variant="deleted" />) 
+  .add('with passed', () => <CardDimmer variant="passed" />) 
