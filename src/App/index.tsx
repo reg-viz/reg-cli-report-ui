@@ -3,7 +3,7 @@ import { RegData } from '../types/reg';
 import { EntityContainer } from '../containers/entity/EntityContainer';
 import { ViewerContainer } from '../containers/viewer/ViewerContainer';
 import { NotificationContainer } from '../containers/notification/NotificationContainer';
-import { AnchorScrollProvider } from '../context/AnchorScrollContext'
+import { AnchorScrollProvider } from '../context/AnchorScrollContext';
 import { WorkerClient } from '../worker-client';
 import { WorkerContext } from '../context/WorkerContext';
 import { SidebarContainer } from '../containers/sidebar/SidebarContainer';

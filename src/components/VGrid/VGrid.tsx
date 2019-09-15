@@ -1,5 +1,5 @@
 import React from 'react';
-import { AnchorScrollContext, AnchorScrollContextValue } from '../../context/AnchorScrollContext'
+import { AnchorScrollContext, AnchorScrollContextValue } from '../../context/AnchorScrollContext';
 
 type GridStyleProperty = {
   gridGap: number;
@@ -168,8 +168,7 @@ export class VGrid<T, K extends keyof T> extends React.Component<Props<T, K>, St
       if (hit) {
         // Notify scrolling to the context because we should not check the hash after the scrolling.
         this.context.consume();
-        this.setState({ offsetIndex: hit.offsetIndex });
-        setTimeout(() => scrollTo(0, this.calculateClientOffsetTop(hit.offsetIndex)));
+        setTimeout(() => this.scrollTo(hit.offsetIndex, true));
       }
     }
   }
@@ -263,7 +262,7 @@ export class VGrid<T, K extends keyof T> extends React.Component<Props<T, K>, St
     requestAnimationFrame(rafCb);
     scroll({
       top,
-      behavior: instant ? ('instant' as unknown as any) : 'smooth',
+      behavior: instant ? (('instant' as unknown) as any) : 'smooth',
     });
   }
 
@@ -309,11 +308,11 @@ export class VGrid<T, K extends keyof T> extends React.Component<Props<T, K>, St
     return (
       <div ref={this.containerRef} style={containerStyle}>
         <ul style={innerStyle}>
-          {(this.sliceVisibleItems().map((item, index) => (
+          {this.sliceVisibleItems().map((item, index) => (
             <li key={(item[itemKey] as unknown) as string} style={{ height: cellHeight }}>
               {this.context.isAnchorScrolling && dimmerCell ? dimmerCell() : children({ item, index })}
             </li>
-          )))}
+          ))}
         </ul>
       </div>
     );

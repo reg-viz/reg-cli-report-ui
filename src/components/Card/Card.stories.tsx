@@ -53,7 +53,7 @@ storiesOf('Card', module)
   ));
 
 storiesOf('CardDimmer', module)
-  .add('with changed', () => <CardDimmer variant="changed" />) 
-  .add('with new', () => <CardDimmer variant="new" />) 
-  .add('with deleted', () => <CardDimmer variant="deleted" />) 
-  .add('with passed', () => <CardDimmer variant="passed" />) 
+  .add('with changed', () => <CardDimmer variant="changed" />)
+  .add('with new', () => <CardDimmer variant="new" />)
+  .add('with deleted', () => <CardDimmer variant="deleted" />)
+  .add('with passed', () => <CardDimmer variant="passed" />);

@@ -58,7 +58,12 @@ const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({ var
   return (
     <>
       <h2 id={variant}>{title}</h2>
-      <VGrid items={entities} itemKey="id" cellHeight={Size.CARD_OUTER_HEIGHT} gridOptions={gridOptions} dimmerCell={() => <CardDimmer variant={variant} />}>
+      <VGrid
+        items={entities}
+        itemKey="id"
+        cellHeight={Size.CARD_OUTER_HEIGHT}
+        gridOptions={gridOptions}
+        dimmerCell={() => <CardDimmer variant={variant} />}>
         {({ item: entity }) => <Card entity={entity} menus={[]} onClick={handleClick} onCopy={handleCopy} />}
       </VGrid>
     </>
