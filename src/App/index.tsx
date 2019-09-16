@@ -3,7 +3,7 @@ import { RegData } from '../types/reg';
 import { EntityContainer } from '../containers/entity/EntityContainer';
 import { ViewerContainer } from '../containers/viewer/ViewerContainer';
 import { NotificationContainer } from '../containers/notification/NotificationContainer';
-import { InitialHashProvider } from '../context/InitialHashContext';
+import { AnchorScrollProvider } from '../context/AnchorScrollContext';
 import { WorkerClient } from '../worker-client';
 import { WorkerContext } from '../context/WorkerContext';
 import { SidebarContainer } from '../containers/sidebar/SidebarContainer';
@@ -15,7 +15,7 @@ export type Props = {
 };
 
 export const App: React.FC<Props> = ({ data, worker }) => (
-  <InitialHashProvider>
+  <AnchorScrollProvider>
     <WorkerContext.Provider value={worker}>
       <NotificationContainer.Provider>
         <EntityContainer.Provider initialState={data}>
@@ -27,5 +27,5 @@ export const App: React.FC<Props> = ({ data, worker }) => (
         </EntityContainer.Provider>
       </NotificationContainer.Provider>
     </WorkerContext.Provider>
-  </InitialHashProvider>
+  </AnchorScrollProvider>
 );

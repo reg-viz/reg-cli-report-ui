@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import * as clipboard from 'clipboard-polyfill';
 import { Space, Color, Shadow, LineHeight, Focus, FontSize, BreakPoint } from '../../styles/variables';
-import { RegEntity } from '../../types/reg';
+import { RegEntity, RegVariant } from '../../types/reg';
 import { Image } from '../Image';
 import { Ellipsis } from '../internal/Ellipsis';
 import { IconButton } from '../IconButton';
@@ -162,3 +162,23 @@ export const Card: React.FC<Props> = ({ entity, menus, onClick, onCopy }) => {
     </Wrapper>
   );
 };
+
+export const CardDimmer: React.FC<{ variant: RegVariant }> = React.memo(({ variant }) => {
+  return (
+    <Wrapper>
+      <Inner type="button">
+        <CardSign>
+          <Sign variant={variant} />
+        </CardSign>
+
+        <CardImage>
+          <Transparent />
+        </CardImage>
+
+        <CardText>
+          <Ellipsis>---------</Ellipsis>
+        </CardText>
+      </Inner>
+    </Wrapper>
+  );
+});
