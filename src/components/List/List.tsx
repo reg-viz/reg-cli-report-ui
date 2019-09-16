@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Color, FontSize, Space } from '../../styles/variables';
+import { Color, Space, Typography } from '../../styles/variables';
 import { Item } from './Item';
 import { Expandable } from './Expandable';
 
@@ -13,11 +13,10 @@ const Wrapper = styled.div`
 `;
 
 const Header = styled.div`
+  ${Typography.SUBHEAD};
   margin-bottom: ${Space / 2}px;
   padding: 0 ${Space * 2}px;
   color: ${Color.GRAY};
-  font-weight: bold;
-  font-size: ${FontSize.SMALL};
 `;
 
 export type Props = {

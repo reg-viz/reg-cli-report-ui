@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, FontSize, Color, FontFamily } from '../../styles/variables';
+import { Space, Color, FontFamily, Typography } from '../../styles/variables';
 import { Dialog, Props as DialogProps } from '../Dialog';
 
 const Wrapper = styled.div`
@@ -15,18 +15,16 @@ const Wrapper = styled.div`
     }
 
     & th {
+      ${Typography.SUBTITLE2};
       padding: ${Space * 4}px 0 ${Space * 1}px;
       text-align: left;
-      font-size: ${FontSize.MEDIUM};
-      font-weight: bold;
     }
 
     & td {
+      ${Typography.BODY2};
       padding: ${Space * 1}px 0;
       border-bottom: 1px solid ${Color.BORDER};
       text-align: left;
-      font-size: ${FontSize.SMALL};
-      font-weight: normal;
     }
   }
 

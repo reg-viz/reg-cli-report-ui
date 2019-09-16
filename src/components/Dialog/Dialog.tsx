@@ -3,7 +3,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock';
 import focusTrap, { FocusTrap } from 'focus-trap';
-import { Space, Duration, Color, Depth, Easing, Focus, BreakPoint } from '../../styles/variables';
+import { Space, Duration, Color, Depth, Easing, Focus, BreakPoint, Shadow } from '../../styles/variables';
 import { Portal } from '../internal/Portal';
 import { IconButton } from '../IconButton';
 import { CloseIcon } from '../icons/CloseIcon';
@@ -82,6 +82,7 @@ const Content = styled.div`
   padding: ${Space * 5}px;
   background: ${Color.WHITE};
   border-radius: 4px;
+  box-shadow: ${Shadow.LEVEL2};
   transition-property: opacity, transform;
   -webkit-tap-highlight-color: transparent;
 
@@ -145,7 +146,7 @@ const Backdrop = styled.button`
   width: 100%;
   height: 100%;
   border: none;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(255, 255, 255, 0.9);
   will-change: opacity;
   transition-timing-function: ${Easing.STANDARD};
   transition-property: opacity;

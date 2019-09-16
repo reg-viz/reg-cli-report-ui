@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, Color, FontSize, Duration, Easing } from '../../styles/variables';
+import { Space, Color, Duration, Easing, Typography } from '../../styles/variables';
 import { BaseButton } from '../internal/BaseButton';
 import { Collapse } from '../internal/Collapse';
 import { ArrowUpIcon } from '../icons/ArrowUpIcon';
 import { Ellipsis } from '../internal/Ellipsis';
 
 const Button = styled(BaseButton)<{ large: boolean; depth: number }>`
+  ${({ large }) => (large ? Typography.SUBTITLE2 : Typography.SUBTITLE3)};
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -18,8 +19,6 @@ const Button = styled(BaseButton)<{ large: boolean; depth: number }>`
   border: 0;
   color: ${Color.DEFAULT};
   text-align: left;
-  font-weight: bold;
-  font-size: ${({ large }) => (large ? FontSize.MEDIUM : FontSize.SMALL)};
 
   &:hover {
     background-color: ${Color.HOVER_BLACK};
@@ -40,9 +39,9 @@ const Label = styled.span`
 `;
 
 const Meta = styled.span`
+  ${Typography.SUBHEAD};
   margin-left: ${Space}px;
   color: ${Color.GRAY};
-  font-size: ${FontSize.X_SMALL};
   white-space: nowrap;
 `;
 
