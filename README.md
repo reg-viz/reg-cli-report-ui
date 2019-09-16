@@ -1,5 +1,7 @@
 # reg-cli-report-ui
 
+[![GitHub Actions Status](https://github.com/reg-viz/reg-cli-report-ui/workflows/Continuous%20Integration/badge.svg)](https://github.com/reg-viz/reg-cli-report-ui/actions)
+
 > :gem: New face of reg-cli report UI.
 
 This repository is the Report UI of [reg-viz/reg-cli][reg-cli]
