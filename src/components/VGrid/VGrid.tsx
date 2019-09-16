@@ -213,9 +213,11 @@ export class VGrid<T, K extends keyof T> extends React.Component<Props<T, K>, St
       return media.matches;
     });
     if (!matched) throw new Error('No matched media');
+
     const { gridGap, minContentLength } = matched;
-    const repeatLength = minContentLength ? ~~((containerWidth + gridGap) / (minContentLength + gridGap)) : 1;
+    const repeatLength = (minContentLength && ~~((containerWidth + gridGap) / (minContentLength + gridGap))) || 1;
     const gridStyle = createGridStyleObject(matched);
+
     return { gridStyle, repeatLength, gridGap };
   }
 
