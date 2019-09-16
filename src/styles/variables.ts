@@ -14,10 +14,10 @@ export enum Color {
   PRIMARY = '#7995F0',
   HOVER_WHITE = 'rgba(255, 255, 255, 0.3)',
   HOVER_BLACK = 'rgba(0, 0, 0, 0.1)',
-  SIGN_PASSED = '#47D8B5',
-  SIGN_NEW = '#668AFF',
-  SIGN_CHANGED = '#EC5F89',
-  SIGN_DELETED = '#494E6A',
+  SIGN_PASSED = '#64DDC0',
+  SIGN_NEW = '#33A6E8',
+  SIGN_CHANGED = '#E5537C',
+  SIGN_DELETED = '#404D77',
 }
 
 export const Focus = `0 0 0 4px rgba(121, 149, 240, 0.4)`;
