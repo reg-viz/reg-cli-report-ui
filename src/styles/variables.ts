@@ -1,20 +1,23 @@
+import { css } from 'styled-components';
+
 export const Space = 8;
 
 export enum Color {
-  DEFAULT = '#40455a',
-  WHITE = '#fff',
-  GRAY = '#8086a1',
-  GRAY_LIGHTER = '#ececec',
-  GRAY_DARK = '#2e3241',
+  DEFAULT = '#2C3552',
+  BLACK = '#000000',
+  WHITE = '#FFFFFF',
+  GRAY = '#A5A6AA',
+  GRAY_LIGHTER = '#D5D6DA',
+  GRAY_DARK = '#2C3552',
+  BACKGROUND = '#EDEEF2',
+  BORDER = '#D5D6DA',
+  PRIMARY = '#7995F0',
   HOVER_WHITE = 'rgba(255, 255, 255, 0.3)',
   HOVER_BLACK = 'rgba(0, 0, 0, 0.1)',
-  BACKGROUND = '#edeef2',
-  BORDER = '#d5d8e2',
-  PRIMARY = '#7995f0',
-  SIGN_PASSED = '#47d8b5',
-  SIGN_NEW = '#668aff',
-  SIGN_CHANGED = '#ec5f89',
-  SIGN_DELETED = '#494e6a',
+  SIGN_PASSED = '#47D8B5',
+  SIGN_NEW = '#668AFF',
+  SIGN_CHANGED = '#EC5F89',
+  SIGN_DELETED = '#494E6A',
 }
 
 export const Focus = `0 0 0 4px rgba(121, 149, 240, 0.4)`;
@@ -26,23 +29,94 @@ export enum Shadow {
 
 export enum FontFamily {
   SANS_SERIF = '"Work Sans", sans-serif',
-  MONOSPACE = 'SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace',
+  MONOSPACE = '"Roboto", monospace',
 }
 
 // base size = 16px (browser default)
 export enum FontSize {
-  X_SMALL = '0.75rem', // 12px
-  SMALL = '0.875rem', // 14px
-  MEDIUM = '1rem', // 16px
-  LARGE = '1.5rem', // 24px
-  X_LARGE = '2.875rem', // 46px
+  TITLE1 = '3rem',
+  TITLE2 = '2.25rem',
+  TITLE3 = '1.5rem',
+  SUBTITLE1 = '1,125rem',
+  SUBTITLE2 = '1rem',
+  SUBTITLE3 = '0.875rem',
+  BODY1 = '1rem',
+  BODY2 = '0.875rem',
+  BODY3 = '0.75rem',
+  SUBHEAD = '0.75rem',
+  BUTTON = '0.875rem',
 }
 
 export enum LineHeight {
-  SMALL = '1.2',
-  MEDIUM = '1.65',
-  LARGE = '1.8',
+  X_SMALL = 1.1,
+  SMALL = 1.2,
+  MEDIUM = 1.3,
+  LARGE = 1.5,
+  X_LARGE = 1.75,
 }
+
+export const Typography = {
+  TITLE1: css`
+    font-size: ${FontSize.TITLE1};
+    font-weight: bold;
+    line-height: ${LineHeight.X_SMALL};
+    text-transform: uppercase;
+  `,
+  TITLE2: css`
+    font-size: ${FontSize.TITLE2};
+    font-weight: bold;
+    line-height: ${LineHeight.SMALL};
+    text-transform: uppercase;
+  `,
+  TITLE3: css`
+    font-size: ${FontSize.TITLE3};
+    font-weight: bold;
+    line-height: ${LineHeight.SMALL};
+    text-transform: uppercase;
+  `,
+  SUBTITLE1: css`
+    font-size: ${FontSize.SUBTITLE1};
+    font-weight: bold;
+    line-height: ${LineHeight.MEDIUM};
+  `,
+  SUBTITLE2: css`
+    font-size: ${FontSize.SUBTITLE2};
+    font-weight: bold;
+    line-height: ${LineHeight.MEDIUM};
+  `,
+  SUBTITLE3: css`
+    font-size: ${FontSize.SUBTITLE3};
+    font-weight: bold;
+    line-height: ${LineHeight.MEDIUM};
+  `,
+  BODY1: css`
+    font-size: ${FontSize.BODY1};
+    font-weight: normal;
+    line-height: ${LineHeight.X_LARGE};
+  `,
+  BODY2: css`
+    font-size: ${FontSize.BODY2};
+    font-weight: normal;
+    line-height: ${LineHeight.X_LARGE};
+  `,
+  BODY3: css`
+    font-size: ${FontSize.BODY3};
+    font-weight: normal;
+    line-height: ${LineHeight.X_LARGE};
+  `,
+  SUBHEAD: css`
+    font-size: ${FontSize.SUBHEAD};
+    font-weight: bold;
+    line-height: ${LineHeight.LARGE};
+    text-transform: uppercase;
+  `,
+  BUTTON: css`
+    font-size: ${FontSize.BUTTON};
+    font-weight: bold;
+    line-height: ${LineHeight.LARGE};
+    letter-spacing: 0.01;
+  `,
+};
 
 export enum BreakPoint {
   X_SMALL = 375,
@@ -79,7 +153,6 @@ export enum Depth {
 }
 
 export enum Size {
-  // <Header />
   HEADER_HEIGHT = 60,
   CARD_OUTER_HEIGHT = 326,
 }

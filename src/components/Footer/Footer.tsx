@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, FontSize, Color } from '../../styles/variables';
+import { Space, Color, Typography } from '../../styles/variables';
 import { Logo } from '../Logo';
 import { Container } from '../Container';
 
@@ -9,9 +9,8 @@ const Wrapper = styled.footer`
   text-align: center;
 
   & p {
+    ${Typography.BODY2};
     margin: ${Space * 2}px 0 0;
-    font-weight: bold;
-    font-size: ${FontSize.SMALL};
   }
 
   & a {

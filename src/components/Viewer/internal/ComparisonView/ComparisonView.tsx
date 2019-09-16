@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import SwitchTransition from 'react-transition-group/SwitchTransition';
-import { Space, Color, Shadow, Duration, Easing, FontSize, BreakPoint } from '../../../../styles/variables';
+import { Space, Color, Shadow, Duration, Easing, BreakPoint, Typography } from '../../../../styles/variables';
 import { ChoiceGroup } from '../../../ChoiceGroup';
 import { Slider } from '../../../Slider';
 import { Switch } from '../../../Switch';
@@ -127,8 +127,7 @@ const Control = styled.div`
 
   & > span:first-child,
   & > span:last-child {
-    font-size: ${FontSize.SMALL};
-    font-weight: bold;
+    ${Typography.SUBTITLE3};
   }
 `;
 

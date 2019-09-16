@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, FontSize, Color, LineHeight } from '../../styles/variables';
+import { Space, Color, Typography } from '../../styles/variables';
 import { Logo } from '../Logo';
 import { BaseButton } from '../internal/BaseButton';
 
@@ -10,6 +10,7 @@ const Button = styled(BaseButton)`
   display: flex;
   align-items: center;
   padding: ${Space * 3}px ${Space * 2}px;
+  min-width: 280px;
   background: transparent;
 
   &:hover {
@@ -23,16 +24,15 @@ const Icon = styled.span`
 
 const Text = styled.span`
   & h3 {
+    ${Typography.SUBTITLE3};
     margin: 0;
     color: ${Color.DEFAULT};
-    line-height: ${LineHeight.SMALL};
-    font-size: ${FontSize.MEDIUM};
   }
 
   & p {
+    ${Typography.BODY3};
     margin: 0;
     color: ${Color.GRAY};
-    font-size: ${FontSize.X_SMALL};
   }
 `;
 

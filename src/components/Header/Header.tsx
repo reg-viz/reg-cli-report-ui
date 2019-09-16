@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { Space, Color, Shadow, FontSize, Size, BreakPoint } from '../../styles/variables';
+import { Space, Color, Shadow, Size, BreakPoint, Typography } from '../../styles/variables';
 import { CloseIcon } from '../icons/CloseIcon';
 import { IconButton } from '../IconButton';
 import { RegVariant } from '../../types/reg';
@@ -30,10 +30,10 @@ const Center = styled.div`
   display: none;
 
   @media (min-width: ${BreakPoint.SMALL}px) {
+    ${Typography.BODY2};
     display: block;
     align-self: center;
     text-align: center;
-    font-size: ${FontSize.SMALL};
   }
 `;
 
@@ -44,10 +44,10 @@ const Right = styled.div`
 `;
 
 const Title = styled.h2`
+  ${Typography.SUBTITLE2};
   display: flex;
   align-items: center;
   margin: 0;
-  font-size: ${FontSize.MEDIUM};
 `;
 
 const TitleSign = styled.span`

@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, Color, FontSize } from '../../styles/variables';
+import { Space, Color, Typography } from '../../styles/variables';
 import { BaseButton, Props as BaseButtonProps } from '../internal/BaseButton';
 import { Ellipsis } from '../internal/Ellipsis';
 
 const LinkButton = styled(BaseButton)<{ depth: number }>`
+  ${Typography.BODY2};
   display: flex;
   align-items: center;
   width: 100%;
@@ -13,7 +14,6 @@ const LinkButton = styled(BaseButton)<{ depth: number }>`
   padding-right: ${Space * 2}px;
   color: ${Color.DEFAULT};
   text-align: left;
-  font-size: ${FontSize.SMALL};
 
   &:hover {
     background-color: ${Color.HOVER_BLACK};

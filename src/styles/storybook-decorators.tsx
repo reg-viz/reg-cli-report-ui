@@ -1,5 +1,5 @@
 import React from 'react';
-import { RenderFunction } from '@storybook/react';
+import { StoryFn } from '@storybook/addons';
 import { Space } from './variables';
 
 export interface PaddingConfig {
@@ -8,7 +8,7 @@ export interface PaddingConfig {
 }
 
 export const withPadding = ({ vertical, horizontal }: PaddingConfig = { vertical: true, horizontal: true }) => (
-  story: RenderFunction,
+  story: StoryFn<React.ReactNode>,
 ) => (
   <div
     style={{

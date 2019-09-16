@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, FontSize, Color, Duration, Easing } from '../../../../styles/variables';
+import { Space, Color, Duration, Easing, Typography } from '../../../../styles/variables';
 import { BaseButton, Props as BaseButtonProps } from '../../../internal/BaseButton';
 
 const SIZE = 44;
 
 const Wrapper = styled(BaseButton)<{ active: boolean }>`
+  ${Typography.BUTTON};
   position: relative;
   display: flex;
   justify-content: center;
@@ -18,8 +19,6 @@ const Wrapper = styled(BaseButton)<{ active: boolean }>`
   background: transparent;
   color: ${({ active }) => (active ? Color.WHITE : Color.DEFAULT)};
   text-align: center;
-  font-weight: bold;
-  font-size: ${FontSize.SMALL};
   cursor: ${({ active }) => (active ? 'default' : 'pointer')};
   user-select: ${({ active }) => (active ? 'none' : 'auto')};
 

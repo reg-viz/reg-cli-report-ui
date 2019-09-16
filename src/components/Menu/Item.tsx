@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { BaseButton, Props as BaseButtonProps } from '../internal/BaseButton';
-import { FontSize, Color, Space, LineHeight } from '../../styles/variables';
+import { Color, Space, Typography } from '../../styles/variables';
 import { Ellipsis } from '../internal/Ellipsis';
 
-const Wrapper = styled.li``;
-
 const Inner = styled(BaseButton)`
+  ${Typography.BODY2};
   display: flex;
   align-items: center;
   position: relative;
@@ -16,8 +15,6 @@ const Inner = styled(BaseButton)`
   background: ${Color.WHITE};
   color: ${Color.DEFAULT};
   text-align: left;
-  font-size: ${FontSize.SMALL};
-  line-height: ${LineHeight.SMALL};
 
   &:hover {
     background-color: ${Color.HOVER_BLACK};
@@ -32,10 +29,10 @@ export type Props = BaseButtonProps;
 
 export const Item: React.FC<Props> = ({ children, ...rest }) => {
   return (
-    <Wrapper>
+    <li>
       <Inner {...rest}>
         <Ellipsis>{children}</Ellipsis>
       </Inner>
-    </Wrapper>
+    </li>
   );
 };

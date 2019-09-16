@@ -1,6 +1,6 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
-import { Space, FontSize, Color, Shadow, Duration, Easing, Focus } from '../../styles/variables';
+import styled from 'styled-components';
+import { Space, Color, Shadow, Duration, Easing, Focus, Typography } from '../../styles/variables';
 
 const Wrapper = styled.span`
   display: inline-flex;
@@ -60,19 +60,14 @@ const Checkbox = styled.span`
   }
 `;
 
-const addonStyles = css`
-  font-size: ${FontSize.SMALL};
-  font-weight: bold;
-`;
-
 const Prepend = styled.span`
-  ${addonStyles};
+  ${Typography.SUBTITLE3};
   margin-right: ${Space * 1}px;
   text-align: right;
 `;
 
 const Append = styled.span`
-  ${addonStyles};
+  ${Typography.SUBTITLE3};
   margin-left: ${Space * 1}px;
   text-align: left;
 `;

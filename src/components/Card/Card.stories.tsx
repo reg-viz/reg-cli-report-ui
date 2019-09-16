@@ -53,6 +53,7 @@ storiesOf('Card', module)
   ));
 
 storiesOf('CardDimmer', module)
+  .addDecorator(withPadding())
   .add('with changed', () => <CardDimmer variant="changed" />)
   .add('with new', () => <CardDimmer variant="new" />)
   .add('with deleted', () => <CardDimmer variant="deleted" />)
