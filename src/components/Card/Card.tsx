@@ -19,6 +19,7 @@ const Wrapper = styled.div`
 const Inner = styled(BaseButton)`
   display: block;
   width: 100%;
+  border: none;
   border-radius: 3px;
   background: ${Color.WHITE};
   box-shadow: ${Shadow.LEVEL1};
@@ -175,7 +176,7 @@ export const CardDimmer: React.FC<{ variant: RegVariant }> = React.memo(({ varia
         </CardImage>
 
         <CardText>
-          <Ellipsis>---------</Ellipsis>
+          <Ellipsis>...</Ellipsis>
         </CardText>
       </Inner>
     </Wrapper>
