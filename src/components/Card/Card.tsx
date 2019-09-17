@@ -120,7 +120,8 @@ export const Card: React.FC<Props> = ({ entity, menus, onClick, onCopy }) => {
       e.preventDefault();
       e.stopPropagation();
       setOpen(false);
-      await clipboard.writeText(`${window.location.origin}#${entity.id}`);
+      const { origin, pathname } = window.location;
+      await clipboard.writeText(`${origin}${pathname}#${entity.id}`);
       onCopy();
     },
     [entity.id, onCopy],
