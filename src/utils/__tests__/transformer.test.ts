@@ -25,26 +25,84 @@ describe('transformer', () => {
   });
 
   test('toStructualItems', () => {
-    const entity = createRegEntity({
-      id: 'id',
-      name: 'foo/bar/baz.jpg',
-    });
+    const entities = [
+      createRegEntity({
+        id: 'id1',
+        name: 'foo/bar/baz1.jpg',
+      }),
+      createRegEntity({
+        id: 'id2',
+        name: 'foo/bar/baz2.jpg',
+      }),
+      createRegEntity({
+        id: 'id3',
+        name: 'foo/hoge/fuga.jpg',
+      }),
+      createRegEntity({
+        id: 'id4',
+        name: 'hoge/fuga/piyo.jpg',
+      }),
+    ];
 
-    expect(toStructualItems([entity])).toEqual([
+    expect(toStructualItems(entities)).toEqual([
       {
-        id: entity.id,
-        path: entity.name,
+        id: entities[0].id,
+        path: entities[0].name,
         name: 'foo',
-        child: {
-          id: entity.id,
-          path: entity.name,
-          name: 'bar',
-          child: {
-            id: entity.id,
-            path: entity.name,
-            name: 'baz.jpg',
+        children: [
+          {
+            id: entities[0].id,
+            path: entities[0].name,
+            name: 'bar',
+            children: [
+              {
+                id: entities[0].id,
+                path: entities[0].name,
+                name: 'baz1.jpg',
+                children: [],
+              },
+              {
+                id: entities[1].id,
+                path: entities[1].name,
+                name: 'baz2.jpg',
+                children: [],
+              },
+            ],
           },
-        },
+          {
+            id: entities[2].id,
+            path: entities[2].name,
+            name: 'hoge',
+            children: [
+              {
+                id: entities[2].id,
+                path: entities[2].name,
+                name: 'fuga.jpg',
+                children: [],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: entities[3].id,
+        path: entities[3].name,
+        name: 'hoge',
+        children: [
+          {
+            id: entities[3].id,
+            path: entities[3].name,
+            name: 'fuga',
+            children: [
+              {
+                id: entities[3].id,
+                path: entities[3].name,
+                name: 'piyo.jpg',
+                children: [],
+              },
+            ],
+          },
+        ],
       },
     ]);
   });

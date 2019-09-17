@@ -78,31 +78,37 @@ export const Typography = {
     font-size: ${FontSize.SUBTITLE1};
     font-weight: bold;
     line-height: ${LineHeight.MEDIUM};
+    text-transform: none;
   `,
   SUBTITLE2: css`
     font-size: ${FontSize.SUBTITLE2};
     font-weight: bold;
     line-height: ${LineHeight.MEDIUM};
+    text-transform: none;
   `,
   SUBTITLE3: css`
     font-size: ${FontSize.SUBTITLE3};
     font-weight: bold;
     line-height: ${LineHeight.MEDIUM};
+    text-transform: none;
   `,
   BODY1: css`
     font-size: ${FontSize.BODY1};
     font-weight: normal;
     line-height: ${LineHeight.X_LARGE};
+    text-transform: none;
   `,
   BODY2: css`
     font-size: ${FontSize.BODY2};
     font-weight: normal;
     line-height: ${LineHeight.X_LARGE};
+    text-transform: none;
   `,
   BODY3: css`
     font-size: ${FontSize.BODY3};
     font-weight: normal;
     line-height: ${LineHeight.X_LARGE};
+    text-transform: none;
   `,
   SUBHEAD: css`
     font-size: ${FontSize.SUBHEAD};
@@ -115,6 +121,7 @@ export const Typography = {
     font-weight: bold;
     line-height: ${LineHeight.LARGE};
     letter-spacing: 0.01;
+    text-transform: none;
   `,
 };
 

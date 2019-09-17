@@ -25,26 +25,41 @@ export type Props = {
   items: RegStructualItem[];
 };
 
-const SummaryItem: React.FC<{ forceOpen: boolean; label: string; depth: number; item: RegStructualItem }> = ({
+const SummaryItemList: React.FC<{ forceOpen: boolean; label: string; depth: number; items: RegStructualItem[] }> = ({
   forceOpen,
   label,
   depth,
-  item,
+  items,
 }) => {
   const [open, setOpen] = useForceOpen(forceOpen);
 
-  if (item.child != null) {
-    return (
-      <List.Expandable key={`${label}${item.name}`} open={open} depth={depth} label={item.name} onChange={setOpen}>
-        <SummaryItem forceOpen={forceOpen} label={label} depth={depth + 1} item={item.child} />
-      </List.Expandable>
-    );
+  if (items.length < 1) {
+    return null;
   }
 
   return (
-    <List.Item key={item.id} depth={depth + 1} href={`#${item.id}`} title={item.path}>
-      {item.name}
-    </List.Item>
+    <>
+      {items.map((item) => {
+        if (item.children.length > 0) {
+          return (
+            <List.Expandable
+              key={`${label}${item.name}`}
+              open={open}
+              depth={depth}
+              label={item.name}
+              onChange={setOpen}>
+              <SummaryItemList forceOpen={forceOpen} label={label} depth={depth + 1} items={item.children} />
+            </List.Expandable>
+          );
+        }
+
+        return (
+          <List.Item key={item.id} depth={depth + 1} href={`#${item.id}`} title={item.path}>
+            {item.name}
+          </List.Item>
+        );
+      })}
+    </>
   );
 };
 
@@ -57,9 +72,7 @@ export const Summary: React.FC<Props> = ({ forceOpen, label, icon, items }) => {
 
   return (
     <List.Expandable large open={open} label={label} meta={`${items.length} items`} icon={icon} onChange={setOpen}>
-      {items.map((item) => (
-        <SummaryItem forceOpen={forceOpen} key={item.id} label={label} depth={1} item={item} />
-      ))}
+      <SummaryItemList forceOpen={forceOpen} label={label} depth={1} items={items} />
     </List.Expandable>
   );
 };
