@@ -21,24 +21,33 @@ export const toEntities = (variant: RegVariant, dirs: Dirs, items: RegItem[]): R
     };
   });
 
-export const toStructualItems = (entities: RegEntity[]): RegStructualItem[] =>
-  entities.map((entity) => {
+export const toStructualItems = (entities: RegEntity[]): RegStructualItem[] => {
+  const results: RegStructualItem[] = [];
+
+  entities.forEach((entity) => {
     const id = entity.id;
     const path = entity.name;
-    const segments = path.split('/').reverse();
-    const edge = {
-      id: entity.id,
-      path,
-      name: segments.shift() as string,
-    };
+    const segments = path.split('/');
+    let obj = results;
 
-    return segments.reduce(
-      (acc, cur) => ({
-        id,
-        path,
-        name: cur,
-        child: acc,
-      }),
-      edge,
-    );
+    segments.forEach((segment) => {
+      const v = obj.find((r) => r.name === segment);
+
+      if (v != null) {
+        obj = v.children;
+      } else {
+        const o = {
+          id,
+          path,
+          name: segment,
+          children: [],
+        };
+
+        obj.push(o);
+        obj = o.children;
+      }
+    });
   });
+
+  return results;
+};

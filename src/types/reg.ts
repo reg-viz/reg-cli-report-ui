@@ -45,7 +45,7 @@ export type RegStructualItem = {
   id: string;
   path: string;
   name: string;
-  child?: RegStructualItem;
+  children: RegStructualItem[];
 };
 
 export type Rect = {
