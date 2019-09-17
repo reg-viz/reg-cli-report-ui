@@ -173,6 +173,13 @@ export class VGrid<T, K extends keyof T> extends React.Component<Props<T, K>, St
     }
   }
 
+  componentDidUpdate(prevProps: Props<T, K>) {
+    if (!this.containerRef.current) return;
+    if (this.props.items.length !== prevProps.items.length || this.props.cellHeight !== prevProps.cellHeight) {
+      this.updateContainerState(this.containerRef.current.clientWidth);
+    }
+  }
+
   componentWillUnmount() {
     document.removeEventListener('scroll', this.handleOnScroll);
     window.removeEventListener('hashchange', this.handleOnHashChange);
