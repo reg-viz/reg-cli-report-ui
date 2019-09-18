@@ -23,6 +23,7 @@ export type Props = {
   label: string;
   icon: React.ReactNode;
   items: RegStructualItem[];
+  size: number;
 };
 
 const SummaryItemList: React.FC<{ forceOpen: boolean; label: string; depth: number; items: RegStructualItem[] }> = ({
@@ -63,7 +64,7 @@ const SummaryItemList: React.FC<{ forceOpen: boolean; label: string; depth: numb
   );
 };
 
-export const Summary: React.FC<Props> = ({ forceOpen, label, icon, items }) => {
+export const Summary: React.FC<Props> = ({ forceOpen, label, icon, items, size }) => {
   const [open, setOpen] = useForceOpen(forceOpen);
 
   if (items.length < 1) {
@@ -71,7 +72,7 @@ export const Summary: React.FC<Props> = ({ forceOpen, label, icon, items }) => {
   }
 
   return (
-    <List.Expandable large open={open} label={label} meta={`${items.length} items`} icon={icon} onChange={setOpen}>
+    <List.Expandable large open={open} label={label} meta={`${size} items`} icon={icon} onChange={setOpen}>
       <SummaryItemList forceOpen={forceOpen} label={label} depth={1} items={items} />
     </List.Expandable>
   );
