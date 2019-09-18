@@ -26,43 +26,39 @@ export type Props = {
   size: number;
 };
 
-const SummaryItemList: React.FC<{ forceOpen: boolean; label: string; depth: number; items: RegStructualItem[] }> = ({
+const SummaryListItem: React.FC<{ forceOpen: boolean; label: string; depth: number; item: RegStructualItem }> = ({
   forceOpen,
   label,
   depth,
-  items,
+  item,
 }) => {
   const [open, setOpen] = useForceOpen(forceOpen);
 
-  if (items.length < 1) {
-    return null;
+  if (item.children.length > 0) {
+    return (
+      <List.Expandable key={`${label}${item.name}`} open={open} depth={depth} label={item.name} onChange={setOpen}>
+        <SummaryList forceOpen={forceOpen} label={label} depth={depth + 1} items={item.children} />
+      </List.Expandable>
+    );
   }
 
   return (
-    <>
-      {items.map((item) => {
-        if (item.children.length > 0) {
-          return (
-            <List.Expandable
-              key={`${label}${item.name}`}
-              open={open}
-              depth={depth}
-              label={item.name}
-              onChange={setOpen}>
-              <SummaryItemList forceOpen={forceOpen} label={label} depth={depth + 1} items={item.children} />
-            </List.Expandable>
-          );
-        }
-
-        return (
-          <List.Item key={item.id} depth={depth + 1} href={`#${item.id}`} title={item.path}>
-            {item.name}
-          </List.Item>
-        );
-      })}
-    </>
+    <List.Item key={item.id} depth={depth + 1} href={`#${item.id}`} title={item.path}>
+      {item.name}
+    </List.Item>
   );
 };
+
+const SummaryList: React.FC<{ forceOpen: boolean; label: string; depth: number; items: RegStructualItem[] }> = ({
+  items,
+  ...rest
+}) => (
+  <>
+    {items.map((item) => (
+      <SummaryListItem key={item.id} {...rest} item={item} />
+    ))}
+  </>
+);
 
 export const Summary: React.FC<Props> = ({ forceOpen, label, icon, items, size }) => {
   const [open, setOpen] = useForceOpen(forceOpen);
@@ -73,7 +69,7 @@ export const Summary: React.FC<Props> = ({ forceOpen, label, icon, items, size }
 
   return (
     <List.Expandable large open={open} label={label} meta={`${size} items`} icon={icon} onChange={setOpen}>
-      <SummaryItemList forceOpen={forceOpen} label={label} depth={1} items={items} />
+      <SummaryList forceOpen={forceOpen} label={label} depth={1} items={items} />
     </List.Expandable>
   );
 };

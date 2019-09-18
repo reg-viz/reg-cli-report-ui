@@ -23,7 +23,11 @@
       window['__reg__'] = {
         type: 'danger',
         hasNew: true,
-        newItems: [{ raw: 'sample/sample.png', encoded: 'sample/sample.png' }],
+        newItems: [
+          { raw: 'sample/sample.png', encoded: 'sample/sample.png' },
+          { raw: 'nest/sample.png?1', encoded: 'nest%2Fsample.png%3F1' },
+          { raw: 'nest/sample.png?2', encoded: 'nest%2Fsample.png%3F2' },
+        ],
         hasDeleted: true,
         deletedItems: [
           { raw: 'sample foo bar.png', encoded: 'sample%20foo%20bar.png' },
