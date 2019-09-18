@@ -82,24 +82,28 @@ export const SidebarInner: React.FC<Props> = ({ inputRef, listRef }) => {
               label="CHANGED"
               icon={<SignChangedIcon fill={Color.SIGN_CHANGED} />}
               items={sidebar.failedItems}
+              size={entities.failedItems.length}
             />
             <Summary
               forceOpen={entities.filtering}
               label="NEW"
               icon={<SignNewIcon fill={Color.SIGN_NEW} />}
               items={sidebar.newItems}
+              size={entities.newItems.length}
             />
             <Summary
               forceOpen={entities.filtering}
               label="DELETED"
               icon={<SignDeletedIcon fill={Color.SIGN_DELETED} />}
               items={sidebar.deletedItems}
+              size={entities.deletedItems.length}
             />
             <Summary
               forceOpen={entities.filtering}
               label="PASSED"
               icon={<SignPassedIcon fill={Color.SIGN_PASSED} />}
               items={sidebar.passedItems}
+              size={entities.passedItems.length}
             />
           </List>
         </div>
