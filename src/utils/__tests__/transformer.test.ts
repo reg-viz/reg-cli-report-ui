@@ -17,9 +17,9 @@ describe('transformer', () => {
         id: `${variant}-${encoded}`,
         variant,
         name: raw,
-        diff: `${dirs.diff}${raw}`,
-        before: `${dirs.expected}${raw}`,
-        after: `${dirs.actual}${raw}`,
+        diff: `${dirs.diff}${encoded}`,
+        before: `${dirs.expected}${encoded}`,
+        after: `${dirs.actual}${encoded}`,
       },
     ]);
   });

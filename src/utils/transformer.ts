@@ -15,9 +15,9 @@ export const toEntities = (variant: RegVariant, dirs: Dirs, items: RegItem[]): R
       id,
       variant,
       name: item.raw,
-      diff: path.join(dirs.diff, item.raw),
-      before: path.join(dirs.expected, item.raw),
-      after: path.join(dirs.actual, item.raw),
+      diff: path.join(dirs.diff, item.encoded),
+      before: path.join(dirs.expected, item.encoded),
+      after: path.join(dirs.actual, item.encoded),
     };
   });
 
