@@ -142,7 +142,7 @@ export const Card: React.FC<Props> = ({ entity, menus, onClick, onCopy }) => {
 
         <CardImage>
           <CardImageInner>
-            <Image lazy={true} src={imageSrc(entity)} width="100%" height="100%" fit="contain" />
+            <Image lazy={true} src={imageSrc(entity)} width="100%" height="100%" fit="scale-down" />
           </CardImageInner>
           <Transparent />
         </CardImage>
