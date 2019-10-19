@@ -13,9 +13,9 @@ const Wrapper = styled.div`
 
 const rectStyles = css`
   position: absolute;
-  border-width: 2px;
+  border-width: 1px;
   border-style: solid;
-  border-radius: 1px;
+  border-radius: 2px;
 `;
 
 const Bounding = styled.div`
