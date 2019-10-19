@@ -164,6 +164,7 @@ export const Slide: React.FC<Props> = ({ before, after, matching }) => {
           min={0}
           max={100}
           value={position}
+          data-mousetrap="ignore"
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={position}
