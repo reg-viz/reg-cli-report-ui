@@ -38,7 +38,7 @@ const Help = styled.span`
   right: ${Space * 3}px;
   bottom: ${Space * 3}px;
   border-radius: 50%;
-  background: ${Color.GRAY_DARK};
+  background: ${Color.BRAND_SECONDARY};
   box-shadow: ${Shadow.LEVEL2};
   z-index: 10;
 `;
@@ -147,7 +147,7 @@ export const App: React.FC<Props> = () => {
       <GlobalStyle />
 
       <Brand>
-        <Logo size={20} />
+        <Logo size={40} />
       </Brand>
 
       <Layout>

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { Color, Duration, Easing } from '../../../../styles/variables';
+import { Duration, Easing, Color } from '../../../../styles/variables';
 import { BaseButton } from '../../../internal/BaseButton';
 
 const Wrapper = styled(BaseButton)<{ open: boolean }>`
@@ -20,7 +20,7 @@ const Wrapper = styled(BaseButton)<{ open: boolean }>`
     margin-left: -19px;
     height: 4px;
     border-radius: 4px;
-    background: ${Color.DEFAULT};
+    background: ${Color.TEXT_BASE};
     transition: all ${Duration.MEDIUM_OUT}ms ${Easing.STANDARD};
   }
 

@@ -3,7 +3,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock';
 import focusTrap, { FocusTrap } from 'focus-trap';
-import { Space, Duration, Color, Depth, Easing, Focus, BreakPoint, Shadow } from '../../styles/variables';
+import { Space, Duration, Depth, Easing, Focus, BreakPoint, Shadow, Color } from '../../styles/variables';
 import { Portal } from '../internal/Portal';
 import { IconButton } from '../IconButton';
 import { CloseIcon } from '../icons/CloseIcon';
@@ -257,7 +257,7 @@ export const Dialog: React.FC<Props> = ({ id, title, open, children, onRequestCl
                 </div>
                 <Close>
                   <IconButton aria-controls={id} aria-label="Close dialog" onClick={handleCloseClick}>
-                    <CloseIcon fill={Color.GRAY} />
+                    <CloseIcon fill={Color.TEXT_SUB} />
                   </IconButton>
                 </Close>
               </Content>

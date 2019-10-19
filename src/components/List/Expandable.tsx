@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, Color, Duration, Easing, Typography } from '../../styles/variables';
+import { Space, Duration, Easing, Typography, Color } from '../../styles/variables';
 import { BaseButton } from '../internal/BaseButton';
 import { Collapse } from '../internal/Collapse';
 import { ArrowUpIcon } from '../icons/ArrowUpIcon';
@@ -17,7 +17,7 @@ const Button = styled(BaseButton)<{ large: boolean; depth: number }>`
   padding-right: ${Space * 2}px;
   background: transparent;
   border: 0;
-  color: ${Color.DEFAULT};
+  color: ${Color.TEXT_BASE};
   text-align: left;
 
   &:hover {
@@ -41,7 +41,7 @@ const Label = styled.span`
 const Meta = styled.span`
   ${Typography.SUBHEAD};
   margin-left: ${Space}px;
-  color: ${Color.GRAY};
+  color: ${Color.TEXT_SUB};
   white-space: nowrap;
 `;
 
@@ -97,7 +97,7 @@ export class Expandable extends React.Component<Props, State> {
       <li>
         <Button large={large as boolean} depth={depth as number} onClick={this.handleClick}>
           <ArrowIcon open={open}>
-            <ArrowUpIcon fill={Color.GRAY} />
+            <ArrowUpIcon fill={Color.TEXT_SUB} />
           </ArrowIcon>
           <Label>
             <Ellipsis>{label}</Ellipsis>

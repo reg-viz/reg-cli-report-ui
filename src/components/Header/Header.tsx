@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { Space, Color, Shadow, Size, BreakPoint, Typography } from '../../styles/variables';
+import { Space, Shadow, Size, BreakPoint, Typography, Color } from '../../styles/variables';
 import { CloseIcon } from '../icons/CloseIcon';
 import { IconButton } from '../IconButton';
 import { RegVariant } from '../../types/reg';
@@ -97,7 +97,7 @@ export const Header: React.FC<Props> = ({ variant, title, current, max, onReques
 
       <Right>
         <IconButton onClick={handleCloseClick}>
-          <CloseIcon fill={Color.GRAY} />
+          <CloseIcon fill={Color.TEXT_SUB} />
         </IconButton>
       </Right>
     </Wrapper>

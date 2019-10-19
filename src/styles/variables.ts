@@ -3,24 +3,25 @@ import { css } from 'styled-components';
 export const Space = 8;
 
 export enum Color {
-  DEFAULT = '#2C3552',
   BLACK = '#000000',
   WHITE = '#FFFFFF',
-  GRAY = '#A5A6AA',
-  GRAY_LIGHTER = '#D5D6DA',
-  GRAY_DARK = '#2C3552',
-  BACKGROUND = '#EDEEF2',
-  BORDER = '#D5D6DA',
-  PRIMARY = '#7995F0',
+  BACKGROUND = '#F7F8F8',
+  BORDER = '#D4DCDE',
   HOVER_WHITE = 'rgba(255, 255, 255, 0.3)',
   HOVER_BLACK = 'rgba(0, 0, 0, 0.1)',
+  TEXT_BASE = '#00303C',
+  TEXT_SUB = '#8DA3A9',
+  TEXT_LINK = '#2582C7',
+  BRAND_PRIMARY = '#FF4438',
+  BRAND_SECONDARY = '#00303C',
+  BRAND_ACCENT = '#7D96E9',
   SIGN_PASSED = '#64DDC0',
   SIGN_NEW = '#33A6E8',
   SIGN_CHANGED = '#E5537C',
   SIGN_DELETED = '#404D77',
 }
 
-export const Focus = `0 0 0 4px rgba(121, 149, 240, 0.4)`;
+export const Focus = `0 0 0 4px rgba(255, 68, 56, 0.4)`;
 
 export enum Shadow {
   LEVEL1 = '0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.12)',
@@ -34,7 +35,7 @@ export enum FontFamily {
 
 // base size = 16px (browser default)
 export enum FontSize {
-  TITLE1 = '3rem',
+  TITLE1 = '3.5rem',
   TITLE2 = '2.25rem',
   TITLE3 = '1.5rem',
   SUBTITLE1 = '1,125rem',
@@ -120,7 +121,6 @@ export const Typography = {
     font-size: ${FontSize.BUTTON};
     font-weight: bold;
     line-height: ${LineHeight.LARGE};
-    letter-spacing: 0.01;
     text-transform: none;
   `,
 };

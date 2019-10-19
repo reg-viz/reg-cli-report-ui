@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, Color, FontFamily, Typography } from '../../styles/variables';
+import { Space, FontFamily, Typography, Color } from '../../styles/variables';
 import { Dialog, Props as DialogProps } from '../Dialog';
 
 const Wrapper = styled.div`

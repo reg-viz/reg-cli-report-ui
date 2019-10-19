@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import * as clipboard from 'clipboard-polyfill';
-import { Space, Color, Shadow, Focus, BreakPoint, Typography } from '../../styles/variables';
+import { Space, Shadow, Focus, BreakPoint, Typography, Color } from '../../styles/variables';
 import { RegEntity, RegVariant } from '../../types/reg';
 import { Image } from '../Image';
 import { Ellipsis } from '../internal/Ellipsis';
@@ -23,7 +23,7 @@ const Inner = styled(BaseButton)`
   border-radius: 3px;
   background: ${Color.WHITE};
   box-shadow: ${Shadow.LEVEL1};
-  color: ${Color.DEFAULT};
+  color: ${Color.TEXT_BASE};
   font-size: inherit;
   text-decoration: none;
   cursor: pointer;
@@ -148,7 +148,7 @@ export const Card: React.FC<Props> = ({ entity, menus, onClick, onCopy }) => {
 
       <CardMenu>
         <IconButton ref={anchor} aria-owns={`${entity.id}-menu`} onClick={handleMenuOpen}>
-          <MoreIcon fill={Color.DEFAULT} />
+          <MoreIcon fill={Color.TEXT_BASE} />
         </IconButton>
         <Menu id={`${entity.id}-menu`} placement="bottom-left" anchor={anchor} open={open} onRequestClose={handleClose}>
           <Menu.Item onClick={handleOpenClick}>Open</Menu.Item>

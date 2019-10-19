@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, Color, Typography } from '../../styles/variables';
+import { Space, Typography, Color } from '../../styles/variables';
 import { Logo } from '../Logo';
 import { BaseButton } from '../internal/BaseButton';
 
@@ -26,13 +26,13 @@ const Text = styled.span`
   & h3 {
     ${Typography.SUBTITLE3};
     margin: 0;
-    color: ${Color.DEFAULT};
+    color: ${Color.TEXT_BASE};
   }
 
   & p {
     ${Typography.BODY3};
     margin: 0;
-    color: ${Color.GRAY};
+    color: ${Color.TEXT_SUB};
   }
 `;
 
@@ -42,7 +42,7 @@ export const PoweredBy: React.FC<Props> = () => (
   <aside>
     <Button href={REG_VIS_URL}>
       <Icon>
-        <Logo size={23} />
+        <Logo size={32} />
       </Icon>
       <Text>
         <h3>Powered by reg-viz</h3>

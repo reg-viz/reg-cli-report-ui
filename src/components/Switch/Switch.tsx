@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, Color, Shadow, Duration, Easing, Focus, Typography } from '../../styles/variables';
+import { Space, Shadow, Duration, Easing, Focus, Typography, Color } from '../../styles/variables';
 
 const Wrapper = styled.span`
   display: inline-flex;
@@ -30,7 +30,7 @@ const Checkbox = styled.span`
     width: 42px;
     height: 22px;
     border-radius: 11px;
-    background: ${Color.GRAY_LIGHTER};
+    background: ${Color.BORDER};
     transition: transform ${Duration.SMALL_OUT}ms ${Easing.STANDARD};
 
     &::before {
@@ -48,7 +48,7 @@ const Checkbox = styled.span`
   }
 
   & > input:checked + span {
-    background: ${Color.PRIMARY};
+    background: ${Color.BRAND_PRIMARY};
 
     &::before {
       transform: translateX(20px);
