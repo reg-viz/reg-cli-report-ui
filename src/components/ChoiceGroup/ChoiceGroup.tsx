@@ -11,7 +11,7 @@ const List = styled.ul`
   padding: ${Space * 0.5}px;
   border-radius: 26px;
   background: ${Color.WHITE};
-  box-shadow: ${Shadow.LEVEL1};
+  box-shadow: ${Shadow.LEVEL2};
   list-style: none;
 `;
 

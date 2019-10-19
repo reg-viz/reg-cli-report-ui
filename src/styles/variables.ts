@@ -24,8 +24,9 @@ export enum Color {
 export const Focus = `0 0 0 4px rgba(255, 68, 56, 0.4)`;
 
 export enum Shadow {
-  LEVEL1 = '0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.12)',
-  LEVEL2 = '0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.12)',
+  LEVEL1 = '0px 2px 4px rgba(0, 0, 0, 0.1), 0px 2px 3px rgba(0, 0, 0, 0.12)',
+  LEVEL2 = '0px 4px 14px rgba(0, 0, 0, 0.1), 0px 3px 3px rgba(0, 0, 0, 0.08)',
+  LEVEL3 = '0px 8px 20px rgba(0, 0, 0, 0.12), 0px 2px 6px rgba(0, 0, 0, 0.06)',
 }
 
 export enum FontFamily {

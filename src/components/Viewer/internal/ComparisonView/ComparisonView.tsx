@@ -99,7 +99,7 @@ const Control = styled.div`
   padding: ${Space * 1}px ${Space * 4}px;
   border-radius: 20px;
   background: ${Color.WHITE};
-  box-shadow: ${Shadow.LEVEL1};
+  box-shadow: ${Shadow.LEVEL2};
   transition-property: opacity, transform;
   transition-timing-function: ${Easing.STANDARD};
 

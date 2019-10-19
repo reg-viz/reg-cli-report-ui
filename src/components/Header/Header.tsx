@@ -13,7 +13,7 @@ const Wrapper = styled.header`
   grid-gap: ${Space * 1}px;
   height: ${Size.HEADER_HEIGHT}px;
   background: ${Color.WHITE};
-  box-shadow: ${Shadow.LEVEL2};
+  box-shadow: ${Shadow.LEVEL1};
 
   @media (min-width: ${BreakPoint.SMALL}px) {
     grid-template-columns: 2fr 1fr 2fr;
@@ -81,7 +81,7 @@ export const Header: React.FC<Props> = ({ variant, title, current, max, onReques
   return (
     <Wrapper>
       <Left>
-        <Title>
+        <Title title={title}>
           <TitleSign>
             <Sign variant={variant} />
           </TitleSign>

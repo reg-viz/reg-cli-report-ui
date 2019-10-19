@@ -281,13 +281,13 @@ export const Viewer: React.FC<Props> = ({ total, current, entity, matching, onPr
                   <ComparisonView entity={entity} matching={matching} />
 
                   <Previous>
-                    <IconButton onClick={handlePreviousClick}>
+                    <IconButton aria-label="Previous Item" onClick={handlePreviousClick}>
                       <ArrowLeftIcon fill={Color.TEXT_BASE} />
                     </IconButton>
                   </Previous>
 
                   <Next>
-                    <IconButton onClick={handleNextClick}>
+                    <IconButton aria-label="Next Item" onClick={handleNextClick}>
                       <ArrowRightIcon fill={Color.TEXT_BASE} />
                     </IconButton>
                   </Next>

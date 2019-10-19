@@ -40,10 +40,14 @@ export const GlobalStyle = createGlobalStyle`
   h1 {
     ${Typography.TITLE1};
     margin: 124px 0 ${Space * 3}px;
+
+    & + h2 {
+      margin-top: ${Space * 8}px;
+    }
   }
 
   h2 {
-    ${Typography.TITLE3};
-    margin: ${Space * 7}px 0 ${Space * 3}px;
+    ${Typography.TITLE2};
+    margin: ${Space * 12}px 0 ${Space * 3}px;
   }
 `;

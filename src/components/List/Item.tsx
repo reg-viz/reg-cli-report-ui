@@ -24,9 +24,9 @@ export type Props = BaseButtonProps & {
   depth?: number;
 };
 
-export const Item: React.FC<Props> = ({ depth, href, children }) => (
+export const Item: React.FC<Props> = ({ depth, href, children, ...rest }) => (
   <li>
-    <LinkButton depth={depth as number} href={href}>
+    <LinkButton depth={depth as number} href={href} {...rest}>
       <Ellipsis>{children}</Ellipsis>
     </LinkButton>
   </li>

@@ -28,7 +28,7 @@ export type Props = {};
 export const Footer: React.FC<Props> = () => (
   <Wrapper>
     <Container>
-      <Logo size={24} />
+      <Logo size={40} />
       <p>
         powered by <a href="https://github.com/reg-viz">reg-viz</a>
       </p>

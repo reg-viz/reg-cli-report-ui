@@ -31,7 +31,7 @@ const TextField = styled.input`
 
   &:focus {
     outline: none;
-    border-bottom-color: ${Color.BRAND_ACCENT};
+    border-bottom-color: ${Color.BRAND_PRIMARY};
   }
 `;
 
