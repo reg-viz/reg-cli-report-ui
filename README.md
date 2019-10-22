@@ -78,6 +78,8 @@ PRs welcome.
 
 ## License
 
-[MIT License @ tsuyoshiwada](./LICENSE)
+[MIT License @ reg-viz](./LICENSE)
+
+![reg-viz](https://raw.githubusercontent.com/reg-viz/artwork/master/repository/footer.png)
 
 [reg-cli]: https://github.com/reg-viz/reg-cli
