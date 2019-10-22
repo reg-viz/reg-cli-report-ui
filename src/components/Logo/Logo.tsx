@@ -13,23 +13,18 @@ export type Props = React.ComponentProps<'svg'> & {
 
 export const Logo: React.FC<Props> = ({ size, ...rest }) => (
   <Wrapper>
-    <svg
-      {...rest}
-      width={size}
-      height={(size as number) * (34 / 20)}
-      viewBox="0 0 20 34"
-      fill="none"
-      aria-label="REG-SUIT">
-      <path fillRule="evenodd" clipRule="evenodd" d="M10 16.5705H0L20 33.0435L10 16.5705Z" fill="#7995F0" />
-      <path fillRule="evenodd" clipRule="evenodd" d="M0 16.5705V33.0435L10 16.5705H0Z" fill="#7995F0" />
-      <path fillRule="evenodd" clipRule="evenodd" d="M6.66667 21.9922L0 16.5012H10L6.66667 21.9922Z" fill="#A4B8FB" />
-      <path fillRule="evenodd" clipRule="evenodd" d="M0 0V16.5705L5 8.28524L0 0Z" fill="#6A88E9" />
-      <path fillRule="evenodd" clipRule="evenodd" d="M0 0L5 8.2365H15L0 0Z" fill="#A4B8FB" />
-      <path fillRule="evenodd" clipRule="evenodd" d="M0 16.5705L5 8.2365H15L0 16.5705Z" fill="#7995F0" />
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-label="REG-SUIT" {...rest}>
+      <path d="M8.61739 13.0679L8.6321 13.0421H8.60268L8.61739 13.0679Z" fill="#FF4438" />
+      <path d="M1 13.0421L4.81606 19.6519L5.23897 18.92L1.84461 13.0421H1Z" fill="#FF4438" />
+      <path d="M6.08353 17.4564L3.535 13.0421H2.68917L5.66062 18.1882L6.08353 17.4564Z" fill="#FF4438" />
+      <path d="M6.92829 15.9939L5.22437 13.0421H4.37976L6.50537 16.7258L6.92829 15.9939Z" fill="#FF4438" />
+      <path d="M7.77292 14.5303L6.9136 13.0421H6.06899L7.35 15.2621L7.77292 14.5303Z" fill="#FF4438" />
+      <path d="M8.61742 13.0679L8.60271 13.0421H7.7581L8.1945 13.7997L8.61742 13.0679Z" fill="#FF4438" />
+      <path d="M15.3633 3L5.54797 20H13.5086L23.3239 3H15.3633Z" fill="#FF4438" />
     </svg>
   </Wrapper>
 );
 
 Logo.defaultProps = {
-  size: 20,
+  size: 24,
 };

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { Space, Color, Shadow, Size, BreakPoint, Typography } from '../../styles/variables';
+import { Space, Shadow, Size, BreakPoint, Typography, Color } from '../../styles/variables';
 import { CloseIcon } from '../icons/CloseIcon';
 import { IconButton } from '../IconButton';
 import { RegVariant } from '../../types/reg';
@@ -13,7 +13,7 @@ const Wrapper = styled.header`
   grid-gap: ${Space * 1}px;
   height: ${Size.HEADER_HEIGHT}px;
   background: ${Color.WHITE};
-  box-shadow: ${Shadow.LEVEL2};
+  box-shadow: ${Shadow.LEVEL1};
 
   @media (min-width: ${BreakPoint.SMALL}px) {
     grid-template-columns: 2fr 1fr 2fr;
@@ -81,7 +81,7 @@ export const Header: React.FC<Props> = ({ variant, title, current, max, onReques
   return (
     <Wrapper>
       <Left>
-        <Title>
+        <Title title={title}>
           <TitleSign>
             <Sign variant={variant} />
           </TitleSign>
@@ -97,7 +97,7 @@ export const Header: React.FC<Props> = ({ variant, title, current, max, onReques
 
       <Right>
         <IconButton onClick={handleCloseClick}>
-          <CloseIcon fill={Color.GRAY} />
+          <CloseIcon fill={Color.TEXT_SUB} />
         </IconButton>
       </Right>
     </Wrapper>

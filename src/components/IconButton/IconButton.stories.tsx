@@ -12,15 +12,15 @@ storiesOf('IconButton', module)
   .add('overview', () => (
     <>
       <IconButton>
-        <MoreIcon fill={Color.GRAY} />
+        <MoreIcon fill={Color.TEXT_SUB} />
       </IconButton>
 
       <IconButton>
-        <CloseIcon fill={Color.PRIMARY} />
+        <CloseIcon fill={Color.BRAND_PRIMARY} />
       </IconButton>
 
       <IconButton variant="dark">
-        <HelpIcon fill={Color.GRAY} />
+        <HelpIcon fill={Color.TEXT_SUB} />
       </IconButton>
     </>
   ));

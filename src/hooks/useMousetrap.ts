@@ -1,6 +1,16 @@
 import Mousetrap from 'mousetrap';
 import { useEffect, useCallback } from 'react';
 
+Mousetrap.prototype.stopCallback = (_: KeyboardEvent, element: HTMLElement) => {
+  if (element.dataset.mousetrap === 'ignore') {
+    return false;
+  }
+
+  const tagName = element.tagName.toLowerCase();
+
+  return tagName === 'input' || tagName === 'select' || tagName === 'textarea';
+};
+
 type MousetrapHandler = (e: ExtendedKeyboardEvent, combo: string) => any;
 
 export const useMousetrap = (

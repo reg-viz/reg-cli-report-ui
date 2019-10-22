@@ -5,7 +5,7 @@ import { Space, Color } from '../../../styles/variables';
 import { Collapse } from './';
 
 const content = (
-  <div style={{ padding: Space * 2, color: '#fff', background: Color.GRAY }}>
+  <div style={{ padding: Space * 2, color: '#fff', background: Color.BRAND_SECONDARY }}>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vel tristique risus. Aenean efficitur condimentum
       auctor. Mauris consectetur magna neque, sollicitudin viverra lorem semper eget. Lorem ipsum dolor sit amet,

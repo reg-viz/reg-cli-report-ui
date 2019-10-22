@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Resizable } from 're-resizable';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { Space, Color, Duration, Easing, Depth } from '../../../../styles/variables';
+import { Space, Duration, Easing, Depth, Color } from '../../../../styles/variables';
 import { SidebarContainer } from '../../../../containers/sidebar/SidebarContainer';
 import { SidebarInner } from '../SidebarInner';
 import { Props } from '../../types';

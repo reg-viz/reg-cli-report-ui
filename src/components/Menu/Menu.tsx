@@ -5,7 +5,7 @@ import keycode from 'keycode';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import debounce from 'debounce';
 import { Portal } from '../internal/Portal';
-import { Space, Duration, Easing, Color, Depth, Shadow } from '../../styles/variables';
+import { Space, Duration, Easing, Depth, Shadow, Color } from '../../styles/variables';
 import { findFocusable } from '../../utils/selector';
 import { tryFocus } from '../../utils/focus';
 import { Item } from './Item';

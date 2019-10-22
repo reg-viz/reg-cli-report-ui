@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import * as clipboard from 'clipboard-polyfill';
-import { Space, Color, Shadow, Focus, BreakPoint, Typography } from '../../styles/variables';
+import { Space, Shadow, Focus, BreakPoint, Typography, Color, Duration, Easing } from '../../styles/variables';
 import { RegEntity, RegVariant } from '../../types/reg';
 import { Image } from '../Image';
 import { Ellipsis } from '../internal/Ellipsis';
@@ -20,13 +20,18 @@ const Inner = styled(BaseButton)`
   display: block;
   width: 100%;
   border: none;
-  border-radius: 3px;
+  border-radius: 6px;
   background: ${Color.WHITE};
-  box-shadow: ${Shadow.LEVEL1};
-  color: ${Color.DEFAULT};
+  box-shadow: ${Shadow.LEVEL3};
+  color: ${Color.TEXT_BASE};
   font-size: inherit;
   text-decoration: none;
   cursor: pointer;
+  transition: box-shadow ${Duration.FADE_IN}ms ${Easing.STANDARD};
+
+  &:hover {
+    box-shadow: ${Shadow.LEVEL2};
+  }
 
   &:focus {
     outline: none;
@@ -45,6 +50,7 @@ const CardImage = styled.div`
   position: relative;
   overflow: hidden;
   height: 260px;
+  border-radius: 6px 6px 0 0;
 `;
 
 const CardImageInner = styled.span`
@@ -136,19 +142,19 @@ export const Card: React.FC<Props> = ({ entity, menus, onClick, onCopy }) => {
 
         <CardImage>
           <CardImageInner>
-            <Image lazy={true} src={imageSrc(entity)} width="100%" height="100%" fit="contain" />
+            <Image lazy={true} src={imageSrc(entity)} width="100%" height="100%" fit="scale-down" />
           </CardImageInner>
           <Transparent />
         </CardImage>
 
-        <CardText>
+        <CardText title={entity.name}>
           <Ellipsis>{entity.name}</Ellipsis>
         </CardText>
       </Inner>
 
       <CardMenu>
         <IconButton ref={anchor} aria-owns={`${entity.id}-menu`} onClick={handleMenuOpen}>
-          <MoreIcon fill={Color.DEFAULT} />
+          <MoreIcon fill={Color.TEXT_BASE} />
         </IconButton>
         <Menu id={`${entity.id}-menu`} placement="bottom-left" anchor={anchor} open={open} onRequestClose={handleClose}>
           <Menu.Item onClick={handleOpenClick}>Open</Menu.Item>

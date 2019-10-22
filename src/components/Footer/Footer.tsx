@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, Color, Typography } from '../../styles/variables';
+import { Space, Typography, Color } from '../../styles/variables';
 import { Logo } from '../Logo';
 import { Container } from '../Container';
 
@@ -14,7 +14,7 @@ const Wrapper = styled.footer`
   }
 
   & a {
-    color: ${Color.PRIMARY};
+    color: ${Color.TEXT_LINK};
     text-decoration: none;
 
     &:hover {
@@ -28,7 +28,7 @@ export type Props = {};
 export const Footer: React.FC<Props> = () => (
   <Wrapper>
     <Container>
-      <Logo size={24} />
+      <Logo size={40} />
       <p>
         powered by <a href="https://github.com/reg-viz">reg-viz</a>
       </p>

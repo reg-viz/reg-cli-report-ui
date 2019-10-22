@@ -4,7 +4,7 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import styled, { css } from 'styled-components';
 import focusTrap, { FocusTrap } from 'focus-trap';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
-import { Space, Color, Depth, Size, Duration, Easing } from '../../styles/variables';
+import { Space, Depth, Size, Duration, Easing, Color } from '../../styles/variables';
 import { IconButton } from '../IconButton';
 import { ArrowLeftIcon } from '../icons/ArrowLeftIcon';
 import { ArrowRightIcon } from '../icons/ArrowRightIcon';
@@ -281,14 +281,14 @@ export const Viewer: React.FC<Props> = ({ total, current, entity, matching, onPr
                   <ComparisonView entity={entity} matching={matching} />
 
                   <Previous>
-                    <IconButton onClick={handlePreviousClick}>
-                      <ArrowLeftIcon fill={Color.DEFAULT} />
+                    <IconButton aria-label="Previous Item" onClick={handlePreviousClick}>
+                      <ArrowLeftIcon fill={Color.TEXT_BASE} />
                     </IconButton>
                   </Previous>
 
                   <Next>
-                    <IconButton onClick={handleNextClick}>
-                      <ArrowRightIcon fill={Color.DEFAULT} />
+                    <IconButton aria-label="Next Item" onClick={handleNextClick}>
+                      <ArrowRightIcon fill={Color.TEXT_BASE} />
                     </IconButton>
                   </Next>
                 </Body>

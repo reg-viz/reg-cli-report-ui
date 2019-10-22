@@ -1,7 +1,7 @@
 import React from 'react';
 import RcSlider from 'rc-slider';
 import styled, { css } from 'styled-components';
-import { Color, Focus, Duration, Easing } from '../../styles/variables';
+import { Focus, Duration, Easing, Color } from '../../styles/variables';
 
 const barStyles = css`
   position: absolute;
@@ -21,13 +21,13 @@ const StyledSlider = styled(RcSlider)`
     ${barStyles};
     z-index: 1;
     width: 100%;
-    background: ${Color.GRAY_LIGHTER};
+    background: ${Color.BORDER};
   }
 
   & .rc-slider-track {
     ${barStyles};
     z-index: 2;
-    background: ${Color.PRIMARY};
+    background: ${Color.BRAND_PRIMARY};
   }
 
   & .rc-slider-handle {
@@ -40,7 +40,7 @@ const StyledSlider = styled(RcSlider)`
     height: 18px;
     background: ${Color.WHITE};
     border-radius: 50%;
-    border: 4px solid ${Color.PRIMARY};
+    border: 4px solid ${Color.BRAND_PRIMARY};
     transition-property: transform, border;
     transition-duration: ${Duration.FADE_IN}ms;
     transition-timing-function: ${Easing.STANDARD};

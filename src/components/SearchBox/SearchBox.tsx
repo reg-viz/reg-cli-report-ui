@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, Color, Duration, Easing } from '../../styles/variables';
+import { Space, Duration, Easing, Color } from '../../styles/variables';
 import { SearchIcon } from '../icons/SearchIcon';
 
 const Wrapper = styled.div`
@@ -31,7 +31,7 @@ const TextField = styled.input`
 
   &:focus {
     outline: none;
-    border-bottom-color: ${Color.PRIMARY};
+    border-bottom-color: ${Color.BRAND_PRIMARY};
   }
 `;
 
@@ -43,7 +43,7 @@ export const SearchBox: React.FC<Props> = ({ inputRef, children, ...rest }) => {
   return (
     <Wrapper>
       <Icon aria-hidden="true">
-        <SearchIcon fill={Color.GRAY} />
+        <SearchIcon fill={Color.TEXT_SUB} />
       </Icon>
       <TextField ref={inputRef} type="text" {...rest} />
     </Wrapper>

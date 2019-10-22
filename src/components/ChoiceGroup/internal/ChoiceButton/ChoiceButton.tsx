@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, Color, Duration, Easing, Typography } from '../../../../styles/variables';
+import { Space, Duration, Easing, Typography, Color } from '../../../../styles/variables';
 import { BaseButton, Props as BaseButtonProps } from '../../../internal/BaseButton';
 
 const SIZE = 44;
@@ -17,7 +17,7 @@ const Wrapper = styled(BaseButton)<{ active: boolean }>`
   border: none;
   border-radius: ${SIZE}px;
   background: transparent;
-  color: ${({ active }) => (active ? Color.WHITE : Color.DEFAULT)};
+  color: ${({ active }) => (active ? Color.WHITE : Color.TEXT_BASE)};
   text-align: center;
   cursor: ${({ active }) => (active ? 'default' : 'pointer')};
   user-select: ${({ active }) => (active ? 'none' : 'auto')};
@@ -36,7 +36,7 @@ const Wrapper = styled(BaseButton)<{ active: boolean }>`
     z-index: 0;
     display: block;
     border-radius: ${SIZE}px;
-    background: ${Color.PRIMARY};
+    background: ${Color.BRAND_PRIMARY};
     opacity: ${({ active }) => (active ? '1' : '0')};
     transition: all ${Duration.SMALL_OUT}ms ${Easing.BACK};
     transform: ${({ active }) => (active ? 'scale(1)' : 'scale(0.9)')};

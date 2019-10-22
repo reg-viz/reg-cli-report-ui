@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Color, Space, Typography } from '../../styles/variables';
+import { Space, Typography, Color } from '../../styles/variables';
 import { Item } from './Item';
 import { Expandable } from './Expandable';
 
@@ -16,7 +16,7 @@ const Header = styled.div`
   ${Typography.SUBHEAD};
   margin-bottom: ${Space / 2}px;
   padding: 0 ${Space * 2}px;
-  color: ${Color.GRAY};
+  color: ${Color.TEXT_SUB};
 `;
 
 export type Props = {

@@ -3,7 +3,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import focusTrap, { FocusTrap } from 'focus-trap';
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
-import { Space, Depth, Duration, Color, Easing, Shadow } from '../../../../styles/variables';
+import { Space, Depth, Duration, Easing, Shadow, Color } from '../../../../styles/variables';
 import { Props } from '../../types';
 import { SidebarContainer } from '../../../../containers/sidebar/SidebarContainer';
 import { SidebarInner } from '../SidebarInner';

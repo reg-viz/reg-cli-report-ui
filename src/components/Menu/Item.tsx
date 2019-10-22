@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { BaseButton, Props as BaseButtonProps } from '../internal/BaseButton';
-import { Color, Space, Typography } from '../../styles/variables';
+import { Space, Typography, Color } from '../../styles/variables';
 import { Ellipsis } from '../internal/Ellipsis';
 
 const Inner = styled(BaseButton)`
@@ -13,7 +13,7 @@ const Inner = styled(BaseButton)`
   padding: ${Space * 1}px ${Space * 2}px;
   border: 0;
   background: ${Color.WHITE};
-  color: ${Color.DEFAULT};
+  color: ${Color.TEXT_BASE};
   text-align: left;
 
   &:hover {

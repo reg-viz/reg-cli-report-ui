@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { LineHeight, FontFamily, Color, Space, Typography } from './variables';
+import { LineHeight, FontFamily, Space, Typography, Color } from './variables';
 
 export const GlobalStyle = createGlobalStyle`
   *,
@@ -11,7 +11,7 @@ export const GlobalStyle = createGlobalStyle`
   :root {
     box-sizing: border-box;
     background: ${Color.BACKGROUND};
-    color: ${Color.DEFAULT};
+    color: ${Color.TEXT_BASE};
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     font-family: ${FontFamily.SANS_SERIF};
@@ -40,10 +40,14 @@ export const GlobalStyle = createGlobalStyle`
   h1 {
     ${Typography.TITLE1};
     margin: 124px 0 ${Space * 3}px;
+
+    & + h2 {
+      margin-top: ${Space * 8}px;
+    }
   }
 
   h2 {
-    ${Typography.TITLE3};
-    margin: ${Space * 7}px 0 ${Space * 3}px;
+    ${Typography.TITLE2};
+    margin: ${Space * 12}px 0 ${Space * 3}px;
   }
 `;
