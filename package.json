@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "0.0.5",
+  "version": "0.1.0",
   "name": "reg-suit-report-ui",
   "scripts": {
     "clean": "rimraf dist",
