@@ -11,6 +11,13 @@ const Wrapper = styled.div`
   z-index: 10;
 `;
 
+const Inner = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+`;
+
 const rectStyles = css`
   position: absolute;
   border-width: 1px;
@@ -60,79 +67,83 @@ export const Markers: React.FC<Props> = ({ variant, matching }) => {
 
   return variant === 'before' ? (
     <Wrapper>
-      {matching.matches.map((m, i) => (
-        <React.Fragment key={i}>
-          <Bounding
+      <Inner style={{ maxWidth: w1 }}>
+        {matching.matches.map((m, i) => (
+          <React.Fragment key={i}>
+            <Bounding
+              style={{
+                top: sy1(m[1].bounding),
+                left: sx1(m[1].bounding),
+                width: sw1(m[1].bounding),
+                height: sh1(m[1].bounding),
+              }}
+            />
+            {m[1].diffMarkers.map((r, n) => (
+              <React.Fragment key={n}>
+                <Diff
+                  style={{
+                    top: sy2(r),
+                    left: sx2(r),
+                    width: sw2(r),
+                    height: sh2(r),
+                  }}
+                />
+              </React.Fragment>
+            ))}
+          </React.Fragment>
+        ))}
+        {matching.strayingRects[1].map((r, i) => (
+          <Straying
+            key={i}
             style={{
-              top: sy1(m[1].bounding),
-              left: sx1(m[1].bounding),
-              width: sw1(m[1].bounding),
-              height: sh1(m[1].bounding),
+              top: sy2(r),
+              left: sx2(r),
+              width: sw2(r),
+              height: sh2(r),
             }}
           />
-          {m[1].diffMarkers.map((r, n) => (
-            <React.Fragment key={n}>
-              <Diff
-                style={{
-                  top: sy2(r),
-                  left: sx2(r),
-                  width: sw2(r),
-                  height: sh2(r),
-                }}
-              />
-            </React.Fragment>
-          ))}
-        </React.Fragment>
-      ))}
-      {matching.strayingRects[1].map((r, i) => (
-        <Straying
-          key={i}
-          style={{
-            top: sy2(r),
-            left: sx2(r),
-            width: sw2(r),
-            height: sh2(r),
-          }}
-        />
-      ))}
+        ))}
+      </Inner>
     </Wrapper>
   ) : (
     <Wrapper>
-      {matching.matches.map((m, i) => (
-        <React.Fragment key={i}>
-          <Bounding
+      <Inner style={{ maxWidth: w2 }}>
+        {matching.matches.map((m, i) => (
+          <React.Fragment key={i}>
+            <Bounding
+              style={{
+                top: sy1(m[0].bounding),
+                left: sx1(m[0].bounding),
+                width: sw1(m[0].bounding),
+                height: sh1(m[0].bounding),
+              }}
+            />
+            {m[0].diffMarkers.map((r, n) => (
+              <React.Fragment key={n}>
+                <Diff
+                  style={{
+                    top: sy1(r),
+                    left: sx1(r),
+                    width: sw1(r),
+                    height: sh1(r),
+                  }}
+                />
+              </React.Fragment>
+            ))}
+          </React.Fragment>
+        ))}
+        {matching.strayingRects[0].map((r, i) => (
+          <Straying
+            key={i}
             style={{
-              top: sy1(m[0].bounding),
-              left: sx1(m[0].bounding),
-              width: sw1(m[0].bounding),
-              height: sh1(m[0].bounding),
+              top: sy1(r),
+              left: sx1(r),
+              width: sw1(r),
+              height: sh1(r),
             }}
           />
-          {m[0].diffMarkers.map((r, n) => (
-            <React.Fragment key={n}>
-              <Diff
-                style={{
-                  top: sy1(r),
-                  left: sx1(r),
-                  width: sw1(r),
-                  height: sh1(r),
-                }}
-              />
-            </React.Fragment>
-          ))}
-        </React.Fragment>
-      ))}
-      {matching.strayingRects[0].map((r, i) => (
-        <Straying
-          key={i}
-          style={{
-            top: sy1(r),
-            left: sx1(r),
-            width: sw1(r),
-            height: sh1(r),
-          }}
-        />
-      ))}
+        ))}
+      </Inner>
     </Wrapper>
   );
 };
