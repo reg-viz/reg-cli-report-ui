@@ -5,7 +5,7 @@ describe('transformer', () => {
   test('toStructualItems', () => {
     const variant = 'new';
     const raw = 'raw';
-    const encoded = 'encoded';
+    const encoded = 'encoded.jpg';
     const dirs = {
       diff: 'diff/',
       expected: 'expected/',
@@ -17,7 +17,7 @@ describe('transformer', () => {
         id: `${variant}-${encoded}`,
         variant,
         name: raw,
-        diff: `${dirs.diff}${encoded}`,
+        diff: `${dirs.diff}encoded.png`,
         before: `${dirs.expected}${encoded}`,
         after: `${dirs.actual}${encoded}`,
       },
