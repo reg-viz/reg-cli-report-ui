@@ -162,5 +162,5 @@ export enum Depth {
 
 export enum Size {
   HEADER_HEIGHT = 60,
-  CARD_OUTER_HEIGHT = 326,
+  CARD_OUTER_HEIGHT = 360,
 }

@@ -63,7 +63,7 @@ const CardImageInner = styled.span`
 `;
 
 const CardText = styled.div`
-  ${Typography.BODY1};
+  ${Typography.SUBTITLE3};
   padding: ${Space * 2}px;
   text-align: left;
 
