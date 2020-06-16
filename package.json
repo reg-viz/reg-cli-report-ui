@@ -8,7 +8,7 @@
     "start:huge": "webpack-dev-server --hot --env.ENABLED_HUGE",
     "build": "cross-env NODE_ENV=\"production\" npm-run-all -s clean build:source",
     "build:source": "webpack",
-    "typecheck": "tsc -p .",
+    "typecheck": "tsc",
     "test": "jest",
     "test:watch": "yarn test --watch",
     "lint": "eslint \"**/*.+(ts|tsx)\"",

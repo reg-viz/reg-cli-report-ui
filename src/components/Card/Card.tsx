@@ -148,7 +148,7 @@ export const Card: React.FC<Props> = ({ entity, menus, onClick, onCopy }) => {
         </CardImage>
 
         <CardText title={entity.name}>
-          <Ellipsis>{entity.name}</Ellipsis>
+          <Ellipsis line={2}>{entity.name}</Ellipsis>
         </CardText>
       </Inner>
 
@@ -183,7 +183,7 @@ export const CardDimmer: React.FC<{ variant: RegVariant }> = React.memo(({ varia
         </CardImage>
 
         <CardText>
-          <Ellipsis>...</Ellipsis>
+          <Ellipsis line={2}>...</Ellipsis>
         </CardText>
       </Inner>
     </Wrapper>
