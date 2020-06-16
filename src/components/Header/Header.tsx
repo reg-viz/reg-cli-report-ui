@@ -86,7 +86,7 @@ export const Header: React.FC<Props> = ({ variant, title, current, max, onReques
             <Sign variant={variant} />
           </TitleSign>
           <TitleText>
-            <Ellipsis>{title}</Ellipsis>
+            <Ellipsis line={2}>{title}</Ellipsis>
           </TitleText>
         </Title>
       </Left>
