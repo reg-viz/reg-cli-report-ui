@@ -1,4 +1,3 @@
-import path from 'path';
 import { RegItem, RegStructualItem, RegVariant, RegEntity } from '../types/reg';
 
 type Dirs = {
@@ -7,19 +6,22 @@ type Dirs = {
   expected: string;
 };
 
-export const toEntities = (variant: RegVariant, dirs: Dirs, items: RegItem[]): RegEntity[] =>
-  items.map((item) => {
+export const toEntities = (variant: RegVariant, dirs: Dirs, items: RegItem[]): RegEntity[] => {
+  const join = (key: keyof Dirs, to: string) => dirs[key].replace(/\/$/, '') + '/' + to.replace(/^\//, '');
+
+  return items.map((item) => {
     const id = `${variant}-${item.encoded}`;
 
     return {
       id,
       variant,
       name: item.raw,
-      diff: path.join(dirs.diff, item.encoded).replace(/\.[^.]+$/, '.png'),
-      before: path.join(dirs.expected, item.encoded),
-      after: path.join(dirs.actual, item.encoded),
+      diff: join('diff', item.encoded).replace(/\.[^.]+$/, '.png'),
+      before: join('expected', item.encoded),
+      after: join('actual', item.encoded),
     };
   });
+};
 
 export const toStructualItems = (entities: RegEntity[]): RegStructualItem[] => {
   const results: RegStructualItem[] = [];
