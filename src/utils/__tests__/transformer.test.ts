@@ -6,7 +6,8 @@ describe('transformer', () => {
     const variant = 'new';
     const raw = 'raw';
     const encoded = 'encoded.jpg';
-    const dirs = {
+
+    let dirs = {
       diff: 'diff/',
       expected: 'expected/',
       actual: 'actual/',
@@ -20,6 +21,23 @@ describe('transformer', () => {
         diff: `${dirs.diff}encoded.png`,
         before: `${dirs.expected}${encoded}`,
         after: `${dirs.actual}${encoded}`,
+      },
+    ]);
+
+    dirs = {
+      diff: 'http://localhost:8080/diff',
+      expected: 'http://localhost:8080/expected',
+      actual: 'http://localhost:8080/actual',
+    };
+
+    expect(toEntities(variant, dirs, [{ raw, encoded }])).toEqual([
+      {
+        id: `${variant}-${encoded}`,
+        variant,
+        name: raw,
+        diff: `${dirs.diff}/encoded.png`,
+        before: `${dirs.expected}/${encoded}`,
+        after: `${dirs.actual}/${encoded}`,
       },
     ]);
   });
