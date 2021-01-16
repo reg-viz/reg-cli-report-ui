@@ -1,4 +1,4 @@
-interface ResizeObserverEntry {
+type ResizeObserverEntry = {
   target: Element;
   contentRect: DOMRectReadOnly;
   borderBoxSize: {
@@ -9,7 +9,7 @@ interface ResizeObserverEntry {
     readonly inlineSize: number;
     readonly blockSize: number;
   };
-}
+};
 
 type ResizeObserverCallback = (entries: ResizeObserverEntry[]) => void;
 

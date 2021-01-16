@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
@@ -9,7 +8,7 @@ const DIST_PATH = path.join(__dirname, 'dist');
 
 const common = {
   mode: IS_PRODUCTION ? 'production' : 'development',
-  devtool: IS_PRODUCTION ? false : '#source-map',
+  devtool: IS_PRODUCTION ? false : 'source-map',
 
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
@@ -25,7 +24,9 @@ const common = {
     ],
   },
 
-  plugins: [new webpack.NamedModulesPlugin()],
+  optimization: {
+    moduleIds: 'named',
+  },
 };
 
 module.exports = (env = {}) => [
@@ -40,29 +41,43 @@ module.exports = (env = {}) => [
       publicPath: '/',
     },
     plugins: [
-      ...common.plugins,
       ...(IS_PRODUCTION
         ? []
         : [
-            new CopyPlugin([
-              {
-                from: path.join(__dirname, 'node_modules', 'x-img-diff-js', 'build', 'cv-wasm_browser.*'),
-                to: path.join(DIST_PATH),
-                flatten: true,
-              },
-              { from: 'develop', to: DIST_PATH, ignore: ['index.html'] },
-            ]),
+            new CopyPlugin({
+              patterns: [
+                {
+                  from: path.join(
+                    __dirname,
+                    'node_modules',
+                    'x-img-diff-js',
+                    'build',
+                    'cv-wasm_browser.*',
+                  ),
+                  to: '[name].[ext]',
+                },
+                {
+                  from: 'develop',
+                  globOptions: {
+                    ignore: ['**/index*.html'],
+                  },
+                },
+              ],
+            }),
             new HtmlWebpackPlugin({
-              template: path.join(__dirname, 'develop', env.ENABLED_HUGE ? 'index_large_data.html' : 'index.html'),
+              template: path.join(
+                __dirname,
+                'develop',
+                env.ENABLED_HUGE ? 'index_large_data.html' : 'index.html',
+              ),
             }),
           ]),
     ],
     devServer: {
       contentBase: DIST_PATH,
-      inline: true,
-      hot: true,
       port: 8080,
       host: '0.0.0.0',
+      watchContentBase: true,
       disableHostCheck: true,
     },
   },

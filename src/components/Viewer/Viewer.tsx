@@ -2,16 +2,24 @@ import React, { useRef, useEffect, useCallback, useState } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import styled, { css } from 'styled-components';
-import focusTrap, { FocusTrap } from 'focus-trap';
+import type { FocusTrap } from 'focus-trap';
+import { createFocusTrap } from 'focus-trap';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
-import { Space, Depth, Size, Duration, Easing, Color } from '../../styles/variables';
+import {
+  Space,
+  Depth,
+  Size,
+  Duration,
+  Easing,
+  Color,
+} from '../../styles/variables';
 import { IconButton } from '../IconButton';
 import { ArrowLeftIcon } from '../icons/ArrowLeftIcon';
 import { ArrowRightIcon } from '../icons/ArrowRightIcon';
 import { Transparent } from '../internal/Transparent';
 import { Header } from '../Header';
 import { Portal } from '../internal/Portal';
-import { RegEntity, Matching } from '../../types/reg';
+import type { RegEntity, Matching } from '../../types/reg';
 import { useMousetrap } from '../../hooks/useMousetrap';
 import { ComparisonView } from './internal/ComparisonView';
 import { OPEN_DELAY } from './constants';
@@ -142,7 +150,15 @@ export type Props = {
   onRequestClose: () => void;
 };
 
-export const Viewer: React.FC<Props> = ({ total, current, entity, matching, onPrevious, onNext, onRequestClose }) => {
+export const Viewer: React.FC<Props> = ({
+  total,
+  current,
+  entity,
+  matching,
+  onPrevious,
+  onNext,
+  onRequestClose,
+}) => {
   const [mounted, setMounted] = useState(false);
 
   const rootRef = useRef<HTMLDivElement>(null);
@@ -201,7 +217,7 @@ export const Viewer: React.FC<Props> = ({ total, current, entity, matching, onPr
     }
 
     if (mounted) {
-      focusRef.current = focusTrap(root, {});
+      focusRef.current = createFocusTrap(root, {});
       focusRef.current.activate();
       disableBodyScroll(root);
     } else {
@@ -258,13 +274,15 @@ export const Viewer: React.FC<Props> = ({ total, current, entity, matching, onPr
             exit: Duration.LARGE_OUT,
           }}
           onEnter={handleEnter}
-          onExit={handleExit}>
+          onExit={handleExit}
+        >
           <div
             ref={rootRef}
             tabIndex={entity == null ? -1 : 0}
             role="dialog"
             aria-modal="true"
-            aria-hidden={entity != null ? 'false' : 'true'}>
+            aria-hidden={entity != null ? 'false' : 'true'}
+          >
             {entity == null ? null : (
               <Wrapper>
                 <HeaderWrapper>
@@ -281,13 +299,19 @@ export const Viewer: React.FC<Props> = ({ total, current, entity, matching, onPr
                   <ComparisonView entity={entity} matching={matching} />
 
                   <Previous>
-                    <IconButton aria-label="Previous Item" onClick={handlePreviousClick}>
+                    <IconButton
+                      aria-label="Previous Item"
+                      onClick={handlePreviousClick}
+                    >
                       <ArrowLeftIcon fill={Color.TEXT_BASE} />
                     </IconButton>
                   </Previous>
 
                   <Next>
-                    <IconButton aria-label="Next Item" onClick={handleNextClick}>
+                    <IconButton
+                      aria-label="Next Item"
+                      onClick={handleNextClick}
+                    >
                       <ArrowRightIcon fill={Color.TEXT_BASE} />
                     </IconButton>
                   </Next>

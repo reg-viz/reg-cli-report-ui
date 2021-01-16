@@ -16,4 +16,6 @@ export type Props = React.HTMLAttributes<HTMLDivElement> & {
   children: React.ReactNode;
 };
 
-export const Container: React.FC<Props> = ({ children, ...rest }) => <Wrapper {...rest}>{children}</Wrapper>;
+export const Container: React.FC<Props> = ({ children, ...rest }) => (
+  <Wrapper {...rest}>{children}</Wrapper>
+);

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BaseButton, Props as BaseButtonProps } from '../internal/BaseButton';
+import type { Props as BaseButtonProps } from '../internal/BaseButton';
+import { BaseButton } from '../internal/BaseButton';
 import { Space, Typography, Color } from '../../styles/variables';
 import { Ellipsis } from '../internal/Ellipsis';
 

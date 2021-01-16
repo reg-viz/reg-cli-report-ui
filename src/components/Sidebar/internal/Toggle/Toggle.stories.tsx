@@ -11,7 +11,9 @@ const defaultProps = {
 const Overview: React.FC = () => {
   const [open, setOpen] = useState(false);
 
-  return <Toggle {...defaultProps} open={open} onClick={() => setOpen(!open)} />;
+  return (
+    <Toggle {...defaultProps} open={open} onClick={() => setOpen(!open)} />
+  );
 };
 
 storiesOf('Toggle', module)

@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Space, FontFamily, Typography, Color } from '../../styles/variables';
-import { Dialog, Props as DialogProps } from '../Dialog';
+import type { Props as DialogProps } from '../Dialog';
+import { Dialog } from '../Dialog';
 
 const Wrapper = styled.div`
   padding-bottom: ${Space * 1}px;
@@ -51,10 +52,10 @@ const Title: React.FC = ({ children }) => (
   </tr>
 );
 
-const Item: React.FC<{ description: React.ReactNode; shortcuts: (string | string[])[] }> = ({
-  description,
-  shortcuts,
-}) => {
+const Item: React.FC<{
+  description: React.ReactNode;
+  shortcuts: (string | string[])[];
+}> = ({ description, shortcuts }) => {
   return (
     <tr>
       <td>{description}</td>

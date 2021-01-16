@@ -37,18 +37,19 @@ export type Props = React.ComponentPropsWithoutRef<'button'> & {
   referrerPolicy?: string;
 };
 
-export const BaseButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Props>(
-  ({ type, href, children, ...rest }, ref) => {
-    const linkable = href != null;
-    const props = linkable ? ({ href, ...rest } as any) : { type, ...rest };
+export const BaseButton = forwardRef<
+  HTMLButtonElement | HTMLAnchorElement,
+  Props
+>(({ type, href, children, ...rest }, ref) => {
+  const linkable = href != null;
+  const props = linkable ? ({ href, ...rest } as any) : { type, ...rest };
 
-    return (
-      <Wrapper {...props} ref={ref} as={linkable ? 'a' : 'button'}>
-        {children}
-      </Wrapper>
-    );
-  },
-);
+  return (
+    <Wrapper {...props} ref={ref} as={linkable ? 'a' : 'button'}>
+      {children}
+    </Wrapper>
+  );
+});
 
 BaseButton.defaultProps = {
   type: 'button',

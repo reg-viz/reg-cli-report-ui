@@ -1,9 +1,10 @@
 import { createContainer } from 'unstated-next';
 import { useState, useEffect, useContext, useRef } from 'react';
 import { EntityContainer } from '../entity/EntityContainer';
-import { RegEntity, Matching } from '../../types/reg';
+import type { RegEntity, Matching } from '../../types/reg';
 import { WorkerContext } from '../../context/WorkerContext';
-import { WorkerEventType, WorkerEventDataPayload } from '../../types/event';
+import type { WorkerEventDataPayload } from '../../types/event';
+import { WorkerEventType } from '../../types/event';
 
 type Current = {
   entity: RegEntity | null;
@@ -85,7 +86,9 @@ export const ViewerContainer = createContainer<ViewerValue>(() => {
       return;
     }
 
-    const listener = (payload: WorkerEventDataPayload<WorkerEventType.RESULT_CALC>) => {
+    const listener = (
+      payload: WorkerEventDataPayload<WorkerEventType.RESULT_CALC>,
+    ) => {
       if (seqRef.current === payload.seq) {
         setCurrent({
           ...current,

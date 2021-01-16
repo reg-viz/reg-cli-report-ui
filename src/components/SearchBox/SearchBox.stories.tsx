@@ -6,4 +6,9 @@ import { SearchBox } from './';
 
 storiesOf('SearchBox', module)
   .addDecorator(withPadding())
-  .add('overview', () => <SearchBox placeholder="Filter by file name" onChange={action('onChange')} />);
+  .add('overview', () => (
+    <SearchBox
+      placeholder="Filter by file name"
+      onChange={action('onChange')}
+    />
+  ));

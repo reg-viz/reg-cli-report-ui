@@ -1,8 +1,17 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import * as clipboard from 'clipboard-polyfill';
-import { Space, Shadow, Focus, BreakPoint, Typography, Color, Duration, Easing } from '../../styles/variables';
-import { RegEntity, RegVariant } from '../../types/reg';
+import {
+  Space,
+  Shadow,
+  Focus,
+  BreakPoint,
+  Typography,
+  Color,
+  Duration,
+  Easing,
+} from '../../styles/variables';
+import type { RegEntity, RegVariant } from '../../types/reg';
 import { Image } from '../Image';
 import { Ellipsis } from '../internal/Ellipsis';
 import { IconButton } from '../IconButton';
@@ -102,11 +111,14 @@ export const Card: React.FC<Props> = ({ entity, menus, onClick, onCopy }) => {
   const anchor = React.useRef<any>(null);
   const [open, setOpen] = React.useState(false);
 
-  const handleMenuOpen = useCallback((e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setOpen(true);
-  }, []);
+  const handleMenuOpen = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setOpen(true);
+    },
+    [],
+  );
 
   const handleClose = useCallback(() => {
     setOpen(false);
@@ -142,7 +154,13 @@ export const Card: React.FC<Props> = ({ entity, menus, onClick, onCopy }) => {
 
         <CardImage>
           <CardImageInner>
-            <Image lazy={true} src={imageSrc(entity)} width="100%" height="100%" fit="scale-down" />
+            <Image
+              lazy={true}
+              src={imageSrc(entity)}
+              width="100%"
+              height="100%"
+              fit="scale-down"
+            />
           </CardImageInner>
           <Transparent />
         </CardImage>
@@ -153,10 +171,20 @@ export const Card: React.FC<Props> = ({ entity, menus, onClick, onCopy }) => {
       </Inner>
 
       <CardMenu>
-        <IconButton ref={anchor} aria-owns={`${entity.id}-menu`} onClick={handleMenuOpen}>
+        <IconButton
+          ref={anchor}
+          aria-owns={`${entity.id}-menu`}
+          onClick={handleMenuOpen}
+        >
           <MoreIcon fill={Color.TEXT_BASE} />
         </IconButton>
-        <Menu id={`${entity.id}-menu`} placement="bottom-left" anchor={anchor} open={open} onRequestClose={handleClose}>
+        <Menu
+          id={`${entity.id}-menu`}
+          placement="bottom-left"
+          anchor={anchor}
+          open={open}
+          onRequestClose={handleClose}
+        >
           <Menu.Item onClick={handleOpenClick}>Open</Menu.Item>
           <Menu.Item onClick={handleCopyClick}>Copy Link</Menu.Item>
           {menus.map(({ label, href }, i) => (
@@ -170,22 +198,24 @@ export const Card: React.FC<Props> = ({ entity, menus, onClick, onCopy }) => {
   );
 };
 
-export const CardDimmer: React.FC<{ variant: RegVariant }> = React.memo(({ variant }) => {
-  return (
-    <Wrapper>
-      <Inner type="button">
-        <CardSign>
-          <Sign variant={variant} />
-        </CardSign>
+export const CardDimmer: React.FC<{ variant: RegVariant }> = React.memo(
+  ({ variant }) => {
+    return (
+      <Wrapper>
+        <Inner type="button">
+          <CardSign>
+            <Sign variant={variant} />
+          </CardSign>
 
-        <CardImage>
-          <Transparent />
-        </CardImage>
+          <CardImage>
+            <Transparent />
+          </CardImage>
 
-        <CardText>
-          <Ellipsis line={2}>...</Ellipsis>
-        </CardText>
-      </Inner>
-    </Wrapper>
-  );
-});
+          <CardText>
+            <Ellipsis line={2}>...</Ellipsis>
+          </CardText>
+        </Inner>
+      </Wrapper>
+    );
+  },
+);

@@ -1,19 +1,26 @@
 ---
-name: 'ui-class-component'
-description: 'Create Class Component'
-message: 'Please enter component name.'
+name: 'ui-component'
 root: 'src/components'
 output: '**/*'
-ignore: ['**/{A..Z}*', '**/__tests__']
+ignore:
+  - 'src/components/icons'
+  - '**/{A..Z}*'
+  - '**/__tests__'
+questions:
+  name: 'Please enter a component name.'
 ---
 
-# `{{ input | pascal }}/index.ts`
+# Variables
+
+- name: `{{ inputs.name | pascal }}`
+
+# `{{ name }}/index.ts`
 
 ```typescript
-{{ read "./partials/index.tpl" }}
+export * from './{{ name }}';
 ```
 
-# `{{ input | pascal }}/{{ input | pascal }}.tsx`
+# `{{ name }}/{{ name }}.tsx`
 
 ```typescript
 import React from 'react';
@@ -24,24 +31,24 @@ const Wrapper = styled.div`
   margin: ${Space}px;
 `;
 
-export type Props = {
-};
+export type Props = {};
 
-type State = {};
-
-export class {{ input | pascal }} extends React.Component<Props, State> {
-  public render() {
-    const { children, ...rest } = this.props;
-
-    return (
-      <Wrapper {...rest}>{children}</Wrapper>
-    );
-  }
-}
+export const {{ name }}: React.FC<Props> = ({ children, ...rest }) => (
+  <Wrapper {...rest}>{children}</Wrapper>
+);
 ```
 
-# `{{ input | pascal }}/{{ input | pascal }}.stories.tsx`
+# `{{ name }}/{{ name }}.stories.tsx`
 
 ```typescript
-{{ read "./partials/stories.tpl" }}
+import { storiesOf } from '@storybook/react';
+import React from 'react';
+import { withPadding } from '{{ relative "../src/styles/storybook-decorators" }}';
+import { {{ name }} } from './';
+
+storiesOf('{{ name }}', module)
+  .addDecorator(withPadding())
+  .add('overview', () => (
+    <{{ name }}>TODO</{{ name }}>
+  ));
 ```

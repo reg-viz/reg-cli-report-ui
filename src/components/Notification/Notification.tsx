@@ -2,7 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import SwitchTransition from 'react-transition-group/SwitchTransition';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { Space, Depth, Duration, Easing, BreakPoint } from '../../styles/variables';
+import {
+  Space,
+  Depth,
+  Duration,
+  Easing,
+  BreakPoint,
+} from '../../styles/variables';
 import { Portal } from '../internal/Portal';
 import { Snackbar } from '../Snackbar';
 
@@ -65,7 +71,8 @@ export const Notification: React.FC<Props> = ({ show, message }) => {
               timeout={{
                 enter: Duration.FADE_IN,
                 exit: Duration.FADE_OUT,
-              }}>
+              }}
+            >
               <Inner>{show && <Snackbar>{message}</Snackbar>}</Inner>
             </CSSTransition>
           </SwitchTransition>

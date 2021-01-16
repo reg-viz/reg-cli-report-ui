@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Image } from '../../../Image';
-import { Matching } from '../../../../types/reg';
+import type { Matching } from '../../../../types/reg';
 import { Markers } from './Markers';
 
 const Wrapper = styled.div`
@@ -21,7 +21,12 @@ export type Props = {
   matching: Matching | null;
 };
 
-export const Toggle: React.FC<Props> = ({ before, after, checked, matching }) => (
+export const Toggle: React.FC<Props> = ({
+  before,
+  after,
+  checked,
+  matching,
+}) => (
   <Wrapper>
     <div>
       <Image src={checked ? after : before} />

@@ -3,7 +3,7 @@ import { action } from '@storybook/addon-actions';
 import React, { useState } from 'react';
 import { withPadding } from '../../styles/storybook-decorators';
 import { createRegEntity } from '../../mocks';
-import { RegEntity } from '../../types/reg';
+import type { RegEntity } from '../../types/reg';
 import { Viewer } from './Viewer';
 
 const defaultEntity = createRegEntity({
@@ -34,7 +34,8 @@ const Overview: React.FC = () => {
         type="button"
         onClick={() => {
           setEntity(defaultEntity);
-        }}>
+        }}
+      >
         open viewer
       </button>
 

@@ -1,7 +1,8 @@
 import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import { Color } from '../../styles/variables';
-import { BaseButton, Props as BaseButtonProps } from '../internal/BaseButton';
+import type { Props as BaseButtonProps } from '../internal/BaseButton';
+import { BaseButton } from '../internal/BaseButton';
 
 const SIZE = 40;
 
@@ -41,13 +42,14 @@ export type Props = BaseButtonProps & {
   variant?: Variant;
 };
 
-export const IconButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Props>(
-  ({ variant, children, ...rest }, ref) => (
-    <Wrapper ref={ref as any} {...variants[variant as Variant]} {...rest}>
-      {children}
-    </Wrapper>
-  ),
-);
+export const IconButton = forwardRef<
+  HTMLButtonElement | HTMLAnchorElement,
+  Props
+>(({ variant, children, ...rest }, ref) => (
+  <Wrapper ref={ref as any} {...variants[variant as Variant]} {...rest}>
+    {children}
+  </Wrapper>
+));
 
 IconButton.defaultProps = {
   variant: 'light',

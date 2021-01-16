@@ -2,7 +2,7 @@ import { toStructualItems, toEntities } from '../transformer';
 import { createRegEntity } from '../../mocks';
 
 describe('transformer', () => {
-  test('toStructualItems', () => {
+  test('toEntities', () => {
     const variant = 'new';
     const raw = 'raw';
     const encoded = 'encoded.jpg';

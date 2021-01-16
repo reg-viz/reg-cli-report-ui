@@ -1,5 +1,6 @@
 import React from 'react';
-import { AnchorScrollContext, AnchorScrollContextValue } from '../../context/AnchorScrollContext';
+import type { AnchorScrollContextValue } from '../../context/AnchorScrollContext';
+import { AnchorScrollContext } from '../../context/AnchorScrollContext';
 
 type GridStyleProperty = {
   gridGap: number;
@@ -56,7 +57,10 @@ const createGridStyleObject = (opt: GridStyleProperty) => {
 
 const prerenderRowsLength = 1;
 
-export class VGrid<T, K extends keyof T> extends React.Component<Props<T, K>, State> {
+export class VGrid<T, K extends keyof T> extends React.Component<
+  Props<T, K>,
+  State
+> {
   static contextType = AnchorScrollContext;
 
   context!: AnchorScrollContextValue;
@@ -175,7 +179,10 @@ export class VGrid<T, K extends keyof T> extends React.Component<Props<T, K>, St
 
   componentDidUpdate(prevProps: Props<T, K>) {
     if (!this.containerRef.current) return;
-    if (this.props.items.length !== prevProps.items.length || this.props.cellHeight !== prevProps.cellHeight) {
+    if (
+      this.props.items.length !== prevProps.items.length ||
+      this.props.cellHeight !== prevProps.cellHeight
+    ) {
       this.updateContainerState(this.containerRef.current.clientWidth);
     }
   }
@@ -205,10 +212,19 @@ export class VGrid<T, K extends keyof T> extends React.Component<Props<T, K>, St
     const { gridStyle, repeatLength } = this.getGridDefinition(containerWidth);
     const rowHeight = cellHeight + gridStyle.gridGap;
     const allItemsCount = this.props.items.length;
-    const containerHeight = Math.ceil(allItemsCount / repeatLength) * rowHeight - gridStyle.gridGap;
+    const containerHeight =
+      Math.ceil(allItemsCount / repeatLength) * rowHeight - gridStyle.gridGap;
     const visibleItemsLength =
-      (~~(innerHeight / (this.props.cellHeight + gridStyle.gridGap)) + 2 + prerenderRowsLength) * repeatLength;
-    this.setState({ containerHeight, repeatLength, visibleItemsLength, gridStyle });
+      (~~(innerHeight / (this.props.cellHeight + gridStyle.gridGap)) +
+        2 +
+        prerenderRowsLength) *
+      repeatLength;
+    this.setState({
+      containerHeight,
+      repeatLength,
+      visibleItemsLength,
+      gridStyle,
+    });
 
     requestAnimationFrame(() => this.updateCurrentOffsetIndex());
   }
@@ -222,7 +238,10 @@ export class VGrid<T, K extends keyof T> extends React.Component<Props<T, K>, St
     if (!matched) throw new Error('No matched media');
 
     const { gridGap, minContentLength } = matched;
-    const repeatLength = (minContentLength && ~~((containerWidth + gridGap) / (minContentLength + gridGap))) || 1;
+    const repeatLength =
+      (minContentLength &&
+        ~~((containerWidth + gridGap) / (minContentLength + gridGap))) ||
+      1;
     const gridStyle = createGridStyleObject(matched);
 
     return { gridStyle, repeatLength, gridGap };
@@ -281,7 +300,8 @@ export class VGrid<T, K extends keyof T> extends React.Component<Props<T, K>, St
     const cot = containerElement.offsetTop;
     const sst = this.scrollingElement.scrollTop;
     const deltaY = sst - cot;
-    const nextOffsetIndex = ~~(deltaY / this.rowHeightUnit) * this.state.repeatLength;
+    const nextOffsetIndex =
+      ~~(deltaY / this.rowHeightUnit) * this.state.repeatLength;
     if (nextOffsetIndex >= 0 && this.state.offsetIndex !== nextOffsetIndex) {
       this.setState({ offsetIndex: nextOffsetIndex });
     }
@@ -289,7 +309,10 @@ export class VGrid<T, K extends keyof T> extends React.Component<Props<T, K>, St
 
   private sliceVisibleItems() {
     const { offsetIndex, visibleItemsLength } = this.state;
-    return this.props.items.slice(offsetIndex, visibleItemsLength + offsetIndex);
+    return this.props.items.slice(
+      offsetIndex,
+      visibleItemsLength + offsetIndex,
+    );
   }
 
   private calculateInnerOffsetTop(offsetIndex: number) {
@@ -299,7 +322,10 @@ export class VGrid<T, K extends keyof T> extends React.Component<Props<T, K>, St
 
   private calculateClientOffsetTop(offsetIndex: number) {
     if (!this.containerRef.current) return 0;
-    return this.calculateInnerOffsetTop(offsetIndex) + this.containerRef.current.offsetTop;
+    return (
+      this.calculateInnerOffsetTop(offsetIndex) +
+      this.containerRef.current.offsetTop
+    );
   }
 
   render() {
@@ -318,8 +344,13 @@ export class VGrid<T, K extends keyof T> extends React.Component<Props<T, K>, St
       <div ref={this.containerRef} style={containerStyle}>
         <ul style={innerStyle}>
           {this.sliceVisibleItems().map((item, index) => (
-            <li key={(item[itemKey] as unknown) as string} style={{ height: cellHeight }}>
-              {this.context.isAnchorScrolling && dimmerCell ? dimmerCell() : children({ item, index })}
+            <li
+              key={(item[itemKey] as unknown) as string}
+              style={{ height: cellHeight }}
+            >
+              {this.context.isAnchorScrolling && dimmerCell
+                ? dimmerCell()
+                : children({ item, index })}
             </li>
           ))}
         </ul>

@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Space, Typography, Color } from '../../styles/variables';
-import { BaseButton, Props as BaseButtonProps } from '../internal/BaseButton';
+import type { Props as BaseButtonProps } from '../internal/BaseButton';
+import { BaseButton } from '../internal/BaseButton';
 import { Ellipsis } from '../internal/Ellipsis';
 
 const LinkButton = styled(BaseButton)<{ depth: number }>`

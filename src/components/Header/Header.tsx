@@ -1,9 +1,16 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { Space, Shadow, Size, BreakPoint, Typography, Color } from '../../styles/variables';
+import {
+  Space,
+  Shadow,
+  Size,
+  BreakPoint,
+  Typography,
+  Color,
+} from '../../styles/variables';
 import { CloseIcon } from '../icons/CloseIcon';
 import { IconButton } from '../IconButton';
-import { RegVariant } from '../../types/reg';
+import type { RegVariant } from '../../types/reg';
 import { Sign } from '../Sign';
 import { Ellipsis } from '../internal/Ellipsis';
 
@@ -69,7 +76,13 @@ export type Props = {
   onRequestClose: () => void;
 };
 
-export const Header: React.FC<Props> = ({ variant, title, current, max, onRequestClose }) => {
+export const Header: React.FC<Props> = ({
+  variant,
+  title,
+  current,
+  max,
+  onRequestClose,
+}) => {
   const handleCloseClick = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();

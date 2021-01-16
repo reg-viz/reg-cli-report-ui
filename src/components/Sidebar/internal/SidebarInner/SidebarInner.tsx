@@ -71,7 +71,11 @@ export const SidebarInner: React.FC<Props> = ({ inputRef, listRef }) => {
   return (
     <>
       <Inner ref={innerRef} id="sidebar">
-        <SearchBox inputRef={inputRef} placeholder="Filter by file name" onChange={handleChange} />
+        <SearchBox
+          inputRef={inputRef}
+          placeholder="Filter by file name"
+          onChange={handleChange}
+        />
 
         <Spacer variant="margin" x={3} />
 

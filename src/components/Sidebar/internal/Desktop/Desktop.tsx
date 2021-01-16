@@ -2,7 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { Resizable } from 're-resizable';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { Space, Duration, Easing, Depth, Color } from '../../../../styles/variables';
+import {
+  Space,
+  Duration,
+  Easing,
+  Depth,
+  Color,
+} from '../../../../styles/variables';
 import { SidebarContainer } from '../../../../containers/sidebar/SidebarContainer';
 import { SidebarInner } from '../SidebarInner';
 import { Props } from '../../types';
@@ -76,7 +82,8 @@ export const Desktop: React.FC<Props> = (props) => {
       timeout={{
         enter: Duration.SLIDE_IN,
         exit: Duration.SLIDE_OUT,
-      }}>
+      }}
+    >
       <Wrapper
         enable={{
           top: false,
@@ -105,7 +112,8 @@ export const Desktop: React.FC<Props> = (props) => {
           topLeft: 'handle-top-left',
           bottomRight: 'handle-bottom-right',
           bottomLeft: 'handle-bottom-left',
-        }}>
+        }}
+      >
         <SidebarInner {...props} />
       </Wrapper>
     </CSSTransition>

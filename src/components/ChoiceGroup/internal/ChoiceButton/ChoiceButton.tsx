@@ -1,7 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, Duration, Easing, Typography, Color } from '../../../../styles/variables';
-import { BaseButton, Props as BaseButtonProps } from '../../../internal/BaseButton';
+import {
+  Space,
+  Duration,
+  Easing,
+  Typography,
+  Color,
+} from '../../../../styles/variables';
+import type { Props as BaseButtonProps } from '../../../internal/BaseButton';
+import { BaseButton } from '../../../internal/BaseButton';
 
 const SIZE = 44;
 
@@ -52,7 +59,11 @@ export type Props = BaseButtonProps & {
   active?: boolean;
 };
 
-export const ChoiceButton: React.FC<Props> = ({ active, children, ...rest }) => (
+export const ChoiceButton: React.FC<Props> = ({
+  active,
+  children,
+  ...rest
+}) => (
   <Wrapper {...rest} active={active as boolean}>
     <span>{children}</span>
   </Wrapper>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { hot } from 'react-hot-loader';
-import { RegData } from './types/reg';
+import type { RegData } from './types/reg';
 import { App } from './App';
 import { WorkerClient } from './worker-client';
 
@@ -16,4 +16,7 @@ workerClient.start(ximgdiffConfig);
 // Report App
 const HotApp = hot(module)(App);
 
-render(<HotApp data={regData} worker={workerClient} />, document.getElementById('app'));
+render(
+  <HotApp data={regData} worker={workerClient} />,
+  document.getElementById('app'),
+);

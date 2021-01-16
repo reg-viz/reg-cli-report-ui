@@ -1,9 +1,21 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
-import focusTrap, { FocusTrap } from 'focus-trap';
-import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
-import { Space, Depth, Duration, Easing, Shadow, Color } from '../../../../styles/variables';
+import type { FocusTrap } from 'focus-trap';
+import { createFocusTrap } from 'focus-trap';
+import {
+  disableBodyScroll,
+  enableBodyScroll,
+  clearAllBodyScrollLocks,
+} from 'body-scroll-lock';
+import {
+  Space,
+  Depth,
+  Duration,
+  Easing,
+  Shadow,
+  Color,
+} from '../../../../styles/variables';
 import { Props } from '../../types';
 import { SidebarContainer } from '../../../../containers/sidebar/SidebarContainer';
 import { SidebarInner } from '../SidebarInner';
@@ -112,7 +124,7 @@ export const Mobile: React.FC<Props> = (props) => {
       return;
     }
 
-    focusRef.current = focusTrap(wrapper, {});
+    focusRef.current = createFocusTrap(wrapper, {});
 
     return () => {
       clearAllBodyScrollLocks();
@@ -158,7 +170,8 @@ export const Mobile: React.FC<Props> = (props) => {
       timeout={{
         enter: Duration.SLIDE_IN,
         exit: Duration.SLIDE_OUT,
-      }}>
+      }}
+    >
       <div ref={wrapperRef}>
         <Inner>
           <SidebarInner {...props} />

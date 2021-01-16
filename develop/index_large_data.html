@@ -35,7 +35,10 @@
           { raw: 'sample.3.png', encoded: 'sample.3.png' },
         ],
         hasFailed: true,
-        failedItems: [...new Uint8Array(1000)].map((_, i) => ({ raw: 'sample.png?' + i, encoded: 'sample.png?' + i })),
+        failedItems: [...new Uint8Array(1000)].map((_, i) => ({
+          raw: 'sample.png?' + i,
+          encoded: 'sample.png?' + i,
+        })),
         actualDir: './actual',
         expectedDir: './expected',
         diffDir: './diff',

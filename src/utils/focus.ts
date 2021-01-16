@@ -37,12 +37,11 @@ const trySiblingsFocus = (
 };
 
 export const tryNextFocus = (element: HTMLElement | null): boolean =>
-  trySiblingsFocus(element, (focusable, index) => focusable.splice(index + 1).some(tryFocus));
+  trySiblingsFocus(element, (focusable, index) =>
+    focusable.splice(index + 1).some(tryFocus),
+  );
 
 export const tryPreviousFocus = (element: HTMLElement | null): boolean =>
   trySiblingsFocus(element, (focusable, index) =>
-    focusable
-      .splice(0, index)
-      .reverse()
-      .some(tryFocus),
+    focusable.splice(0, index).reverse().some(tryFocus),
   );
