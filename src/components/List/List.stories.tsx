@@ -16,7 +16,8 @@ storiesOf('List', module)
         defaultOpen={true}
         label="Large expandable 1"
         meta="meta text"
-        icon={<SignChangedIcon fill={Color.SIGN_CHANGED} />}>
+        icon={<SignChangedIcon fill={Color.SIGN_CHANGED} />}
+      >
         <List.Item depth={1} href="#">
           Nest Item 1
         </List.Item>
@@ -53,7 +54,10 @@ storiesOf('List', module)
   .add('with long text', () => (
     <List>
       <List.Item href="#">{'Long text '.repeat(20).trim()}</List.Item>
-      <List.Expandable defaultOpen={true} label={'Long text '.repeat(20).trim()}>
+      <List.Expandable
+        defaultOpen={true}
+        label={'Long text '.repeat(20).trim()}
+      >
         <List.Item depth={1} href="#">
           {'Long text '.repeat(20).trim()}
         </List.Item>
@@ -61,7 +65,8 @@ storiesOf('List', module)
       <List.Expandable
         label={'Long text '.repeat(20).trim()}
         meta="meta text"
-        icon={<SignChangedIcon fill={Color.SIGN_CHANGED} />}>
+        icon={<SignChangedIcon fill={Color.SIGN_CHANGED} />}
+      >
         <li>hidden content</li>
       </List.Expandable>
     </List>

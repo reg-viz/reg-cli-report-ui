@@ -44,7 +44,10 @@
           { raw: 'sample.png?2', encoded: 'sample.png?2' },
           { raw: 'nest/sample.png?3', encoded: 'nest%2Fsample.png?3' },
           { raw: 'nest/sample.png?4', encoded: 'nest%2Fsample.png?4' },
-          { raw: 'nest/deep/sample.png?5', encoded: 'nest%2Fdeep%2Fsample.png?5' },
+          {
+            raw: 'nest/deep/sample.png?5',
+            encoded: 'nest%2Fdeep%2Fsample.png?5',
+          },
         ],
         actualDir: './actual',
         expectedDir: './expected',

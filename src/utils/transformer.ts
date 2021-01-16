@@ -1,4 +1,9 @@
-import { RegItem, RegStructualItem, RegVariant, RegEntity } from '../types/reg';
+import type {
+  RegItem,
+  RegStructualItem,
+  RegVariant,
+  RegEntity,
+} from '../types/reg';
 
 type Dirs = {
   diff: string;
@@ -6,8 +11,13 @@ type Dirs = {
   expected: string;
 };
 
-export const toEntities = (variant: RegVariant, dirs: Dirs, items: RegItem[]): RegEntity[] => {
-  const join = (key: keyof Dirs, to: string) => dirs[key].replace(/\/$/, '') + '/' + to.replace(/^\//, '');
+export const toEntities = (
+  variant: RegVariant,
+  dirs: Dirs,
+  items: RegItem[],
+): RegEntity[] => {
+  const join = (key: keyof Dirs, to: string) =>
+    dirs[key].replace(/\/$/, '') + '/' + to.replace(/^\//, '');
 
   return items.map((item) => {
     const id = `${variant}-${item.encoded}`;

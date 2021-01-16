@@ -1,6 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, Duration, Easing, Typography, Color } from '../../styles/variables';
+import {
+  Space,
+  Duration,
+  Easing,
+  Typography,
+  Color,
+} from '../../styles/variables';
 import { BaseButton } from '../internal/BaseButton';
 import { Collapse } from '../internal/Collapse';
 import { ArrowUpIcon } from '../icons/ArrowUpIcon';
@@ -95,7 +101,11 @@ export class Expandable extends React.Component<Props, State> {
 
     return (
       <li>
-        <Button large={large as boolean} depth={depth as number} onClick={this.handleClick}>
+        <Button
+          large={large as boolean}
+          depth={depth as number}
+          onClick={this.handleClick}
+        >
           <ArrowIcon open={open}>
             <ArrowUpIcon fill={Color.TEXT_SUB} />
           </ArrowIcon>
@@ -105,7 +115,10 @@ export class Expandable extends React.Component<Props, State> {
           {meta && <Meta>{meta}</Meta>}
           {icon && <Icon>{icon}</Icon>}
         </Button>
-        <Collapse open={open} duration={{ enter: Duration.SLIDE_IN, exit: Duration.SLIDE_OUT }}>
+        <Collapse
+          open={open}
+          duration={{ enter: Duration.SLIDE_IN, exit: Duration.SLIDE_OUT }}
+        >
           <InnerList>{children}</InnerList>
         </Collapse>
       </li>

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Image } from '../../../Image';
 import { Space, BreakPoint } from '../../../../styles/variables';
-import { Matching } from '../../../../types/reg';
+import type { Matching } from '../../../../types/reg';
 import { Markers } from './Markers';
 
 const Wrapper = styled.div`

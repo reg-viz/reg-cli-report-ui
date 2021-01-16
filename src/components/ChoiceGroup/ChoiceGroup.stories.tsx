@@ -61,12 +61,28 @@ storiesOf('ChoiceGroup', module)
   ))
   .add('with 4 options', () => (
     <>
-      <ChoiceGroup {...defaultProps} options={options4} value={options4[0].value} />
+      <ChoiceGroup
+        {...defaultProps}
+        options={options4}
+        value={options4[0].value}
+      />
       <Spacer variant="margin" x={2} />
-      <ChoiceGroup {...defaultProps} options={options4} value={options4[1].value} />
+      <ChoiceGroup
+        {...defaultProps}
+        options={options4}
+        value={options4[1].value}
+      />
       <Spacer variant="margin" x={2} />
-      <ChoiceGroup {...defaultProps} options={options4} value={options4[2].value} />
+      <ChoiceGroup
+        {...defaultProps}
+        options={options4}
+        value={options4[2].value}
+      />
       <Spacer variant="margin" x={2} />
-      <ChoiceGroup {...defaultProps} options={options4} value={options4[3].value} />
+      <ChoiceGroup
+        {...defaultProps}
+        options={options4}
+        value={options4[3].value}
+      />
     </>
   ));

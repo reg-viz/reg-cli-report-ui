@@ -28,7 +28,12 @@ export type Props = Omit<React.ComponentPropsWithoutRef<'ul'>, 'onChange'> & {
   onChange: (value: string, index: number) => void;
 };
 
-export const ChoiceGroup: React.FC<Props> = ({ value, options, onChange, ...rest }) => {
+export const ChoiceGroup: React.FC<Props> = ({
+  value,
+  options,
+  onChange,
+  ...rest
+}) => {
   const handleItemClick = React.useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
@@ -46,7 +51,11 @@ export const ChoiceGroup: React.FC<Props> = ({ value, options, onChange, ...rest
     <List {...rest}>
       {options.map((opts) => (
         <ListItem key={opts.value}>
-          <ChoiceButton value={opts.value} active={opts.value === value} onClick={handleItemClick}>
+          <ChoiceButton
+            value={opts.value}
+            active={opts.value === value}
+            onClick={handleItemClick}
+          >
             {opts.label}
           </ChoiceButton>
         </ListItem>

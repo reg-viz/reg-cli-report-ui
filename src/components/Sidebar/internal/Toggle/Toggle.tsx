@@ -27,7 +27,8 @@ const Wrapper = styled(BaseButton)<{ open: boolean }>`
   & > span:nth-child(1) {
     margin-top: -13px;
     width: ${({ open }) => (open ? '38px' : '30px')};
-    transform: ${({ open }) => (open ? 'rotate(225deg) translate(-7px, -8px)' : undefined)};
+    transform: ${({ open }) =>
+      open ? 'rotate(225deg) translate(-7px, -8px)' : undefined};
     will-change: width;
   }
 
@@ -40,7 +41,8 @@ const Wrapper = styled(BaseButton)<{ open: boolean }>`
   & > span:nth-child(3) {
     margin-top: 10px;
     width: 22px;
-    transform: ${({ open }) => (open ? 'rotate(45deg) translate(-4px, -6px)' : undefined)};
+    transform: ${({ open }) =>
+      open ? 'rotate(45deg) translate(-4px, -6px)' : undefined};
     opacity: ${({ open }) => (open ? '0' : '1')};
   }
 `;
@@ -64,7 +66,8 @@ export const Toggle: React.FC<Props> = ({ open, onClick }) => {
       open={open}
       aria-label={open ? 'Close sidebar' : 'Open sidebar'}
       aria-controls="sidebar"
-      onClick={handleClick}>
+      onClick={handleClick}
+    >
       <span />
       <span />
       <span />

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // 1. +++ fetchAndInstantiate() +++ //
 
 // This library function fetches the wasm module at 'url', instantiates it with
@@ -22,7 +23,11 @@
 // just the given URL) is versioned by dbVersion and any change in dbVersion on
 // any call to instantiateCachedURL() will conservatively clear out the entire
 // cache to avoid stale modules.
-export function instantiateCachedURL(dbVersion: number, url: string, importObject: any) {
+export function instantiateCachedURL(
+  dbVersion: number,
+  url: string,
+  importObject: any,
+) {
   const dbName = 'wasm-cache';
   const storeName = 'wasm-cache';
 
@@ -67,7 +72,9 @@ export function instantiateCachedURL(dbVersion: number, url: string, importObjec
   // This helper function fires off an async operation to store the given wasm
   // Module in the given IDBDatabase.
   function storeInDatabase(db: IDBDatabase, module: WebAssembly.Module) {
-    const store = db.transaction([storeName], 'readwrite').objectStore(storeName);
+    const store = db
+      .transaction([storeName], 'readwrite')
+      .objectStore(storeName);
     try {
       const request = store.put(module, url);
       request.onerror = (err) => {

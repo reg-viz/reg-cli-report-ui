@@ -2,7 +2,8 @@ import { storiesOf } from '@storybook/react';
 import React, { useState } from 'react';
 import { action } from '@storybook/addon-actions';
 import { withPadding } from '../../styles/storybook-decorators';
-import { Menu, Placement } from './';
+import type { Placement } from './';
+import { Menu } from './';
 
 const Overview: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -16,7 +17,8 @@ const Overview: React.FC = () => {
           value={placement}
           onChange={(e: any) => {
             setPlacement(e.target.value);
-          }}>
+          }}
+        >
           <option value="top-left">top-left</option>
           <option value="top">top</option>
           <option value="top-right">top-right</option>
@@ -33,7 +35,8 @@ const Overview: React.FC = () => {
           aria-haspopup="true"
           onClick={() => {
             setOpen(true);
-          }}>
+          }}
+        >
           Open Menu
         </button>
       </div>
@@ -45,7 +48,8 @@ const Overview: React.FC = () => {
         placement={placement}
         onRequestClose={() => {
           setOpen(false);
-        }}>
+        }}
+      >
         <Menu.Item onClick={action('onClick') as any}>Button 1</Menu.Item>
         <Menu.Item href="#anchor-click">Anchor 1</Menu.Item>
         <Menu.Item onClick={action('onClick') as any}>Button 2</Menu.Item>

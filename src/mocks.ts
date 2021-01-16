@@ -1,4 +1,4 @@
-import { RegEntity } from './types/reg';
+import type { RegEntity } from './types/reg';
 
 export const createRegEntity = (properties: Partial<RegEntity>): RegEntity => ({
   id: '',

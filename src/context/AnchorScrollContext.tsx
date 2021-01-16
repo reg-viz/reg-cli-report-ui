@@ -7,12 +7,14 @@ export type AnchorScrollContextValue = {
   consume(): void;
 };
 
-export const AnchorScrollContext = React.createContext<AnchorScrollContextValue>({
-  hash: '#',
-  consumed: true,
-  isAnchorScrolling: false,
-  consume: () => {},
-});
+export const AnchorScrollContext = React.createContext<AnchorScrollContextValue>(
+  {
+    hash: '#',
+    consumed: true,
+    isAnchorScrolling: false,
+    consume: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  },
+);
 
 class HashValue implements AnchorScrollContextValue {
   private _ = false;
@@ -28,5 +30,9 @@ class HashValue implements AnchorScrollContextValue {
 
 export const AnchorScrollProvider: React.FC<{}> = ({ children }) => {
   const value: AnchorScrollContextValue = new HashValue();
-  return <AnchorScrollContext.Provider value={value}>{children}</AnchorScrollContext.Provider>;
+  return (
+    <AnchorScrollContext.Provider value={value}>
+      {children}
+    </AnchorScrollContext.Provider>
+  );
 };

@@ -2,8 +2,18 @@ import React, { useRef, useCallback, useEffect, useState } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock';
-import focusTrap, { FocusTrap } from 'focus-trap';
-import { Space, Duration, Depth, Easing, Focus, BreakPoint, Shadow, Color } from '../../styles/variables';
+import type { FocusTrap } from 'focus-trap';
+import { createFocusTrap } from 'focus-trap';
+import {
+  Space,
+  Duration,
+  Depth,
+  Easing,
+  Focus,
+  BreakPoint,
+  Shadow,
+  Color,
+} from '../../styles/variables';
 import { Portal } from '../internal/Portal';
 import { IconButton } from '../IconButton';
 import { CloseIcon } from '../icons/CloseIcon';
@@ -159,7 +169,14 @@ export type Props = Omit<React.ComponentPropsWithoutRef<'div'>, 'id'> & {
   onRequestClose: () => void;
 };
 
-export const Dialog: React.FC<Props> = ({ id, title, open, children, onRequestClose, ...rest }) => {
+export const Dialog: React.FC<Props> = ({
+  id,
+  title,
+  open,
+  children,
+  onRequestClose,
+  ...rest
+}) => {
   const [mounted, setMounted] = useState(false);
 
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -174,7 +191,7 @@ export const Dialog: React.FC<Props> = ({ id, title, open, children, onRequestCl
       return;
     }
 
-    focusRef.current = focusTrap(inner, { allowOutsideClick });
+    focusRef.current = createFocusTrap(inner, { allowOutsideClick });
     focusRef.current.activate();
 
     disableBodyScroll(body);
@@ -240,7 +257,8 @@ export const Dialog: React.FC<Props> = ({ id, title, open, children, onRequestCl
           exit: Duration.FADE_OUT + Delay.EXIT,
         }}
         onEnter={handleEnter}
-        onExit={handleExit}>
+        onExit={handleExit}
+      >
         <Wrapper>
           <Body ref={bodyRef}>
             <Inner ref={innerRef}>
@@ -250,20 +268,30 @@ export const Dialog: React.FC<Props> = ({ id, title, open, children, onRequestCl
                 tabIndex={open ? 0 : -1}
                 role="dialog"
                 aria-modal="true"
-                aria-hidden={open ? 'false' : 'true'}>
+                aria-hidden={open ? 'false' : 'true'}
+              >
                 <div role="document">
                   <h2>{title}</h2>
                   {children}
                 </div>
                 <Close>
-                  <IconButton aria-controls={id} aria-label="Close dialog" onClick={handleCloseClick}>
+                  <IconButton
+                    aria-controls={id}
+                    aria-label="Close dialog"
+                    onClick={handleCloseClick}
+                  >
                     <CloseIcon fill={Color.TEXT_SUB} />
                   </IconButton>
                 </Close>
               </Content>
             </Inner>
 
-            <Backdrop type="button" aria-controls={id} aria-label="Close dialog" onClick={handleCloseClick} />
+            <Backdrop
+              type="button"
+              aria-controls={id}
+              aria-label="Close dialog"
+              onClick={handleCloseClick}
+            />
           </Body>
         </Wrapper>
       </CSSTransition>

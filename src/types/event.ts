@@ -1,4 +1,4 @@
-import { RegEntity, Matching } from './reg';
+import type { RegEntity, Matching } from './reg';
 
 export enum WorkerEventType {
   // calculate
@@ -47,9 +47,13 @@ type WorkerEventDataPayloadMap = {
   };
 };
 
-export type WorkerEventDataPayload<T extends WorkerEventType> = WorkerEventDataPayloadMap[T];
+export type WorkerEventDataPayload<
+  T extends WorkerEventType
+> = WorkerEventDataPayloadMap[T];
 
-export type WorkerEventData<T extends WorkerEventType> = WorkerEventDataPayload<T> extends void
+export type WorkerEventData<
+  T extends WorkerEventType
+> = WorkerEventDataPayload<T> extends void
   ? {
       type: T;
     }

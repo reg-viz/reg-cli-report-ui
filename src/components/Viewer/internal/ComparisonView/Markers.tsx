@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { Matching, Rect } from '../../../../types/reg';
+import type { Matching, Rect } from '../../../../types/reg';
 
 const Wrapper = styled.div`
   position: absolute;

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Image } from '../../../Image';
-import { Matching } from '../../../../types/reg';
+import type { Matching } from '../../../../types/reg';
 import { useComparisonImage } from './useComparisonImage';
 import { Markers } from './Markers';
 
@@ -43,7 +43,11 @@ export const Blend: React.FC<Props> = ({ before, after, value, matching }) => {
     <Wrapper style={{ visibility: image.loaded ? 'visible' : 'hidden' }}>
       <Inner style={canvas}>
         <Before>
-          <Image ref={image.before.ref} src={before} onLoad={image.before.handleLoad} />
+          <Image
+            ref={image.before.ref}
+            src={before}
+            onLoad={image.before.handleLoad}
+          />
           <Markers variant="before" matching={matching} />
         </Before>
 
@@ -54,8 +58,13 @@ export const Blend: React.FC<Props> = ({ before, after, value, matching }) => {
             width: image.after.width,
             height: image.after.height,
             opacity: value,
-          }}>
-          <Image ref={image.after.ref} src={after} onLoad={image.after.handleLoad} />
+          }}
+        >
+          <Image
+            ref={image.after.ref}
+            src={after}
+            onLoad={image.after.handleLoad}
+          />
           <Markers variant="after" matching={matching} />
         </After>
       </Inner>

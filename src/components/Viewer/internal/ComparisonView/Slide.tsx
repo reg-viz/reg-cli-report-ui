@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Image } from '../../../Image';
 import { Color } from '../../../../styles/variables';
-import { Matching } from '../../../../types/reg';
+import type { Matching } from '../../../../types/reg';
 import { useComparisonImage } from './useComparisonImage';
 import { Markers } from './Markers';
 
@@ -115,7 +115,8 @@ export const Slide: React.FC<Props> = ({ before, after, matching }) => {
     const inner = innerRef.current as HTMLDivElement;
 
     const handleMousemove = (e: MouseEvent | TouchEvent) => {
-      const pageX = ('touches' in e ? e.touches[0].pageX : e.pageX) - window.pageXOffset;
+      const pageX =
+        ('touches' in e ? e.touches[0].pageX : e.pageX) - window.pageXOffset;
       const { left } = inner.getBoundingClientRect();
       const x = Math.min(Math.max(0, pageX - left), image.width);
 
@@ -179,8 +180,13 @@ export const Slide: React.FC<Props> = ({ before, after, matching }) => {
               left: canvas.width / 2 - image.after.width / 2,
               width: image.before.width,
               height: image.before.height,
-            }}>
-            <Image ref={image.before.ref} src={before} onLoad={image.before.handleLoad} />
+            }}
+          >
+            <Image
+              ref={image.before.ref}
+              src={before}
+              onLoad={image.before.handleLoad}
+            />
             <Markers variant="before" matching={matching} />
           </Before>
         </Frame>
@@ -189,8 +195,13 @@ export const Slide: React.FC<Props> = ({ before, after, matching }) => {
           style={{
             width: image.after.width,
             height: image.after.height,
-          }}>
-          <Image ref={image.after.ref} src={after} onLoad={image.after.handleLoad} />
+          }}
+        >
+          <Image
+            ref={image.after.ref}
+            src={after}
+            onLoad={image.after.handleLoad}
+          />
           <Markers variant="after" matching={matching} />
         </After>
 

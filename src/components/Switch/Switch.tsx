@@ -1,6 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Space, Shadow, Duration, Easing, Focus, Typography, Color } from '../../styles/variables';
+import {
+  Space,
+  Shadow,
+  Duration,
+  Easing,
+  Focus,
+  Typography,
+  Color,
+} from '../../styles/variables';
 
 const Wrapper = styled.span`
   display: inline-flex;
@@ -72,7 +80,10 @@ const Append = styled.span`
   text-align: left;
 `;
 
-export type Props = Omit<React.ComponentPropsWithoutRef<'input'>, 'id' | 'type'> & {
+export type Props = Omit<
+  React.ComponentPropsWithoutRef<'input'>,
+  'id' | 'type'
+> & {
   id: string;
   prepend?: React.ReactNode;
   append?: React.ReactNode;
@@ -95,7 +106,12 @@ export const Switch: React.FC<Props> = ({ id, prepend, append, ...rest }) => {
     <Wrapper>
       {prepend && <Prepend id={prependId}>{prepend}</Prepend>}
       <Checkbox>
-        <input {...rest} id={id} type="checkbox" aria-describedby={describedby.join(' ')} />
+        <input
+          {...rest}
+          id={id}
+          type="checkbox"
+          aria-describedby={describedby.join(' ')}
+        />
         <span />
       </Checkbox>
       {append && <Append id={appendId}>{append}</Append>}

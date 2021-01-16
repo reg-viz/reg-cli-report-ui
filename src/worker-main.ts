@@ -1,9 +1,10 @@
-/* eslint-disable import/newline-after-import */
+/* eslint-disable no-console, import/newline-after-import */
 import FuzzySearch from 'fuzzy-search';
 import { ModuleClass } from './detector-wrapper';
-import { WorkerEvent, WorkerEventType, WorkerEventData } from './types/event';
-const ximgdiffVersionString = require('x-img-diff-js/package.json').version as string;
-/* eslint-enable */
+import type { WorkerEvent, WorkerEventData } from './types/event';
+import { WorkerEventType } from './types/event';
+const ximgdiffVersionString = require('x-img-diff-js/package.json')
+  .version as string;
 
 const _self = self as any;
 
@@ -12,7 +13,12 @@ const _self = self as any;
 // // TODO Dynamic embed
 
 function version2number(version: string) {
-  const [, major, minor, patch] = version.match(/^(\d*)\.(\d*)\.(\d*)/) as [string, string, string, string];
+  const [, major, minor, patch] = version.match(/^(\d*)\.(\d*)\.(\d*)/) as [
+    string,
+    string,
+    string,
+    string,
+  ];
 
   return +major * 10000 + +minor * 100 + +patch;
 }
@@ -34,7 +40,10 @@ const calc = ({
       expectedSrc,
       result: {
         ...diffResult,
-        images: [{ width: img1.width, height: img1.height }, { width: img2.width, height: img2.height }],
+        images: [
+          { width: img1.width, height: img1.height },
+          { width: img2.width, height: img2.height },
+        ],
       },
     },
   });

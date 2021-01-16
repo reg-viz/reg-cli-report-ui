@@ -4,7 +4,7 @@ import { Color } from '../../styles/variables';
 import { SignNewIcon } from '../icons/SignNewIcon';
 import { SignPassedIcon } from '../icons/SignPassedIcon';
 import { SignChangedIcon } from '../icons/SignChangedIcon';
-import { RegVariant } from '../../types/reg';
+import type { RegVariant } from '../../types/reg';
 import { SignDeletedIcon } from '../icons/SignDeletedIcon';
 
 const signIconMap = {

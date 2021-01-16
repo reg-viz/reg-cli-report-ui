@@ -1,7 +1,8 @@
 import { EventEmitter } from 'events';
 import { debounce } from 'debounce';
-import { XIMGDiffConfig } from './types/reg';
-import { WorkerEventType, WorkerEvent, WorkerEventDataPayload } from './types/event';
+import type { XIMGDiffConfig } from './types/reg';
+import type { WorkerEvent, WorkerEventDataPayload } from './types/event';
+import { WorkerEventType } from './types/event';
 
 const fromCanvas = (img: HTMLImageElement): ImageData => {
   const canvas = document.createElement('canvas');
@@ -34,7 +35,9 @@ const loadImage = (src: string): Promise<ImageData> =>
   });
 
 export class WorkerClient {
-  private _cache: { [key: string]: WorkerEventDataPayload<WorkerEventType.RESULT_CALC> } = {};
+  private _cache: {
+    [key: string]: WorkerEventDataPayload<WorkerEventType.RESULT_CALC>;
+  } = {};
   private _seq = 0;
   private _emitter = new EventEmitter();
   private _worker: Worker | null = null;
@@ -62,7 +65,10 @@ export class WorkerClient {
   }
 
   public requestCalc(
-    payload: Pick<WorkerEventDataPayload<WorkerEventType.REQUEST_CALC>, 'raw' | 'actualSrc' | 'expectedSrc'>,
+    payload: Pick<
+      WorkerEventDataPayload<WorkerEventType.REQUEST_CALC>,
+      'raw' | 'actualSrc' | 'expectedSrc'
+    >,
   ) {
     if (this._worker == null) {
       return 0;
@@ -71,11 +77,21 @@ export class WorkerClient {
     const seq = ++this._seq;
 
     if (this._cache[payload.raw]) {
-      setTimeout(() => this._emitter.emit(WorkerEventType.RESULT_CALC, { ...this._cache[payload.raw], seq }), 10);
+      setTimeout(
+        () =>
+          this._emitter.emit(WorkerEventType.RESULT_CALC, {
+            ...this._cache[payload.raw],
+            seq,
+          }),
+        10,
+      );
       return seq;
     }
 
-    Promise.all([loadImage(payload.actualSrc), loadImage(payload.expectedSrc)]).then(([img1, img2]) => {
+    Promise.all([
+      loadImage(payload.actualSrc),
+      loadImage(payload.expectedSrc),
+    ]).then(([img1, img2]) => {
       (this._worker as Worker).postMessage(
         {
           type: WorkerEventType.REQUEST_CALC,
@@ -93,22 +109,31 @@ export class WorkerClient {
     return seq;
   }
 
-  public requestFilter = debounce((payload: WorkerEventDataPayload<WorkerEventType.REQUEST_FILTER>) => {
-    if (this._worker == null) {
-      return;
-    }
+  public requestFilter = debounce(
+    (payload: WorkerEventDataPayload<WorkerEventType.REQUEST_FILTER>) => {
+      if (this._worker == null) {
+        return;
+      }
 
-    this._worker.postMessage({
-      type: WorkerEventType.REQUEST_FILTER,
-      payload,
-    });
-  }, 200);
+      this._worker.postMessage({
+        type: WorkerEventType.REQUEST_FILTER,
+        payload,
+      });
+    },
+    200,
+  );
 
-  public subscribe<T extends WorkerEventType>(type: T, listener: (payload: WorkerEventDataPayload<T>) => void) {
+  public subscribe<T extends WorkerEventType>(
+    type: T,
+    listener: (payload: WorkerEventDataPayload<T>) => void,
+  ) {
     this._emitter.on(type, listener);
   }
 
-  public unsubscribe<T extends WorkerEventType>(type: T, listener: (payload: WorkerEventDataPayload<T>) => void) {
+  public unsubscribe<T extends WorkerEventType>(
+    type: T,
+    listener: (payload: WorkerEventDataPayload<T>) => void,
+  ) {
     this._emitter.off(type, listener);
   }
 }

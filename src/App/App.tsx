@@ -47,7 +47,12 @@ export type Props = {};
 
 export const App: React.FC<Props> = () => {
   const sidebar = SidebarContainer.useContainer();
-  const { newItems, failedItems, deletedItems, passedItems } = EntityContainer.useContainer();
+  const {
+    newItems,
+    failedItems,
+    deletedItems,
+    passedItems,
+  } = EntityContainer.useContainer();
 
   const [helpDialogOpen, setHelpDialogOpen] = useState(false);
 

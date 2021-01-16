@@ -18,4 +18,6 @@ export type Props = {
   x: number;
 };
 
-export const Spacer: React.FC<Props> = ({ variant, x }) => <Wrapper style={{ [variantMap[variant]]: Space * x }} />;
+export const Spacer: React.FC<Props> = ({ variant, x }) => (
+  <Wrapper style={{ [variantMap[variant]]: Space * x }} />
+);

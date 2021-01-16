@@ -2,11 +2,19 @@ import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import SwitchTransition from 'react-transition-group/SwitchTransition';
-import { Space, Shadow, Duration, Easing, BreakPoint, Typography, Color } from '../../../../styles/variables';
+import {
+  Space,
+  Shadow,
+  Duration,
+  Easing,
+  BreakPoint,
+  Typography,
+  Color,
+} from '../../../../styles/variables';
 import { ChoiceGroup } from '../../../ChoiceGroup';
 import { Slider } from '../../../Slider';
 import { Switch } from '../../../Switch';
-import { RegEntity, Matching } from '../../../../types/reg';
+import type { RegEntity, Matching } from '../../../../types/reg';
 import { Image } from '../../../Image';
 import { OPEN_DELAY } from '../../constants';
 import { Diff } from './Diff';
@@ -189,18 +197,42 @@ export const ComparisonView: React.FC<Props> = ({ entity, matching }) => {
             {entity.variant === 'changed' && (
               <>
                 {mode === 'diff' && <Diff src={entity.diff} />}
-                {mode === 'slide' && <Slide before={entity.before} after={entity.after} matching={matching} />}
-                {mode === '2up' && <TwoUp before={entity.before} after={entity.after} matching={matching} />}
+                {mode === 'slide' && (
+                  <Slide
+                    before={entity.before}
+                    after={entity.after}
+                    matching={matching}
+                  />
+                )}
+                {mode === '2up' && (
+                  <TwoUp
+                    before={entity.before}
+                    after={entity.after}
+                    matching={matching}
+                  />
+                )}
                 {mode === 'blend' && (
-                  <Blend before={entity.before} after={entity.after} value={blendValue} matching={matching} />
+                  <Blend
+                    before={entity.before}
+                    after={entity.after}
+                    value={blendValue}
+                    matching={matching}
+                  />
                 )}
                 {mode === 'toggle' && (
-                  <Toggle before={entity.before} after={entity.after} checked={toggleValue} matching={matching} />
+                  <Toggle
+                    before={entity.before}
+                    after={entity.after}
+                    checked={toggleValue}
+                    matching={matching}
+                  />
                 )}
               </>
             )}
 
-            {(entity.variant === 'new' || entity.variant === 'passed') && <Image src={entity.after} />}
+            {(entity.variant === 'new' || entity.variant === 'passed') && (
+              <Image src={entity.after} />
+            )}
 
             {entity.variant === 'deleted' && <Image src={entity.before} />}
           </ComparisonImageInnerH>
@@ -216,13 +248,20 @@ export const ComparisonView: React.FC<Props> = ({ entity, matching }) => {
               timeout={{
                 enter: Duration.FADE_IN,
                 exit: Duration.FADE_OUT,
-              }}>
+              }}
+            >
               <ControlWrapper>
                 {mode === 'blend' && (
                   <Control>
                     <span>Before</span>
                     <ControlSlider>
-                      <Slider min={0} max={1} step={0.01} value={blendValue} onChange={handleBlendChange} />
+                      <Slider
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        value={blendValue}
+                        onChange={handleBlendChange}
+                      />
                     </ControlSlider>
                     <span>After</span>
                   </Control>
@@ -243,7 +282,11 @@ export const ComparisonView: React.FC<Props> = ({ entity, matching }) => {
             </CSSTransition>
           </SwitchTransition>
 
-          <ChoiceGroup options={modes} value={mode} onChange={handleModeChange} />
+          <ChoiceGroup
+            options={modes}
+            value={mode}
+            onChange={handleModeChange}
+          />
         </ComparisonMode>
       )}
     </Wrapper>

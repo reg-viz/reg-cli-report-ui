@@ -35,7 +35,11 @@ const Loading = styled.span`
 `;
 
 // FIXME Remove patch when `loading` is added to the type definition.
-const Img = styled.img<{ fit: ObjectFitValue | undefined; full: boolean; loading?: string }>`
+const Img = styled.img<{
+  fit: ObjectFitValue | undefined;
+  full: boolean;
+  loading?: string;
+}>`
   position: relative;
   z-index: 1;
   max-width: 100%;
@@ -57,50 +61,60 @@ export type Props = Omit<React.ComponentProps<'img'>, 'width' | 'height'> & {
 
 type InnerProps = Omit<Props, 'lazy'>;
 
-const ImmediatelyImage = forwardRef<HTMLImageElement, InnerProps>(({ src, width, height, fit, ...rest }, ref) => {
-  const wrapperRef = useRef<HTMLSpanElement>(null);
-  const [loaded, setLoaded] = useState(srcCache.has(src));
+const ImmediatelyImage = forwardRef<HTMLImageElement, InnerProps>(
+  ({ src, width, height, fit, ...rest }, ref) => {
+    const wrapperRef = useRef<HTMLSpanElement>(null);
+    const [loaded, setLoaded] = useState(srcCache.has(src));
 
-  useEffect(() => {
-    const { current: wrapper } = wrapperRef;
-    if (loaded || wrapper == null) {
-      return;
-    }
-
-    const img = wrapper.firstElementChild;
-    if (img == null || !(img instanceof HTMLImageElement)) {
-      return;
-    }
-
-    if (img.complete) {
-      return setLoaded(true);
-    }
-
-    img.onload = () => {
-      if (img != null) {
-        setLoaded(true);
+    useEffect(() => {
+      const { current: wrapper } = wrapperRef;
+      if (loaded || wrapper == null) {
+        return;
       }
-      srcCache.add(src);
-    };
-  }, [loaded, src]);
 
-  return (
-    <Wrapper
-      ref={wrapperRef}
-      style={{
-        width: size2str(width),
-        height: size2str(height),
-      }}>
-      <Img ref={ref as any} loading="lazy" src={src} fit={fit} full={width != null && height != null} {...rest} />
+      const img = wrapper.firstElementChild;
+      if (img == null || !(img instanceof HTMLImageElement)) {
+        return;
+      }
 
-      {!loaded && (
-        <Loading>
-          <Spinner aria-label="Loading..." />
-        </Loading>
-      )}
-    </Wrapper>
-  );
-});
+      if (img.complete) {
+        return setLoaded(true);
+      }
+
+      img.onload = () => {
+        if (img != null) {
+          setLoaded(true);
+        }
+        srcCache.add(src);
+      };
+    }, [loaded, src]);
+
+    return (
+      <Wrapper
+        ref={wrapperRef}
+        style={{
+          width: size2str(width),
+          height: size2str(height),
+        }}
+      >
+        <Img
+          ref={ref as any}
+          loading="lazy"
+          src={src}
+          fit={fit}
+          full={width != null && height != null}
+          {...rest}
+        />
+
+        {!loaded && (
+          <Loading>
+            <Spinner aria-label="Loading..." />
+          </Loading>
+        )}
+      </Wrapper>
+    );
+  },
+);
 
 const LazyImage = forwardRef<HTMLImageElement, InnerProps>((props, ref) => {
   const wrapperRef = useRef<HTMLSpanElement>(null);
@@ -109,11 +123,20 @@ const LazyImage = forwardRef<HTMLImageElement, InnerProps>((props, ref) => {
     once: true,
   });
 
-  return <span ref={wrapperRef}>{intersected ? <ImmediatelyImage ref={ref as any} {...props} /> : null}</span>;
+  return (
+    <span ref={wrapperRef}>
+      {intersected ? <ImmediatelyImage ref={ref as any} {...props} /> : null}
+    </span>
+  );
 });
 
-export const Image = forwardRef<HTMLImageElement, Props>(({ lazy, ...rest }, ref) =>
-  lazy && !supportsLoading ? <LazyImage ref={ref as any} {...rest} /> : <ImmediatelyImage ref={ref as any} {...rest} />,
+export const Image = forwardRef<HTMLImageElement, Props>(
+  ({ lazy, ...rest }, ref) =>
+    lazy && !supportsLoading ? (
+      <LazyImage ref={ref as any} {...rest} />
+    ) : (
+      <ImmediatelyImage ref={ref as any} {...rest} />
+    ),
 );
 
 Image.defaultProps = {

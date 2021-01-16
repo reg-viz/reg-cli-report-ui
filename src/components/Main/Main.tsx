@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Space, BreakPoint, Size } from '../../styles/variables';
-import { RegVariant, RegEntity } from '../../types/reg';
+import type { RegVariant, RegEntity } from '../../types/reg';
 import { Container } from '../Container';
 import { Card, CardDimmer } from '../Card';
 import { EntityContainer } from '../../containers/entity/EntityContainer';
@@ -40,7 +40,10 @@ const gridOptions = [
   },
 ];
 
-const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({ variant, entities }) => {
+const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({
+  variant,
+  entities,
+}) => {
   const notification = NotificationContainer.useContainer();
   const viewer = ViewerContainer.useContainer();
 
@@ -69,8 +72,16 @@ const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({ var
         itemKey="id"
         cellHeight={Size.CARD_OUTER_HEIGHT}
         gridOptions={gridOptions}
-        dimmerCell={() => <CardDimmer variant={variant} />}>
-        {({ item: entity }) => <Card entity={entity} menus={[]} onClick={handleClick} onCopy={handleCopy} />}
+        dimmerCell={() => <CardDimmer variant={variant} />}
+      >
+        {({ item: entity }) => (
+          <Card
+            entity={entity}
+            menus={[]}
+            onClick={handleClick}
+            onCopy={handleCopy}
+          />
+        )}
       </VGrid>
     </>
   );

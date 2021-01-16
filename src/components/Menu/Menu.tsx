@@ -5,7 +5,14 @@ import keycode from 'keycode';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import debounce from 'debounce';
 import { Portal } from '../internal/Portal';
-import { Space, Duration, Easing, Depth, Shadow, Color } from '../../styles/variables';
+import {
+  Space,
+  Duration,
+  Easing,
+  Depth,
+  Shadow,
+  Color,
+} from '../../styles/variables';
 import { findFocusable } from '../../utils/selector';
 import { tryFocus } from '../../utils/focus';
 import { Item } from './Item';
@@ -157,7 +164,15 @@ const Backdrop = styled.button`
   background: transparent;
 `;
 
-export type Placement = 'top-left' | 'top' | 'top-right' | 'right' | 'bottom-right' | 'bottom' | 'bottom-left' | 'left';
+export type Placement =
+  | 'top-left'
+  | 'top'
+  | 'top-right'
+  | 'right'
+  | 'bottom-right'
+  | 'bottom'
+  | 'bottom-left'
+  | 'left';
 
 export type Props = {
   id: string;
@@ -224,7 +239,9 @@ export class Menu extends React.Component<Props, State> {
     }
 
     /* eslint-disable-next-line react/no-find-dom-node */
-    const anchor = ReactDOM.findDOMNode(anchorRef.current) as HTMLElement | null;
+    const anchor = ReactDOM.findDOMNode(
+      anchorRef.current,
+    ) as HTMLElement | null;
     if (anchor == null) {
       return;
     }
@@ -248,7 +265,11 @@ export class Menu extends React.Component<Props, State> {
         break;
 
       case 'right':
-        top = window.pageYOffset + rect.top + anchor.clientHeight / 2 - wrapper.clientHeight / 2;
+        top =
+          window.pageYOffset +
+          rect.top +
+          anchor.clientHeight / 2 -
+          wrapper.clientHeight / 2;
         left = rect.left;
         break;
 
@@ -266,7 +287,11 @@ export class Menu extends React.Component<Props, State> {
         break;
 
       case 'left':
-        top = window.pageYOffset + rect.top + anchor.clientHeight / 2 - wrapper.clientHeight / 2;
+        top =
+          window.pageYOffset +
+          rect.top +
+          anchor.clientHeight / 2 -
+          wrapper.clientHeight / 2;
         left = rect.left + anchor.clientWidth - wrapper.clientWidth;
         break;
 
@@ -322,7 +347,15 @@ export class Menu extends React.Component<Props, State> {
   }
 
   public render(): JSX.Element {
-    const { id, open, anchor, placement: _placement, children, onRequestClose, ...rest } = this.props;
+    const {
+      id,
+      open,
+      anchor,
+      placement: _placement,
+      children,
+      onRequestClose,
+      ...rest
+    } = this.props;
     const placement = _placement as Placement;
 
     return (
@@ -335,8 +368,15 @@ export class Menu extends React.Component<Props, State> {
               enter: Duration.MEDIUM_IN,
               exit: Duration.MEDIUM_OUT,
             }}
-            unmountOnExit={true}>
-            <Wrapper ref={this.wrapper} {...rest} id={id} placement={placement} onKeyDown={this.handleKeydown}>
+            unmountOnExit={true}
+          >
+            <Wrapper
+              ref={this.wrapper}
+              {...rest}
+              id={id}
+              placement={placement}
+              onKeyDown={this.handleKeydown}
+            >
               <Scale placement={placement}>
                 <Opacity placement={placement}>
                   <List>{children}</List>

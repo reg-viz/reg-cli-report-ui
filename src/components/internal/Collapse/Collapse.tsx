@@ -38,7 +38,10 @@ const Wrapper = styled('div')<{ duration: { enter: number; exit: number } }>`
   }
 `;
 
-export type Props = Omit<React.ComponentPropsWithoutRef<'div'>, 'aria-hidden'> & {
+export type Props = Omit<
+  React.ComponentPropsWithoutRef<'div'>,
+  'aria-hidden'
+> & {
   open: boolean;
   duration: { enter: number; exit: number };
 };
@@ -57,8 +60,13 @@ export class Collapse extends React.Component<Props> {
         onEnter={this.handleEnter}
         onEntered={this.handleEntered}
         onExit={this.handleExit}
-        onExiting={this.handleExiting}>
-        <Wrapper {...rest} duration={duration} aria-hidden={open ? 'false' : 'true'}>
+        onExiting={this.handleExiting}
+      >
+        <Wrapper
+          {...rest}
+          duration={duration}
+          aria-hidden={open ? 'false' : 'true'}
+        >
           <div ref={this.bodyRef}>
             <div>{children}</div>
           </div>

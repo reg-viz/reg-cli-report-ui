@@ -2,7 +2,9 @@
  * Focusable Elements - Browser Compatibility Table https://allyjs.io/data-tables/focusable.html
  */
 const FOCUSABLE_SELECTOR = [
-  ...['button', 'keygen', 'select', 'textarea'].map((s) => `${s}:not(:disabled)`),
+  ...['button', 'keygen', 'select', 'textarea'].map(
+    (s) => `${s}:not(:disabled)`,
+  ),
   'input:not(:disabled):not([type="hidden"]):not([type="file"])',
   'details > summary',
   'a[href]:not([rel="ignore"])',
@@ -35,7 +37,9 @@ export const findFocusable = (element: HTMLElement): HTMLElement[] => {
   return nodes;
 };
 
-export const findFirstFocusable = (element: HTMLElement): HTMLElement | null => {
+export const findFirstFocusable = (
+  element: HTMLElement,
+): HTMLElement | null => {
   const { childNodes } = element;
 
   for (let i = 0; i < childNodes.length; i += 1) {
