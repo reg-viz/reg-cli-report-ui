@@ -63,7 +63,7 @@ const Checkbox = styled.span`
     }
   }
 
-  & > input:focus + span {
+  & > input:focus-visible + span {
     box-shadow: ${Focus};
   }
 `;

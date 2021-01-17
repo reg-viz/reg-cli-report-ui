@@ -24,12 +24,13 @@ const TextField = styled.input`
   padding: ${Space * 1}px ${Space * 1}px ${Space * 1}px ${Space * 7}px;
   border: none;
   border-bottom: 1px solid ${Color.BORDER};
+  border-radius: 0;
   background: transparent;
   font-size: inherit;
   font-family: inherit;
   transition: border ${Duration.SMALL_OUT}ms ${Easing.STANDARD};
 
-  &:focus {
+  &:focus-visible {
     outline: none;
     border-bottom-color: ${Color.BRAND_PRIMARY};
   }

@@ -46,12 +46,15 @@ const StyledSlider = styled(RcSlider)`
 
     &:focus {
       outline: none;
+    }
+
+    &:focus-visible {
       box-shadow: ${Focus};
     }
   }
 
   &:hover .rc-slider-handle,
-  & .rc-slider-handle:focus {
+  & .rc-slider-handle:focus-visible {
     border-width: 2px;
     transform: scale(1.15);
   }
