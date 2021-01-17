@@ -44,6 +44,9 @@ const Inner = styled(BaseButton)`
 
   &:focus {
     outline: none;
+  }
+
+  &:focus-visible {
     box-shadow: ${Focus};
   }
 `;

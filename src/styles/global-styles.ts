@@ -20,7 +20,7 @@ export const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 
-  :focus {
+  :focus-visible {
     outline: 3px solid rgba(51, 166, 232, 0.4);
     outline-offset: 1px;
   }

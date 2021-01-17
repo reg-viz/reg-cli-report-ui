@@ -16,6 +16,9 @@ const Wrapper = styled('button')`
 
   &:focus {
     outline: none;
+  }
+
+  &:focus-visible {
     box-shadow: ${Focus};
   }
 

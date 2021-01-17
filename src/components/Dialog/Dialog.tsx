@@ -98,6 +98,9 @@ const Content = styled.div`
 
   &:focus {
     outline: none;
+  }
+
+  &:focus-visible {
     box-shadow: ${Focus};
   }
 
