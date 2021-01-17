@@ -1,11 +1,12 @@
 import React from 'react';
 import { GlobalStyle } from '../src/styles/global-styles';
+import { HistoryContextProvider } from '../src/context/HistoryContext';
 
 export const decorators = [
   (Story) => (
-    <React.Fragment>
+    <HistoryContextProvider>
       <GlobalStyle />
       <Story />
-    </React.Fragment>
+    </HistoryContextProvider>
   ),
 ];

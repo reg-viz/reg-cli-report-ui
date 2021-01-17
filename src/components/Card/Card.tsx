@@ -39,7 +39,7 @@ const Inner = styled(BaseButton)`
   transition: box-shadow ${Duration.FADE_IN}ms ${Easing.STANDARD};
 
   &:hover {
-    box-shadow: ${Shadow.LEVEL2};
+    box-shadow: ${Shadow.LEVEL1};
   }
 
   &:focus {
@@ -104,13 +104,13 @@ const imageSrc = (entity: RegEntity) => {
 };
 
 export type Props = {
+  href: string;
   entity: RegEntity;
   menus: { label: string; href: string }[];
-  onClick: (id: string) => void;
   onCopy: () => void;
 };
 
-export const Card: React.FC<Props> = ({ entity, menus, onClick, onCopy }) => {
+export const Card: React.FC<Props> = ({ href, entity, menus, onCopy }) => {
   const anchor = React.useRef<any>(null);
   const [open, setOpen] = React.useState(false);
 
@@ -127,14 +127,9 @@ export const Card: React.FC<Props> = ({ entity, menus, onClick, onCopy }) => {
     setOpen(false);
   }, []);
 
-  const handleOpenClick = useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      setOpen(false);
-      onClick(entity.id);
-    },
-    [entity.id, onClick],
-  );
+  const handleOpenClick = useCallback(() => {
+    setOpen(false);
+  }, []);
 
   const handleCopyClick = useCallback(
     async (e: React.MouseEvent) => {
@@ -142,7 +137,7 @@ export const Card: React.FC<Props> = ({ entity, menus, onClick, onCopy }) => {
       e.stopPropagation();
       setOpen(false);
       const { origin, pathname } = window.location;
-      await clipboard.writeText(`${origin}${pathname}#${entity.id}`);
+      await clipboard.writeText(`${origin}${pathname}?id=${entity.id}`);
       onCopy();
     },
     [entity.id, onCopy],
@@ -150,7 +145,7 @@ export const Card: React.FC<Props> = ({ entity, menus, onClick, onCopy }) => {
 
   return (
     <Wrapper id={entity.id}>
-      <Inner type="button" onClick={handleOpenClick}>
+      <Inner href={href} onClick={handleOpenClick}>
         <CardSign>
           <Sign variant={entity.variant} />
         </CardSign>
@@ -188,7 +183,9 @@ export const Card: React.FC<Props> = ({ entity, menus, onClick, onCopy }) => {
           open={open}
           onRequestClose={handleClose}
         >
-          <Menu.Item onClick={handleOpenClick}>Open</Menu.Item>
+          <Menu.Item href={href} onClick={handleOpenClick}>
+            Open
+          </Menu.Item>
           <Menu.Item onClick={handleCopyClick}>Copy Link</Menu.Item>
           {menus.map(({ label, href }, i) => (
             <Menu.Item key={i} href={href}>

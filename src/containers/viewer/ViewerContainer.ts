@@ -1,10 +1,12 @@
 import { createContainer } from 'unstated-next';
+import type { Location } from 'history';
 import { useState, useEffect, useContext, useRef } from 'react';
 import { EntityContainer } from '../entity/EntityContainer';
 import type { RegEntity, Matching } from '../../types/reg';
 import { WorkerContext } from '../../context/WorkerContext';
 import type { WorkerEventDataPayload } from '../../types/event';
 import { WorkerEventType } from '../../types/event';
+import { useHistory } from '../../hooks/useHistory';
 
 type Current = {
   entity: RegEntity | null;
@@ -27,6 +29,7 @@ export type ViewerValue = {
 };
 
 export const ViewerContainer = createContainer<ViewerValue>(() => {
+  const history = useHistory();
   const worker = useContext(WorkerContext);
 
   const { allItems } = EntityContainer.useContainer();
@@ -35,47 +38,26 @@ export const ViewerContainer = createContainer<ViewerValue>(() => {
   const [current, setCurrent] = useState<Current>(defaultCurrent);
 
   const open = (id: string) => {
-    const index = allItems.findIndex((entity) => entity.id === id);
-    if (index > -1) {
-      setCurrent({
-        entity: allItems[index],
-        index,
-        matching: null,
-      });
-    }
+    history.push({ search: `?id=${id}` });
   };
 
-  const close = () => setCurrent(defaultCurrent);
+  const close = () => {
+    history.push({ search: '' });
+  };
 
   const next = () => {
     if (current.index + 1 < allItems.length) {
-      setCurrent({
-        entity: allItems[current.index + 1],
-        index: current.index + 1,
-        matching: null,
-      });
+      open(allItems[current.index + 1].id);
     } else {
-      setCurrent({
-        entity: allItems[0],
-        index: 0,
-        matching: null,
-      });
+      open(allItems[0].id);
     }
   };
 
   const previous = () => {
     if (current.index - 1 >= 0) {
-      setCurrent({
-        entity: allItems[current.index - 1],
-        index: current.index - 1,
-        matching: null,
-      });
+      open(allItems[current.index - 1].id);
     } else {
-      setCurrent({
-        entity: allItems[allItems.length - 1],
-        index: allItems.length - 1,
-        matching: null,
-      });
+      open(allItems[allItems.length - 1].id);
     }
   };
 
@@ -109,6 +91,33 @@ export const ViewerContainer = createContainer<ViewerValue>(() => {
 
     return () => worker.unsubscribe(WorkerEventType.RESULT_CALC, listener);
   }, [worker, current]);
+
+  useEffect(() => {
+    const sync = (location: Location) => {
+      const query = new URLSearchParams(location.search);
+      const rawId = query.get('id');
+
+      if (rawId) {
+        const id = encodeURIComponent(rawId);
+        const index = allItems.findIndex((entity) => entity.id === id);
+        if (index > -1) {
+          setCurrent({
+            entity: allItems[index],
+            index,
+            matching: null,
+          });
+        }
+      } else {
+        setCurrent(defaultCurrent);
+      }
+    };
+
+    sync(history.location);
+
+    return history.listen(({ location }) => {
+      sync(location);
+    });
+  }, [history]); /* eslint-disable-line react-hooks/exhaustive-deps */
 
   return {
     current,

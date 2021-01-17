@@ -20,7 +20,7 @@ export const toEntities = (
     dirs[key].replace(/\/$/, '') + '/' + to.replace(/^\//, '');
 
   return items.map((item) => {
-    const id = `${variant}-${item.encoded}`;
+    const id = `${variant}-${item.encoded}`.replace(/[=?]/g, '-');
 
     return {
       id,
