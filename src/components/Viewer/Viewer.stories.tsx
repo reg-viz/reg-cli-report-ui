@@ -9,9 +9,9 @@ const defaultEntity = createRegEntity({
   id: 'id',
   variant: 'changed',
   name: 'filename.png',
-  diff: 'https://placehold.it/438x178?text=diff',
-  before: 'https://placehold.it/876x356?text=before',
-  after: 'https://placehold.it/600x534?text=after',
+  diff: 'https://via.placeholder.com/438x178?text=diff',
+  before: 'https://via.placeholder.com/876x356?text=before',
+  after: 'https://via.placeholder.com/600x534?text=after',
 });
 
 const defaultProps = {

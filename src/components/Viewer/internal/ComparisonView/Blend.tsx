@@ -15,18 +15,20 @@ const Inner = styled.div`
   position: relative;
 `;
 
-const Before = styled.div`
+const View = styled.div`
   position: absolute;
-  top: 50%;
+  top: 0;
   left: 50%;
-  z-index: 1;
   width: 100%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0);
 `;
 
-const After = styled.div`
-  position: absolute;
-  z-index: 2;
+const Before = styled(View)`
+  z-index: 0;
+`;
+
+const After = styled(View)`
+  z-index: 1;
 `;
 
 export type Props = {
@@ -42,7 +44,12 @@ export const Blend: React.FC<Props> = ({ before, after, value, matching }) => {
   return (
     <Wrapper style={{ visibility: image.loaded ? 'visible' : 'hidden' }}>
       <Inner style={canvas}>
-        <Before>
+        <Before
+          style={{
+            width: image.before.width,
+            height: image.before.height,
+          }}
+        >
           <Image
             ref={image.before.ref}
             src={before}
@@ -53,8 +60,6 @@ export const Blend: React.FC<Props> = ({ before, after, value, matching }) => {
 
         <After
           style={{
-            top: canvas.height / 2 - image.after.height / 2,
-            left: canvas.width / 2 - image.after.width / 2,
             width: image.after.width,
             height: image.after.height,
             opacity: value,
