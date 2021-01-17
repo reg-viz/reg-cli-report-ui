@@ -16,7 +16,6 @@ export const GlobalStyle = createGlobalStyle`
     -ms-text-size-adjust: 100%;
     font-family: ${FontFamily.SANS_SERIF};
     line-height: ${LineHeight.LARGE};
-    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

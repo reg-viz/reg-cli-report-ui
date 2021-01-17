@@ -172,7 +172,7 @@ export class VGrid<T, K extends keyof T> extends React.Component<
       if (hit) {
         // Notify scrolling to the context because we should not check the hash after the scrolling.
         this.context.consume();
-        setTimeout(() => this.scrollTo(hit.offsetIndex, true));
+        setTimeout(() => this.scrollTo(hit.offsetIndex));
       }
     }
   }
@@ -272,7 +272,7 @@ export class VGrid<T, K extends keyof T> extends React.Component<
     this.updateCurrentOffsetIndex();
   }
 
-  private scrollTo(offsetIndex: number, instant = false) {
+  private scrollTo(offsetIndex: number) {
     const currentTop = scrollY;
     const top = this.calculateClientOffsetTop(offsetIndex);
     const threshold = this.state.visibleItemsLength * this.rowHeightUnit * 1;
@@ -288,10 +288,7 @@ export class VGrid<T, K extends keyof T> extends React.Component<
       requestAnimationFrame(rafCb);
     };
     requestAnimationFrame(rafCb);
-    scroll({
-      top,
-      behavior: instant ? (('instant' as unknown) as any) : 'smooth',
-    });
+    scroll({ top });
   }
 
   private updateCurrentOffsetIndex() {
