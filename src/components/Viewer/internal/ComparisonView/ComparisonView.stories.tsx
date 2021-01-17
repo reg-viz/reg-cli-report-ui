@@ -1,5 +1,4 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react';
 import type { Props } from './ComparisonView';
 import { ComparisonView } from './ComparisonView';
 
@@ -16,6 +15,8 @@ const defaults: Props = {
   defaultMode: 'slide',
 };
 
-storiesOf('ComparisonView', module).add('with slide', () => (
-  <ComparisonView {...defaults} />
-));
+export default {
+  title: 'ComparisonView',
+};
+
+export const WithSlide = () => <ComparisonView {...defaults} />;
