@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import {
   Space,
@@ -59,15 +59,14 @@ export type Props = BaseButtonProps & {
   active?: boolean;
 };
 
-export const ChoiceButton: React.FC<Props> = ({
-  active,
-  children,
-  ...rest
-}) => (
-  <Wrapper {...rest} active={active as boolean}>
+export const ChoiceButton = forwardRef<
+  HTMLButtonElement | HTMLAnchorElement,
+  Props
+>(({ active, children, ...rest }, ref) => (
+  <Wrapper {...rest} ref={ref} active={active!}>
     <span>{children}</span>
   </Wrapper>
-);
+));
 
 ChoiceButton.defaultProps = {
   active: false,

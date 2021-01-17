@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { createRef, useEffect, useMemo, useRef } from 'react';
 import styled from 'styled-components';
+import { useMousetrap } from '../../hooks/useMousetrap';
 import { Space, Shadow, Color } from '../../styles/variables';
 import { ChoiceButton } from './internal/ChoiceButton';
 
@@ -16,6 +17,10 @@ const List = styled.ul`
 `;
 
 const ListItem = styled.li``;
+
+const getValueIndex = (options: ChoiceOption[], value: string) => {
+  return options.findIndex((opts) => opts.value === value);
+};
 
 export type ChoiceOption = {
   value: string;
@@ -34,24 +39,83 @@ export const ChoiceGroup: React.FC<Props> = ({
   onChange,
   ...rest
 }) => {
+  const rootRef = useRef<HTMLUListElement>(null);
+
+  const changedByKey = useRef(false);
+  const buttonRefList = useMemo(() => {
+    return options.map(() =>
+      createRef<HTMLButtonElement | HTMLAnchorElement>(),
+    );
+  }, [options]);
+
   const handleItemClick = React.useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       e.stopPropagation();
 
       const { value: val } = e.currentTarget;
-      const activeIndex = options.findIndex((opts) => opts.value === val);
 
-      onChange(val, activeIndex);
+      onChange(val, getValueIndex(options, val));
     },
     [onChange, options],
   );
 
+  useEffect(() => {
+    if (!changedByKey.current) {
+      return;
+    }
+
+    const index = getValueIndex(options, value);
+    const ref = buttonRefList[index];
+    if (ref != null && ref.current != null) {
+      ref.current.focus();
+    }
+
+    changedByKey.current = false;
+  }, [buttonRefList, options, value]);
+
+  useMousetrap(
+    ['right', 'l'],
+    rootRef.current,
+    (e) => {
+      e.stopPropagation();
+
+      const current = getValueIndex(options, value);
+      const next = current + 1;
+      if (next >= options.length) {
+        return;
+      }
+
+      changedByKey.current = true;
+      onChange(options[next].value, next);
+    },
+    [options, value, onChange],
+  );
+
+  useMousetrap(
+    ['left', 'h'],
+    rootRef.current,
+    (e) => {
+      e.stopPropagation();
+
+      const current = getValueIndex(options, value);
+      const previous = current - 1;
+      if (previous < 0) {
+        return;
+      }
+
+      changedByKey.current = true;
+      onChange(options[previous].value, previous);
+    },
+    [options, value, onChange],
+  );
+
   return (
-    <List {...rest}>
-      {options.map((opts) => (
+    <List {...rest} ref={rootRef}>
+      {options.map((opts, index) => (
         <ListItem key={opts.value}>
           <ChoiceButton
+            ref={buttonRefList[index]}
             value={opts.value}
             active={opts.value === value}
             onClick={handleItemClick}
