@@ -35,7 +35,6 @@ const StyledSlider = styled(RcSlider)`
     top: 50%;
     z-index: 3;
     margin-top: -9px;
-    margin-left: -9px;
     width: 18px;
     height: 18px;
     background: ${Color.WHITE};

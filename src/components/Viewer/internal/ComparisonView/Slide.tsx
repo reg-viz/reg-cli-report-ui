@@ -38,17 +38,21 @@ const Frame = styled.div`
   overflow: hidden;
 `;
 
-const Before = styled.div`
+const View = styled.div`
   position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, 0);
 `;
 
-const After = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
+const Before = styled(View)`
+  z-index: 0;
+  transform: translate(0, 0);
+`;
+
+const After = styled(View)`
   z-index: 1;
-  width: 100%;
-  transform: translate(-50%, -50%);
 `;
 
 const Handle = styled.span`
@@ -173,7 +177,7 @@ export const Slide: React.FC<Props> = ({ before, after, matching }) => {
         <Frame style={{ width: `${position}%` }}>
           <Before
             style={{
-              top: canvas.height / 2 - image.before.height / 2,
+              top: 0,
               left: canvas.width / 2 - image.before.width / 2,
               width: image.before.width,
               height: image.before.height,
