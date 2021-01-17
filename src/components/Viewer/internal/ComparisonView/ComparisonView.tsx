@@ -170,10 +170,15 @@ const modes = [
 export type Props = {
   entity: RegEntity;
   matching: Matching | null;
+  defaultMode?: string;
 };
 
-export const ComparisonView: React.FC<Props> = ({ entity, matching }) => {
-  const [mode, setMode] = useState('slide');
+export const ComparisonView: React.FC<Props> = ({
+  entity,
+  matching,
+  defaultMode,
+}) => {
+  const [mode, setMode] = useState(defaultMode!);
   const [blendValue, setBlendValue] = useState(0.5);
   const [toggleValue, setToggleValue] = useState(false);
 
@@ -291,4 +296,8 @@ export const ComparisonView: React.FC<Props> = ({ entity, matching }) => {
       )}
     </Wrapper>
   );
+};
+
+ComparisonView.defaultProps = {
+  defaultMode: 'slide',
 };

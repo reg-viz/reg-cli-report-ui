@@ -1,4 +1,3 @@
-import { storiesOf } from '@storybook/react';
 import React from 'react';
 import { action } from '@storybook/addon-actions';
 import { withPadding } from '../../styles/storybook-decorators';
@@ -9,6 +8,9 @@ const defaultProps = {
   onRequestClose: action('onRequestClose'),
 };
 
-storiesOf('HelpDialog', module)
-  .addDecorator(withPadding())
-  .add('overview', () => <HelpDialog {...defaultProps} />);
+export default {
+  title: 'HelpDialog',
+  decorators: [withPadding()],
+};
+
+export const Overview = () => <HelpDialog {...defaultProps} />;

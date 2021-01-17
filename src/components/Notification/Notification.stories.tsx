@@ -1,4 +1,3 @@
-import { storiesOf } from '@storybook/react';
 import React, { useState, useEffect } from 'react';
 import { withPadding } from '../../styles/storybook-decorators';
 import { Notification } from './Notification';
@@ -8,7 +7,7 @@ const defaultProps = {
   message: 'Notification !!',
 };
 
-const Overview: React.FC = () => {
+const Demo: React.FC = () => {
   const [msg, setMsg] = useState('');
 
   useEffect(() => {
@@ -25,7 +24,11 @@ const Overview: React.FC = () => {
   );
 };
 
-storiesOf('Notification', module)
-  .addDecorator(withPadding())
-  .add('overview', () => <Overview />)
-  .add('with show', () => <Notification {...defaultProps} />);
+export default {
+  title: 'Notification',
+  decorators: [withPadding()],
+};
+
+export const Overview = () => <Demo />;
+
+export const WithShow = () => <Notification {...defaultProps} />;

@@ -1,4 +1,3 @@
-import { storiesOf } from '@storybook/react';
 import React from 'react';
 import { withPadding } from '../../../styles/storybook-decorators';
 import { Space, Color } from '../../../styles/variables';
@@ -38,7 +37,7 @@ const content = (
   </div>
 );
 
-const Overview = () => {
+const Demo = () => {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -61,16 +60,21 @@ const Overview = () => {
   );
 };
 
-storiesOf('internal/Collapse', module)
-  .addDecorator(withPadding())
-  .add('overview', () => <Overview />)
-  .add('with open', () => (
-    <Collapse open={true} duration={{ enter: 0, exit: 0 }}>
-      {content}
-    </Collapse>
-  ))
-  .add('with close', () => (
-    <Collapse open={false} duration={{ enter: 0, exit: 0 }}>
-      {content}
-    </Collapse>
-  ));
+export default {
+  title: 'internal/Collapse',
+  decorators: [withPadding()],
+};
+
+export const Overview = () => <Demo />;
+
+export const WithOpen = () => (
+  <Collapse open={true} duration={{ enter: 0, exit: 0 }}>
+    {content}
+  </Collapse>
+);
+
+export const WithClose = () => (
+  <Collapse open={false} duration={{ enter: 0, exit: 0 }}>
+    {content}
+  </Collapse>
+);

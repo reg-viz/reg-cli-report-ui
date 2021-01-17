@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   grid-template-columns: repeat(2, 1fr);
   grid-gap: ${Space * 1}px;
   justify-content: center;
-  align-items: center;
+  align-items: start;
 
   @media (min-width: ${BreakPoint.MEDIUM}px) {
     grid-gap: ${Space * 3}px;

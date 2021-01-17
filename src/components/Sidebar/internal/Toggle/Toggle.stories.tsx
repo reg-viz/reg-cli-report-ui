@@ -1,4 +1,3 @@
-import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import React, { useState } from 'react';
 import { withPadding } from '../../../../styles/storybook-decorators';
@@ -8,7 +7,7 @@ const defaultProps = {
   onClick: action('onClick') as any,
 };
 
-const Overview: React.FC = () => {
+const Demo: React.FC = () => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -16,8 +15,13 @@ const Overview: React.FC = () => {
   );
 };
 
-storiesOf('Toggle', module)
-  .addDecorator(withPadding())
-  .add('overview', () => <Overview />)
-  .add('with open', () => <Toggle {...defaultProps} open={true} />)
-  .add('with close', () => <Toggle {...defaultProps} open={false} />);
+export default {
+  title: 'Toggle',
+  decorators: [withPadding()],
+};
+
+export const Overview = () => <Demo />;
+
+export const WithOpen = () => <Toggle {...defaultProps} open={true} />;
+
+export const WithClose = () => <Toggle {...defaultProps} open={false} />;

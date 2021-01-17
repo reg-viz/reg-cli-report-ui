@@ -1,4 +1,3 @@
-import { storiesOf } from '@storybook/react';
 import React from 'react';
 import { action } from '@storybook/addon-actions';
 import { withPadding } from '../../styles/storybook-decorators';
@@ -21,40 +20,47 @@ const defaultProps = {
   onCopy: action('onCopy'),
 };
 
-storiesOf('Card', module)
-  .addDecorator(withPadding())
-  .add('with changed', () => <Card {...defaultProps} />)
-  .add('with new', () => (
-    <Card
-      {...defaultProps}
-      entity={{
-        ...defaultEntity,
-        variant: 'new',
-      }}
-    />
-  ))
-  .add('with deleted', () => (
-    <Card
-      {...defaultProps}
-      entity={{
-        ...defaultEntity,
-        variant: 'deleted',
-      }}
-    />
-  ))
-  .add('with passed', () => (
-    <Card
-      {...defaultProps}
-      entity={{
-        ...defaultEntity,
-        variant: 'passed',
-      }}
-    />
-  ));
+export default {
+  title: 'Card',
+  decorators: [withPadding()],
+};
 
-storiesOf('CardDimmer', module)
-  .addDecorator(withPadding())
-  .add('with changed', () => <CardDimmer variant="changed" />)
-  .add('with new', () => <CardDimmer variant="new" />)
-  .add('with deleted', () => <CardDimmer variant="deleted" />)
-  .add('with passed', () => <CardDimmer variant="passed" />);
+export const withChanged = () => <Card {...defaultProps} />;
+
+export const WithNew = () => (
+  <Card
+    {...defaultProps}
+    entity={{
+      ...defaultEntity,
+      variant: 'new',
+    }}
+  />
+);
+
+export const WithDeleted = () => (
+  <Card
+    {...defaultProps}
+    entity={{
+      ...defaultEntity,
+      variant: 'deleted',
+    }}
+  />
+);
+
+export const WithPassed = () => (
+  <Card
+    {...defaultProps}
+    entity={{
+      ...defaultEntity,
+      variant: 'passed',
+    }}
+  />
+);
+
+export const WithDimmerChanged = () => <CardDimmer variant="changed" />;
+
+export const WithDimmerNew = () => <CardDimmer variant="new" />;
+
+export const WithDimmerDeleted = () => <CardDimmer variant="deleted" />;
+
+export const WithDimmerPassed = () => <CardDimmer variant="passed" />;

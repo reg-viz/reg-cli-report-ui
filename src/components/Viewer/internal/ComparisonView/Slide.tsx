@@ -117,6 +117,7 @@ export const Slide: React.FC<Props> = ({ before, after, matching }) => {
     const handleMousemove = (e: MouseEvent | TouchEvent) => {
       const pageX =
         ('touches' in e ? e.touches[0].pageX : e.pageX) - window.pageXOffset;
+
       const { left } = inner.getBoundingClientRect();
       const x = Math.min(Math.max(0, pageX - left), image.width);
 
@@ -124,12 +125,8 @@ export const Slide: React.FC<Props> = ({ before, after, matching }) => {
     };
 
     const handleMousedown = (e: MouseEvent | TouchEvent) => {
-      if (!('touches' in e)) {
-        e.preventDefault();
-
-        if (rangeRef.current != null) {
-          rangeRef.current.focus();
-        }
+      if (!('touches' in e) && rangeRef.current != null) {
+        rangeRef.current.focus();
       }
 
       window.addEventListener('mousemove', handleMousemove, false);
@@ -176,8 +173,8 @@ export const Slide: React.FC<Props> = ({ before, after, matching }) => {
         <Frame style={{ width: `${position}%` }}>
           <Before
             style={{
-              top: canvas.height / 2 - image.after.height / 2,
-              left: canvas.width / 2 - image.after.width / 2,
+              top: canvas.height / 2 - image.before.height / 2,
+              left: canvas.width / 2 - image.before.width / 2,
               width: image.before.width,
               height: image.before.height,
             }}

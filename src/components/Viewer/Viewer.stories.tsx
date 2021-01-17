@@ -1,4 +1,3 @@
-import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import React, { useState } from 'react';
 import { withPadding } from '../../styles/storybook-decorators';
@@ -25,7 +24,7 @@ const defaultProps = {
   onRequestClose: action('onRequestClose') as any,
 };
 
-const Overview: React.FC = () => {
+const Demo: React.FC = () => {
   const [entity, setEntity] = useState<RegEntity | null>(null);
 
   return (
@@ -50,34 +49,41 @@ const Overview: React.FC = () => {
   );
 };
 
-storiesOf('Viewer', module)
-  .addDecorator(withPadding())
-  .add('overview', () => <Overview />)
-  .add('with changed', () => <Viewer {...defaultProps} />)
-  .add('with new', () => (
-    <Viewer
-      {...defaultProps}
-      entity={{
-        ...defaultEntity,
-        variant: 'new',
-      }}
-    />
-  ))
-  .add('with deleted', () => (
-    <Viewer
-      {...defaultProps}
-      entity={{
-        ...defaultEntity,
-        variant: 'deleted',
-      }}
-    />
-  ))
-  .add('with passed', () => (
-    <Viewer
-      {...defaultProps}
-      entity={{
-        ...defaultEntity,
-        variant: 'passed',
-      }}
-    />
-  ));
+export default {
+  title: 'Viewer',
+  decorators: [withPadding()],
+};
+
+export const Overview = () => <Demo />;
+
+export const WithChanged = () => <Viewer {...defaultProps} />;
+
+export const WithNew = () => (
+  <Viewer
+    {...defaultProps}
+    entity={{
+      ...defaultEntity,
+      variant: 'new',
+    }}
+  />
+);
+
+export const WithDeleted = () => (
+  <Viewer
+    {...defaultProps}
+    entity={{
+      ...defaultEntity,
+      variant: 'deleted',
+    }}
+  />
+);
+
+export const WithPassed = () => (
+  <Viewer
+    {...defaultProps}
+    entity={{
+      ...defaultEntity,
+      variant: 'passed',
+    }}
+  />
+);

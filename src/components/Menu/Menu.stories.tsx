@@ -1,11 +1,10 @@
-import { storiesOf } from '@storybook/react';
 import React, { useState } from 'react';
 import { action } from '@storybook/addon-actions';
 import { withPadding } from '../../styles/storybook-decorators';
 import type { Placement } from './';
 import { Menu } from './';
 
-const Overview: React.FC = () => {
+const Demo: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [placement, setPlacement] = useState<Placement>('bottom-left');
   const btn = React.useRef<HTMLButtonElement>(null);
@@ -59,13 +58,17 @@ const Overview: React.FC = () => {
   );
 };
 
-storiesOf('Menu', module)
-  .addDecorator(withPadding())
-  .add('overview', () => <Overview />)
-  .add('with long content', () => (
-    <Menu id="menu" open={true}>
-      <Menu.Item>{'Long content '.repeat(10)}</Menu.Item>
-      <Menu.Item>{'Long content '.repeat(15)}</Menu.Item>
-      <Menu.Item>{'Long content '.repeat(20)}</Menu.Item>
-    </Menu>
-  ));
+export default {
+  title: 'Menu',
+  decorators: [withPadding()],
+};
+
+export const Overview = () => <Demo />;
+
+export const WithLongContent = () => (
+  <Menu id="menu" open={true}>
+    <Menu.Item>{'Long content '.repeat(10)}</Menu.Item>
+    <Menu.Item>{'Long content '.repeat(15)}</Menu.Item>
+    <Menu.Item>{'Long content '.repeat(20)}</Menu.Item>
+  </Menu>
+);
