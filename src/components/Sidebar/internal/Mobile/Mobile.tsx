@@ -109,6 +109,7 @@ export const Mobile: React.FC<Props> = (props) => {
 
   const focusRef = useRef<FocusTrap | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
 
   const handleBackdropClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -136,18 +137,18 @@ export const Mobile: React.FC<Props> = (props) => {
   }, []);
 
   useEffect(() => {
-    const { current: wrapper } = wrapperRef;
+    const { current: scroller } = scrollerRef;
     const { current: focus } = focusRef;
-    if (wrapper == null || focus == null) {
+    if (scroller == null || focus == null) {
       return;
     }
 
     if (sidebar.isOpen) {
       focus.activate();
-      disableBodyScroll(wrapper);
+      disableBodyScroll(scroller);
     } else {
       focus.deactivate();
-      enableBodyScroll(wrapper);
+      enableBodyScroll(scroller);
     }
   }, [sidebar.isOpen]);
 
@@ -174,7 +175,7 @@ export const Mobile: React.FC<Props> = (props) => {
     >
       <div ref={wrapperRef}>
         <Inner>
-          <SidebarInner {...props} />
+          <SidebarInner {...props} scrollerRef={scrollerRef} />
         </Inner>
         <Backdrop onClick={handleBackdropClick} />
       </div>

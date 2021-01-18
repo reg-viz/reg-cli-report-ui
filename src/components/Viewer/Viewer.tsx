@@ -162,6 +162,7 @@ export const Viewer: React.FC<Props> = ({
   const [mounted, setMounted] = useState(false);
 
   const rootRef = useRef<HTMLDivElement>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
   const focusRef = useRef<FocusTrap | null>(null);
 
   const handleEnter = useCallback(() => {
@@ -212,14 +213,15 @@ export const Viewer: React.FC<Props> = ({
 
   useEffect(() => {
     const { current: root } = rootRef;
-    if (root == null) {
+    const { current: scroller } = scrollerRef;
+    if (root == null || scroller == null) {
       return;
     }
 
     if (mounted) {
       focusRef.current = createFocusTrap(root, {});
       focusRef.current.activate();
-      disableBodyScroll(root);
+      disableBodyScroll(scroller);
     } else {
       if (focusRef.current != null) {
         focusRef.current.deactivate();
@@ -296,7 +298,11 @@ export const Viewer: React.FC<Props> = ({
                 </HeaderWrapper>
 
                 <Body>
-                  <ComparisonView entity={entity} matching={matching} />
+                  <ComparisonView
+                    scrollerRef={scrollerRef}
+                    entity={entity}
+                    matching={matching}
+                  />
 
                   <Previous>
                     <IconButton

@@ -30,8 +30,11 @@ const TextField = styled.input`
   font-family: inherit;
   transition: border ${Duration.SMALL_OUT}ms ${Easing.STANDARD};
 
-  &:focus-visible {
+  &:focus {
     outline: none;
+  }
+
+  &:focus-visible {
     border-bottom-color: ${Color.BRAND_PRIMARY};
   }
 `;

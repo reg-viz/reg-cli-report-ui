@@ -46,7 +46,8 @@ export enum FontSize {
   BODY2 = '0.875rem',
   BODY3 = '0.75rem',
   SUBHEAD = '0.75rem',
-  BUTTON = '0.875rem',
+  BUTTON1 = '0.75rem',
+  BUTTON2 = '0.875rem',
 }
 
 export enum LineHeight {
@@ -55,6 +56,14 @@ export enum LineHeight {
   MEDIUM = 1.3,
   LARGE = 1.5,
   X_LARGE = 1.75,
+}
+
+export enum BreakPoint {
+  X_SMALL = 375,
+  SMALL = 599,
+  MEDIUM = 770,
+  LARGE = 1024,
+  X_LARGE = 1200,
 }
 
 export const Typography = {
@@ -119,20 +128,16 @@ export const Typography = {
     text-transform: uppercase;
   `,
   BUTTON: css`
-    font-size: ${FontSize.BUTTON};
+    font-size: ${FontSize.BUTTON1};
     font-weight: bold;
     line-height: ${LineHeight.LARGE};
     text-transform: none;
+
+    @media (min-width: ${BreakPoint.X_SMALL}px) {
+      font-size: ${FontSize.BUTTON2};
+    }
   `,
 };
-
-export enum BreakPoint {
-  X_SMALL = 375,
-  SMALL = 599,
-  MEDIUM = 770,
-  LARGE = 1024,
-  X_LARGE = 1200,
-}
 
 export enum Easing {
   STANDARD = 'cubic-bezier(0.4, 0.0, 0.2, 1)',

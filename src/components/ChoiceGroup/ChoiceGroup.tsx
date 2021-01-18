@@ -1,12 +1,12 @@
 import React, { createRef, useEffect, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 import { useMousetrap } from '../../hooks/useMousetrap';
-import { Space, Shadow, Color } from '../../styles/variables';
+import { Space, Shadow, Color, BreakPoint } from '../../styles/variables';
 import { ChoiceButton } from './internal/ChoiceButton';
 
 const List = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
   grid-gap: ${Space * 0.5}px;
   margin: 0;
   padding: ${Space * 0.5}px;
@@ -14,6 +14,10 @@ const List = styled.ul`
   background: ${Color.WHITE};
   box-shadow: ${Shadow.LEVEL2};
   list-style: none;
+
+  @media (min-width: ${BreakPoint.SMALL}px) {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
 `;
 
 const ListItem = styled.li``;

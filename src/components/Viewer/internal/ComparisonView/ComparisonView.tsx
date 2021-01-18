@@ -168,19 +168,26 @@ const modes = [
 ];
 
 export type Props = {
+  scrollerRef?: React.Ref<HTMLDivElement>;
   entity: RegEntity;
   matching: Matching | null;
   defaultMode?: string;
 };
 
 export const ComparisonView: React.FC<Props> = ({
+  scrollerRef,
   entity,
   matching,
   defaultMode,
 }) => {
   const [mode, setMode] = useState(defaultMode!);
+  const [slideValue, setSlideValue] = useState(50);
   const [blendValue, setBlendValue] = useState(0.5);
   const [toggleValue, setToggleValue] = useState(false);
+
+  const handleSlideChange = useCallback((value: number) => {
+    setSlideValue(value);
+  }, []);
 
   const handleBlendChange = useCallback((value: number) => {
     setBlendValue(value);
@@ -196,7 +203,7 @@ export const ComparisonView: React.FC<Props> = ({
 
   return (
     <Wrapper>
-      <ComparisonImage>
+      <ComparisonImage ref={scrollerRef}>
         <ComparisonImageInnerV>
           <ComparisonImageInnerH>
             {entity.variant === 'changed' && (
@@ -206,7 +213,9 @@ export const ComparisonView: React.FC<Props> = ({
                   <Slide
                     before={entity.before}
                     after={entity.after}
+                    value={slideValue}
                     matching={matching}
+                    onChange={handleSlideChange}
                   />
                 )}
                 {mode === '2up' && (
@@ -256,6 +265,22 @@ export const ComparisonView: React.FC<Props> = ({
               }}
             >
               <ControlWrapper>
+                {mode === 'slide' && (
+                  <Control>
+                    <span>Before</span>
+                    <ControlSlider>
+                      <Slider
+                        min={0}
+                        max={100}
+                        step={1}
+                        value={slideValue}
+                        onChange={handleSlideChange}
+                      />
+                    </ControlSlider>
+                    <span>After</span>
+                  </Control>
+                )}
+
                 {mode === 'blend' && (
                   <Control>
                     <span>Before</span>
