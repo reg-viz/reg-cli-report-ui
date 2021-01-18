@@ -41,6 +41,7 @@
     "fuzzy-search": "^3.2.1",
     "keycode": "^2.2.0",
     "mousetrap": "^1.6.5",
+    "preact": "^10.5.10",
     "rc-slider": "^9.7.1",
     "re-resizable": "^6.9.0",
     "react": "17.0.1",
