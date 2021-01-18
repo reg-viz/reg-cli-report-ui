@@ -145,9 +145,11 @@ export type Props = {
   current: number;
   entity: RegEntity | null;
   matching: Matching | null;
+  markersEnabled: boolean;
   onNext: () => void;
   onPrevious: () => void;
   onRequestClose: () => void;
+  onMarkersToggle: (enabled: boolean) => void;
 };
 
 export const Viewer: React.FC<Props> = ({
@@ -155,9 +157,11 @@ export const Viewer: React.FC<Props> = ({
   current,
   entity,
   matching,
+  markersEnabled,
   onPrevious,
   onNext,
   onRequestClose,
+  onMarkersToggle,
 }) => {
   const [mounted, setMounted] = useState(false);
 
@@ -293,7 +297,9 @@ export const Viewer: React.FC<Props> = ({
                     title={entity.name}
                     current={current}
                     max={total}
+                    markersEnabled={markersEnabled}
                     onRequestClose={onRequestClose}
+                    onMarkersToggle={onMarkersToggle}
                   />
                 </HeaderWrapper>
 

@@ -13,6 +13,8 @@ import { IconButton } from '../IconButton';
 import type { RegVariant } from '../../types/reg';
 import { Sign } from '../Sign';
 import { Ellipsis } from '../internal/Ellipsis';
+import { Switch } from '../Switch';
+import { useMedia } from '../../hooks/useMedia';
 
 const Wrapper = styled.header`
   display: grid;
@@ -45,6 +47,9 @@ const Center = styled.div`
 `;
 
 const Right = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
   align-self: center;
   padding-right: ${Space * 2}px;
   text-align: right;
@@ -68,12 +73,19 @@ const TitleText = styled.span`
   overflow: hidden;
 `;
 
+const MarkersToggle = styled.div`
+  margin-right: ${Space * 1}px;
+  line-height: 0;
+`;
+
 export type Props = {
   variant: RegVariant;
   title: string;
   current: number;
   max: number;
+  markersEnabled: boolean;
   onRequestClose: () => void;
+  onMarkersToggle: (enabled: boolean) => void;
 };
 
 export const Header: React.FC<Props> = ({
@@ -81,14 +93,25 @@ export const Header: React.FC<Props> = ({
   title,
   current,
   max,
+  markersEnabled,
   onRequestClose,
+  onMarkersToggle,
 }) => {
+  const isSmallViewport = useMedia(`(max-width: ${BreakPoint.SMALL - 1}px)`);
+
   const handleCloseClick = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
       onRequestClose();
     },
     [onRequestClose],
+  );
+
+  const handleToggle = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onMarkersToggle(e.currentTarget.checked);
+    },
+    [onMarkersToggle],
   );
 
   return (
@@ -109,6 +132,15 @@ export const Header: React.FC<Props> = ({
       </Center>
 
       <Right>
+        <MarkersToggle>
+          <Switch
+            id="toggle-markers"
+            prepend={isSmallViewport ? null : 'Markers'}
+            checked={markersEnabled}
+            onChange={handleToggle}
+          />
+        </MarkersToggle>
+
         <IconButton onClick={handleCloseClick}>
           <CloseIcon fill={Color.TEXT_SUB} />
         </IconButton>

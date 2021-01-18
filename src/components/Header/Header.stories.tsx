@@ -14,6 +14,8 @@ export const Overview = () => (
     title="atoms/reg-suit-component.png"
     current={2}
     max={302}
+    markersEnabled={true}
     onRequestClose={action('onRequestClose') as any}
+    onMarkersToggle={action('onMarkersToggle') as any}
   />
 );

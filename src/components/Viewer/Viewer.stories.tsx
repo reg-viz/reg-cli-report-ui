@@ -19,9 +19,11 @@ const defaultProps = {
   current: 2,
   entity: defaultEntity,
   matching: null,
+  markersEnabled: true,
   onPrevious: action('onPrevious') as any,
   onNext: action('onNext') as any,
   onRequestClose: action('onRequestClose') as any,
+  onMarkersToggle: action('onMarkersToggle') as any,
 };
 
 const Demo: React.FC = () => {

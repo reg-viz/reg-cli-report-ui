@@ -19,22 +19,22 @@ export type Props = {};
 const gridOptions = [
   {
     media: 'screen',
-    gridGap: Space * 5,
+    gap: Space * 5,
     minContentLength: 270,
   },
   {
     media: `screen and (min-width: ${BreakPoint.X_SMALL}px)`,
-    gridGap: Space * 5,
+    gap: Space * 5,
     minContentLength: 300,
   },
   {
     media: `screen and (min-width: ${BreakPoint.SMALL}px)`,
-    gridGap: Space * 5,
+    gap: Space * 5,
     minContentLength: 360,
   },
   {
     media: `screen and (min-width: ${BreakPoint.X_LARGE}px)`,
-    gridGap: Space * 5,
+    gap: Space * 5,
     minContentLength: 540,
   },
 ];

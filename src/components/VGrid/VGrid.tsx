@@ -3,12 +3,12 @@ import type { AnchorScrollContextValue } from '../../context/AnchorScrollContext
 import { AnchorScrollContext } from '../../context/AnchorScrollContext';
 
 type GridStyleProperty = {
-  gridGap: number;
+  gap: number;
   minContentLength?: number;
 };
 
 type GridStyle = {
-  gridGap: number;
+  gap: number;
   gridTemplateColumns: string;
   padding: 0;
   margin: 0;
@@ -48,7 +48,7 @@ const createGridStyleObject = (opt: GridStyleProperty) => {
     position: 'absolute',
     left: 0,
     right: 0,
-    gridGap: opt.gridGap,
+    gap: opt.gap,
     gridTemplateColumns: opt.minContentLength
       ? `repeat(auto-fill, minmax(${opt.minContentLength}px, 1fr))`
       : 'repeat(1, 1fr)',
@@ -82,7 +82,7 @@ export class VGrid<T, K extends keyof T> extends React.Component<
       position: 'absolute',
       left: 0,
       right: 0,
-      gridGap: -1,
+      gap: -1,
       gridTemplateColumns: '',
     },
     containerHeight: 0,
@@ -201,21 +201,21 @@ export class VGrid<T, K extends keyof T> extends React.Component<
   private get rowHeightUnit() {
     const { cellHeight } = this.props;
     const {
-      gridStyle: { gridGap },
+      gridStyle: { gap },
     } = this.state;
-    return cellHeight + gridGap;
+    return cellHeight + gap;
   }
 
   // This function should be invoked when the container element is resized.
   private updateContainerState(containerWidth: number) {
     const { cellHeight } = this.props;
     const { gridStyle, repeatLength } = this.getGridDefinition(containerWidth);
-    const rowHeight = cellHeight + gridStyle.gridGap;
+    const rowHeight = cellHeight + gridStyle.gap;
     const allItemsCount = this.props.items.length;
     const containerHeight =
-      Math.ceil(allItemsCount / repeatLength) * rowHeight - gridStyle.gridGap;
+      Math.ceil(allItemsCount / repeatLength) * rowHeight - gridStyle.gap;
     const visibleItemsLength =
-      (~~(innerHeight / (this.props.cellHeight + gridStyle.gridGap)) +
+      (~~(innerHeight / (this.props.cellHeight + gridStyle.gap)) +
         2 +
         prerenderRowsLength) *
       repeatLength;
@@ -237,14 +237,15 @@ export class VGrid<T, K extends keyof T> extends React.Component<
     });
     if (!matched) throw new Error('No matched media');
 
-    const { gridGap, minContentLength } = matched;
+    const { gap, minContentLength } = matched;
     const repeatLength =
       (minContentLength &&
-        ~~((containerWidth + gridGap) / (minContentLength + gridGap))) ||
+        ~~((containerWidth + gap) / (minContentLength + gap))) ||
       1;
+
     const gridStyle = createGridStyleObject(matched);
 
-    return { gridStyle, repeatLength, gridGap };
+    return { gridStyle, repeatLength, gap };
   }
 
   private findOffsetIndexFromHash(hash: string) {
