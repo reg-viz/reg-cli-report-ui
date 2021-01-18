@@ -6,6 +6,7 @@ import {
   Easing,
   Typography,
   Color,
+  BreakPoint,
 } from '../../../../styles/variables';
 import type { Props as BaseButtonProps } from '../../../internal/BaseButton';
 import { BaseButton } from '../../../internal/BaseButton';
@@ -20,7 +21,7 @@ const Wrapper = styled(BaseButton)<{ active: boolean }>`
   align-items: center;
   width: 100%;
   height: ${SIZE}px;
-  padding: 0 ${Space * 2}px;
+  padding: 0 ${Space * 1}px;
   border: none;
   border-radius: ${SIZE}px;
   background: transparent;
@@ -52,6 +53,10 @@ const Wrapper = styled(BaseButton)<{ active: boolean }>`
 
   &:hover {
     background-color: ${Color.HOVER_BLACK};
+  }
+
+  @media (min-width: ${BreakPoint.SMALL}px) {
+    padding: 0 ${Space * 2}px;
   }
 `;
 

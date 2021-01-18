@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Image } from '../../../Image';
 import { Color } from '../../../../styles/variables';
@@ -100,19 +100,25 @@ const HandleBar = styled.span`
 export type Props = {
   before: string;
   after: string;
+  value: number;
   matching: Matching | null;
+  onChange: (value: number) => void;
 };
 
-export const Slide: React.FC<Props> = ({ before, after, matching }) => {
+export const Slide: React.FC<Props> = ({
+  before,
+  after,
+  value,
+  matching,
+  onChange,
+}) => {
   const { canvas, image } = useComparisonImage(before, after);
 
   const innerRef = useRef<HTMLDivElement>(null);
   const rangeRef = useRef<HTMLInputElement>(null);
 
-  const [position, setPosition] = useState(50);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPosition(parseInt(e.target.value, 10));
+    onChange(parseInt(e.target.value, 10));
   };
 
   useEffect(() => {
@@ -125,11 +131,13 @@ export const Slide: React.FC<Props> = ({ before, after, matching }) => {
       const { left } = inner.getBoundingClientRect();
       const x = Math.min(Math.max(0, pageX - left), image.width);
 
-      setPosition((x / image.width) * 100);
+      onChange((x / image.width) * 100);
     };
 
     const handleMousedown = (e: MouseEvent | TouchEvent) => {
-      if (!('touches' in e) && rangeRef.current != null) {
+      e.stopPropagation();
+
+      if (rangeRef.current != null) {
         rangeRef.current.focus();
       }
 
@@ -155,7 +163,7 @@ export const Slide: React.FC<Props> = ({ before, after, matching }) => {
       window.removeEventListener('mousemove', handleMousemove, false);
       window.removeEventListener('touchmove', handleMousemove, false);
     };
-  }, [image.width]);
+  }, [image.width, onChange]);
 
   return (
     <Wrapper style={{ visibility: image.loaded ? 'visible' : 'hidden' }}>
@@ -165,16 +173,16 @@ export const Slide: React.FC<Props> = ({ before, after, matching }) => {
           type="range"
           min={0}
           max={100}
-          value={position}
+          value={value}
           data-mousetrap="ignore"
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-valuenow={position}
+          aria-valuenow={value}
           aria-label="Percent of revealed content"
           onChange={handleChange}
         />
 
-        <Frame style={{ width: `${position}%` }}>
+        <Frame style={{ width: `${value}%` }}>
           <Before
             style={{
               top: 0,
@@ -206,7 +214,7 @@ export const Slide: React.FC<Props> = ({ before, after, matching }) => {
           <Markers variant="after" matching={matching} />
         </After>
 
-        <Handle style={{ left: `${position}%` }}>
+        <Handle style={{ left: `${value}%` }}>
           <HandleBar />
         </Handle>
       </Inner>

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { createRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { Space, Color } from '../../../../styles/variables';
 import { SearchBox } from '../../../SearchBox';
@@ -39,15 +39,19 @@ const ToggleWrapper = styled.div`
 `;
 
 export type Props = {
+  scrollerRef?: React.RefObject<HTMLDivElement>;
   inputRef?: React.RefObject<HTMLInputElement>;
   listRef?: React.RefObject<HTMLDivElement>;
 };
 
-export const SidebarInner: React.FC<Props> = ({ inputRef, listRef }) => {
+export const SidebarInner: React.FC<Props> = ({
+  scrollerRef,
+  inputRef,
+  listRef,
+}) => {
   const entities = EntityContainer.useContainer();
   const sidebar = SidebarContainer.useContainer();
-
-  const innerRef = useRef<HTMLDivElement>(null);
+  const innerRef = scrollerRef || createRef();
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
