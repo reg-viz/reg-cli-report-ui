@@ -22,10 +22,12 @@ const defaultCurrent: Current = {
 
 export type ViewerValue = {
   current: Current;
+  markersEnabled: boolean;
   open: (id: string) => void;
   close: () => void;
   next: () => void;
   previous: () => void;
+  toggleMarkers: () => void;
 };
 
 export const ViewerContainer = createContainer<ViewerValue>(() => {
@@ -36,6 +38,7 @@ export const ViewerContainer = createContainer<ViewerValue>(() => {
 
   const seqRef = useRef(0);
   const [current, setCurrent] = useState<Current>(defaultCurrent);
+  const [markersEnabled, setMarkersEnabled] = useState(true);
 
   const open = (id: string) => {
     history.push({ search: `?id=${id}` });
@@ -61,10 +64,22 @@ export const ViewerContainer = createContainer<ViewerValue>(() => {
     }
   };
 
+  const toggleMarkers = () => {
+    const value = !markersEnabled;
+    setMarkersEnabled(value);
+
+    if (!value && current.matching != null) {
+      setCurrent((cur) => ({
+        ...cur,
+        matching: null,
+      }));
+    }
+  };
+
   useEffect(() => {
     const { entity } = current;
 
-    if (worker == null || entity == null) {
+    if (worker == null || entity == null || markersEnabled === false) {
       return;
     }
 
@@ -90,7 +105,7 @@ export const ViewerContainer = createContainer<ViewerValue>(() => {
     }
 
     return () => worker.unsubscribe(WorkerEventType.RESULT_CALC, listener);
-  }, [worker, current]);
+  }, [markersEnabled, worker, current]);
 
   useEffect(() => {
     const sync = (location: Location) => {
@@ -121,9 +136,11 @@ export const ViewerContainer = createContainer<ViewerValue>(() => {
 
   return {
     current,
+    markersEnabled,
     open,
     close,
     next,
     previous,
+    toggleMarkers,
   };
 });
