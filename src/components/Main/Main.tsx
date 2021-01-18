@@ -4,7 +4,6 @@ import type { RegVariant, RegEntity } from '../../types/reg';
 import { Container } from '../Container';
 import { Card, CardDimmer } from '../Card';
 import { EntityContainer } from '../../containers/entity/EntityContainer';
-import { ViewerContainer } from '../../containers/viewer/ViewerContainer';
 import { NotificationContainer } from '../../containers/notification/NotificationContainer';
 import { VGrid } from '../VGrid';
 
@@ -45,16 +44,7 @@ const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({
   entities,
 }) => {
   const notification = NotificationContainer.useContainer();
-  const viewer = ViewerContainer.useContainer();
-
   const title = titles[variant];
-
-  const handleClick = useCallback(
-    (id: string) => {
-      viewer.open(id);
-    },
-    [viewer],
-  );
 
   const handleCopy = useCallback(() => {
     notification.notify('Copied URL to clipboard');
@@ -76,9 +66,9 @@ const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({
       >
         {({ item: entity }) => (
           <Card
+            href={`?id=${entity.id}`}
             entity={entity}
             menus={[]}
-            onClick={handleClick}
             onCopy={handleCopy}
           />
         )}

@@ -39,6 +39,7 @@
     "debounce": "^1.2.0",
     "focus-trap": "^6.2.3",
     "fuzzy-search": "^3.2.1",
+    "history": "^5.0.0",
     "keycode": "^2.2.0",
     "mousetrap": "^1.6.5",
     "preact": "^10.5.10",

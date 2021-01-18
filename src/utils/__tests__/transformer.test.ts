@@ -24,6 +24,19 @@ describe('transformer', () => {
       },
     ]);
 
+    expect(
+      toEntities(variant, dirs, [{ raw, encoded: `${encoded}?key=value` }]),
+    ).toEqual([
+      {
+        id: `${variant}-encoded.jpg-key-value`,
+        variant,
+        name: raw,
+        diff: `${dirs.diff}encoded.png`,
+        before: `${dirs.expected}${encoded}?key=value`,
+        after: `${dirs.actual}${encoded}?key=value`,
+      },
+    ]);
+
     dirs = {
       diff: 'http://localhost:8080/diff',
       expected: 'http://localhost:8080/expected',

@@ -47,6 +47,7 @@ export type Props = {};
 
 export const App: React.FC<Props> = () => {
   const sidebar = SidebarContainer.useContainer();
+
   const {
     newItems,
     failedItems,

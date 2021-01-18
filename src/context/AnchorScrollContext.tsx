@@ -30,6 +30,7 @@ class HashValue implements AnchorScrollContextValue {
 
 export const AnchorScrollProvider: React.FC<{}> = ({ children }) => {
   const value: AnchorScrollContextValue = new HashValue();
+
   return (
     <AnchorScrollContext.Provider value={value}>
       {children}

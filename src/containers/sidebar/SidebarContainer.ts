@@ -26,12 +26,15 @@ export const SidebarContainer = createContainer<SidebarValue, RegLink[]>(
     const newItems = useMemo(() => toStructualItems(entities.newItems), [
       entities.newItems,
     ]);
+
     const passedItems = useMemo(() => toStructualItems(entities.passedItems), [
       entities.passedItems,
     ]);
+
     const failedItems = useMemo(() => toStructualItems(entities.failedItems), [
       entities.failedItems,
     ]);
+
     const deletedItems = useMemo(
       () => toStructualItems(entities.deletedItems),
       [entities.deletedItems],

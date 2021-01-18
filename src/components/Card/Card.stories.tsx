@@ -14,9 +14,9 @@ const defaultEntity = createRegEntity({
 });
 
 const defaultProps = {
+  href: '?id=storybook',
   entity: defaultEntity,
   menus: [],
-  onClick: action('onClick'),
   onCopy: action('onCopy'),
 };
 

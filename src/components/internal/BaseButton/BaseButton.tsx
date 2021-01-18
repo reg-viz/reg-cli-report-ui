@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import { Focus, Duration, Easing } from '../../../styles/variables';
+import { Link } from '../../Link';
 
 const Wrapper = styled('button')`
   margin: 0;
@@ -48,7 +49,7 @@ export const BaseButton = forwardRef<
   const props = linkable ? ({ href, ...rest } as any) : { type, ...rest };
 
   return (
-    <Wrapper {...props} ref={ref} as={linkable ? 'a' : 'button'}>
+    <Wrapper {...props} ref={ref} as={linkable ? Link : 'button'}>
       {children}
     </Wrapper>
   );
