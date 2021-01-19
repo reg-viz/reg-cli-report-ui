@@ -25,7 +25,6 @@ type Props<T, K extends keyof T> = {
   items: T[];
   itemKey: SK<T, K>;
   children: (props: { item: T; index: number }) => JSX.Element;
-  dimmerCell?: () => JSX.Element;
   gridOptions: GridStyleProperty | ({ media: string } & GridStyleProperty)[];
   cellHeight: number;
 };
@@ -274,15 +273,10 @@ export class VGrid<T, K extends keyof T> extends React.Component<
   }
 
   private scrollTo(offsetIndex: number) {
-    const currentTop = scrollY;
     const top = this.calculateClientOffsetTop(offsetIndex);
     const threshold = this.state.visibleItemsLength * this.rowHeightUnit * 1;
     const rafCb = () => {
-      if (Math.abs(currentTop - scrollY) >= threshold) {
-        this.context.isAnchorScrolling = true;
-      }
       if (Math.abs(top - scrollY) <= threshold) {
-        this.context.isAnchorScrolling = false;
         this.updateCurrentOffsetIndex();
         return;
       }
@@ -327,7 +321,7 @@ export class VGrid<T, K extends keyof T> extends React.Component<
   }
 
   render() {
-    const { children, dimmerCell, itemKey, cellHeight } = this.props;
+    const { children, itemKey, cellHeight } = this.props;
     const { containerHeight } = this.state;
     const offsetTop = this.calculateInnerOffsetTop(this.state.offsetIndex);
     const containerStyle = {
@@ -346,9 +340,7 @@ export class VGrid<T, K extends keyof T> extends React.Component<
               key={(item[itemKey] as unknown) as string}
               style={{ height: cellHeight }}
             >
-              {this.context.isAnchorScrolling && dimmerCell
-                ? dimmerCell()
-                : children({ item, index })}
+              {children({ item, index })}
             </li>
           ))}
         </ul>

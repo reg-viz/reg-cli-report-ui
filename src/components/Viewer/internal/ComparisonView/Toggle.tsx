@@ -55,7 +55,7 @@ export const Toggle: React.FC<Props> = ({
       <Inner style={canvas}>
         <Before
           style={{
-            display: checked ? 'none' : 'block',
+            visibility: checked ? 'hidden' : 'visible',
             width: image.before.width,
             height: image.before.height,
           }}
@@ -70,7 +70,7 @@ export const Toggle: React.FC<Props> = ({
 
         <After
           style={{
-            display: checked ? 'block' : 'none',
+            visibility: checked ? 'visible' : 'hidden',
             width: image.after.width,
             height: image.after.height,
           }}
