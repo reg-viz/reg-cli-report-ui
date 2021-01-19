@@ -48,7 +48,8 @@ const Center = styled.div`
 
 const Right = styled.div`
   display: flex;
-  justify-content: flex-end;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
   align-items: center;
   align-self: center;
   padding-right: ${Space * 2}px;
@@ -64,7 +65,7 @@ const Title = styled.h2`
 
 const TitleSign = styled.span`
   flex: 0 0 auto;
-  margin-right: ${Space * 1}px;
+  margin-left: ${Space * 1}px;
 `;
 
 const TitleText = styled.span`
@@ -132,6 +133,10 @@ export const Header: React.FC<Props> = ({
       </Center>
 
       <Right>
+        <IconButton onClick={handleCloseClick}>
+          <CloseIcon fill={Color.TEXT_SUB} />
+        </IconButton>
+
         <MarkersToggle>
           <Switch
             id="toggle-markers"
@@ -140,10 +145,6 @@ export const Header: React.FC<Props> = ({
             onChange={handleToggle}
           />
         </MarkersToggle>
-
-        <IconButton onClick={handleCloseClick}>
-          <CloseIcon fill={Color.TEXT_SUB} />
-        </IconButton>
       </Right>
     </Wrapper>
   );

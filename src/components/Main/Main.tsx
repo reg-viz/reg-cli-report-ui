@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Space, BreakPoint, Size } from '../../styles/variables';
 import type { RegVariant, RegEntity } from '../../types/reg';
 import { Container } from '../Container';
-import { Card, CardDimmer } from '../Card';
+import { Card } from '../Card';
 import { EntityContainer } from '../../containers/entity/EntityContainer';
 import { NotificationContainer } from '../../containers/notification/NotificationContainer';
 import { VGrid } from '../VGrid';
@@ -62,7 +62,6 @@ const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({
         itemKey="id"
         cellHeight={Size.CARD_OUTER_HEIGHT}
         gridOptions={gridOptions}
-        dimmerCell={() => <CardDimmer variant={variant} />}
       >
         {({ item: entity }) => (
           <Card

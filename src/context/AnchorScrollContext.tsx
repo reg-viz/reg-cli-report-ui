@@ -3,7 +3,6 @@ import React from 'react';
 export type AnchorScrollContextValue = {
   readonly hash: string;
   readonly consumed: boolean;
-  isAnchorScrolling: boolean;
   consume(): void;
 };
 
@@ -11,7 +10,6 @@ export const AnchorScrollContext = React.createContext<AnchorScrollContextValue>
   {
     hash: '#',
     consumed: true,
-    isAnchorScrolling: false,
     consume: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   },
 );
@@ -19,7 +17,6 @@ export const AnchorScrollContext = React.createContext<AnchorScrollContextValue>
 class HashValue implements AnchorScrollContextValue {
   private _ = false;
   hash = location.hash;
-  isAnchorScrolling = false;
   consume() {
     this._ = true;
   }

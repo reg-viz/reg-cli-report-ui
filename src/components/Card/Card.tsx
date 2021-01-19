@@ -11,7 +11,7 @@ import {
   Duration,
   Easing,
 } from '../../styles/variables';
-import type { RegEntity, RegVariant } from '../../types/reg';
+import type { RegEntity } from '../../types/reg';
 import { Image } from '../Image';
 import { Ellipsis } from '../internal/Ellipsis';
 import { IconButton } from '../IconButton';
@@ -197,25 +197,3 @@ export const Card: React.FC<Props> = ({ href, entity, menus, onCopy }) => {
     </Wrapper>
   );
 };
-
-export const CardDimmer: React.FC<{ variant: RegVariant }> = React.memo(
-  ({ variant }) => {
-    return (
-      <Wrapper>
-        <Inner type="button">
-          <CardSign>
-            <Sign variant={variant} />
-          </CardSign>
-
-          <CardImage>
-            <Transparent />
-          </CardImage>
-
-          <CardText>
-            <Ellipsis line={2}>...</Ellipsis>
-          </CardText>
-        </Inner>
-      </Wrapper>
-    );
-  },
-);
