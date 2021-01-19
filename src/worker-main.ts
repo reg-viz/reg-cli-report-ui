@@ -1,8 +1,9 @@
 /* eslint-disable no-console, import/newline-after-import */
-import FuzzySearch from 'fuzzy-search';
+import Fuse from 'fuse.js';
 import { ModuleClass } from './detector-wrapper';
 import type { WorkerEvent, WorkerEventData } from './types/event';
 import { WorkerEventType } from './types/event';
+import type { RegEntity } from './types/reg';
 const ximgdiffVersionString = require('x-img-diff-js/package.json')
   .version as string;
 
@@ -60,21 +61,23 @@ const filter = ({
     });
   }
 
-  const keys = ['name'];
-  const opts = { caseSensitive: true };
+  const search = (entities: RegEntity[]) => {
+    const fuse = new Fuse(entities, {
+      isCaseSensitive: false,
+      keys: ['name'],
+      threshold: 0.3,
+    });
 
-  const newSearcher = new FuzzySearch(newItems, keys, opts);
-  const passedSearcher = new FuzzySearch(passedItems, keys, opts);
-  const failedSearcher = new FuzzySearch(failedItems, keys, opts);
-  const deletedSearcher = new FuzzySearch(deletedItems, keys, opts);
+    return fuse.search(input).map(({ item }) => item);
+  };
 
   _self.postMessage({
     type: WorkerEventType.RESULT_FILTER,
     payload: {
-      newItems: newSearcher.search(input),
-      passedItems: passedSearcher.search(input),
-      failedItems: failedSearcher.search(input),
-      deletedItems: deletedSearcher.search(input),
+      newItems: search(newItems),
+      passedItems: search(passedItems),
+      failedItems: search(failedItems),
+      deletedItems: search(deletedItems),
     },
   });
 };
