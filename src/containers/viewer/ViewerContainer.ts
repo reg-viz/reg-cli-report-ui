@@ -1,6 +1,7 @@
 import { createContainer } from 'unstated-next';
 import type { Location } from 'history';
 import { useState, useEffect, useContext, useRef } from 'react';
+import qs from 'query-string';
 import { EntityContainer } from '../entity/EntityContainer';
 import type { RegEntity, Matching } from '../../types/reg';
 import { WorkerContext } from '../../context/WorkerContext';
@@ -109,11 +110,10 @@ export const ViewerContainer = createContainer<ViewerValue>(() => {
 
   useEffect(() => {
     const sync = (location: Location) => {
-      const query = new URLSearchParams(location.search);
-      const rawId = query.get('id');
+      const query = qs.parse(location.search, { decode: false }); // get raw `id` parameter.
+      const id = query.id;
 
-      if (rawId) {
-        const id = encodeURIComponent(rawId);
+      if (typeof id === 'string' && id !== '') {
         const index = allItems.findIndex((entity) => entity.id === id);
         if (index > -1) {
           setCurrent({
