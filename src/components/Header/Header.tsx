@@ -72,6 +72,7 @@ const TitleText = styled.span`
   display: block;
   flex: 0 1 auto;
   overflow: hidden;
+  margin-left: ${Space * 1}px;
 `;
 
 const MarkersToggle = styled.div`
