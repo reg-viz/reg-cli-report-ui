@@ -63,14 +63,18 @@ const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({
         cellHeight={Size.CARD_OUTER_HEIGHT}
         gridOptions={gridOptions}
       >
-        {({ item: entity }) => (
-          <Card
-            href={`?id=${entity.id}`}
-            entity={entity}
-            menus={[]}
-            onCopy={handleCopy}
-          />
-        )}
+        {({ item: entity }) => {
+          const p = new URL(location.href).searchParams;
+          p.set('id', entity.id);
+          return (
+            <Card
+              href={`?${p.toString()}`}
+              entity={entity}
+              menus={[]}
+              onCopy={handleCopy}
+            />
+          );
+        }}
       </VGrid>
     </>
   );

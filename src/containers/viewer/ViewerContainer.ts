@@ -1,12 +1,12 @@
 import { createContainer } from 'unstated-next';
 import type { Location } from 'history';
-import { useState, useEffect, useContext, useRef } from 'react';
+import { useState, useEffect /*, useContext, useRef  */ } from 'react';
 import qs from 'query-string';
 import { EntityContainer } from '../entity/EntityContainer';
 import type { RegEntity, Matching } from '../../types/reg';
-import { WorkerContext } from '../../context/WorkerContext';
-import type { WorkerEventDataPayload } from '../../types/event';
-import { WorkerEventType } from '../../types/event';
+// import { WorkerContext } from '../../context/WorkerContext';
+// import type { WorkerEventDataPayload } from '../../types/event';
+// import { WorkerEventType } from '../../types/event';
 import { useHistory } from '../../hooks/useHistory';
 
 type Current = {
@@ -33,20 +33,24 @@ export type ViewerValue = {
 
 export const ViewerContainer = createContainer<ViewerValue>(() => {
   const history = useHistory();
-  const worker = useContext(WorkerContext);
+  // const worker = useContext(WorkerContext);
 
   const { allItems } = EntityContainer.useContainer();
 
-  const seqRef = useRef(0);
+  //   const seqRef = useRef(0);
   const [current, setCurrent] = useState<Current>(defaultCurrent);
-  const [markersEnabled, setMarkersEnabled] = useState(true);
+  // const [markersEnabled, setMarkersEnabled] = useState(true);
 
   const open = (id: string) => {
-    history.push({ search: `?id=${id}` });
+    const params = new URL(location.href).searchParams;
+    params.set('id', id);
+    history.push({ search: `?${params.toString()}` });
   };
 
   const close = () => {
-    history.push({ search: '' });
+    const params = new URL(location.href).searchParams;
+    params.delete('id');
+    history.push({ search: `?${params.toString()}` });
   };
 
   const next = () => {
@@ -66,17 +70,18 @@ export const ViewerContainer = createContainer<ViewerValue>(() => {
   };
 
   const toggleMarkers = () => {
-    const value = !markersEnabled;
-    setMarkersEnabled(value);
-
-    if (!value && current.matching != null) {
-      setCurrent((cur) => ({
-        ...cur,
-        matching: null,
-      }));
-    }
+    // const value = !markersEnabled;
+    // setMarkersEnabled(value);
+    //
+    // if (!value && current.matching != null) {
+    //   setCurrent((cur) => ({
+    //     ...cur,
+    //     matching: null,
+    //   }));
+    // }
   };
 
+  /*
   useEffect(() => {
     const { entity } = current;
 
@@ -107,6 +112,7 @@ export const ViewerContainer = createContainer<ViewerValue>(() => {
 
     return () => worker.unsubscribe(WorkerEventType.RESULT_CALC, listener);
   }, [markersEnabled, worker, current]);
+  */
 
   useEffect(() => {
     const sync = (location: Location) => {
@@ -136,7 +142,7 @@ export const ViewerContainer = createContainer<ViewerValue>(() => {
 
   return {
     current,
-    markersEnabled,
+    markersEnabled: false,
     open,
     close,
     next,

@@ -19,6 +19,9 @@ export type RegLink = {
 };
 
 export type RegData = {
+  owner: string;
+  repo: string;
+  runId: number;
   type: 'success' | 'danger';
   actualDir: string;
   expectedDir: string;

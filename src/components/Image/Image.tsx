@@ -60,7 +60,7 @@ export type Props = Omit<
   height?: SizeValue;
   fit?: ObjectFitValue;
   lazy?: boolean;
-  src: string | Promise<string>;
+  src?: Promise<string>;
 };
 
 type InnerProps = Omit<Props, 'lazy'>;
@@ -68,13 +68,11 @@ type InnerProps = Omit<Props, 'lazy'>;
 const ImmediatelyImage = forwardRef<HTMLImageElement, InnerProps>(
   ({ src: _src, width, height, fit, ...rest }, ref) => {
     const wrapperRef = useRef<HTMLSpanElement>(null);
-    const isAsync = typeof _src !== 'string';
-    const [src, setSrc] = useState(isAsync ? null : _src);
+    const [src, setSrc] = useState('');
     const [loaded, setLoaded] = useState(srcCache.has(src));
 
     useEffect(() => {
-      if (typeof _src === 'string') return;
-      _src.then((s) => {
+      _src?.then((s) => {
         if (s === src) return;
         setSrc(s);
       });

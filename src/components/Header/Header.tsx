@@ -138,14 +138,14 @@ export const Header: React.FC<Props> = ({
           <CloseIcon fill={Color.TEXT_SUB} />
         </IconButton>
 
-        <MarkersToggle>
+        {/* <MarkersToggle>
           <Switch
             id="toggle-markers"
             prepend={isSmallViewport ? null : 'Markers'}
             checked={markersEnabled}
             onChange={handleToggle}
           />
-        </MarkersToggle>
+        </MarkersToggle> */}
       </Right>
     </Wrapper>
   );
