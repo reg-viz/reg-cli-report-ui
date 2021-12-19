@@ -52,19 +52,33 @@ const Img = styled.img<{
 type SizeValue = number | string;
 type ObjectFitValue = 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
 
-export type Props = Omit<React.ComponentProps<'img'>, 'width' | 'height'> & {
+export type Props = Omit<
+  React.ComponentProps<'img'>,
+  'width' | 'height' | 'src'
+> & {
   width?: SizeValue;
   height?: SizeValue;
   fit?: ObjectFitValue;
   lazy?: boolean;
+  src: string | Promise<string>;
 };
 
 type InnerProps = Omit<Props, 'lazy'>;
 
 const ImmediatelyImage = forwardRef<HTMLImageElement, InnerProps>(
-  ({ src, width, height, fit, ...rest }, ref) => {
+  ({ src: _src, width, height, fit, ...rest }, ref) => {
     const wrapperRef = useRef<HTMLSpanElement>(null);
+    const isAsync = typeof _src !== 'string';
+    const [src, setSrc] = useState(isAsync ? null : _src);
     const [loaded, setLoaded] = useState(srcCache.has(src));
+
+    useEffect(() => {
+      if (typeof _src === 'string') return;
+      _src.then((s) => {
+        if (s === src) return;
+        setSrc(s);
+      });
+    }, [_src, src]);
 
     useEffect(() => {
       const { current: wrapper } = wrapperRef;
@@ -97,14 +111,16 @@ const ImmediatelyImage = forwardRef<HTMLImageElement, InnerProps>(
           height: size2str(height),
         }}
       >
-        <Img
-          ref={ref as any}
-          loading="lazy"
-          src={src}
-          fit={fit}
-          full={width != null && height != null}
-          {...rest}
-        />
+        {src && (
+          <Img
+            ref={ref as any}
+            loading="lazy"
+            src={src}
+            fit={fit}
+            full={width != null && height != null}
+            {...rest}
+          />
+        )}
 
         {!loaded && (
           <Loading>

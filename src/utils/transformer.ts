@@ -16,9 +16,6 @@ export const toEntities = (
   dirs: Dirs,
   items: RegItem[],
 ): RegEntity[] => {
-  const join = (key: keyof Dirs, to: string) =>
-    dirs[key].replace(/\/$/, '') + '/' + to.replace(/^\//, '');
-
   return items.map((item) => {
     const id = `${variant}-${item.encoded}`.replace(/[=?]/g, '-');
 
@@ -26,9 +23,9 @@ export const toEntities = (
       id,
       variant,
       name: item.raw,
-      diff: join('diff', item.encoded).replace(/\.[^.]+$/, '.png'),
-      before: join('expected', item.encoded),
-      after: join('actual', item.encoded),
+      diff: item.diffResolver,
+      before: item.expectedResolver,
+      after: item.actualResolver,
     };
   });
 };

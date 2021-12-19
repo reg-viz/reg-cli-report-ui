@@ -8,6 +8,9 @@ export type XIMGDiffConfig = {
 export type RegItem = {
   raw: string;
   encoded: string;
+  diffResolver?: Promise<string>;
+  actualResolver?: Promise<string>;
+  expectedResolver?: Promise<string>;
 };
 
 export type RegLink = {
@@ -36,9 +39,9 @@ export type RegEntity = {
   id: string;
   variant: RegVariant;
   name: string;
-  diff: string;
-  before: string;
-  after: string;
+  diff?: Promise<string>;
+  before?: Promise<string>;
+  after?: Promise<string>;
 };
 
 export type RegStructualItem = {

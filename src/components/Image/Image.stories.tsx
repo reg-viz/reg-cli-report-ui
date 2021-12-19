@@ -24,3 +24,23 @@ export const WithLazy = () => (
     <div style={{ paddingTop: '200vh' }} />
   </>
 );
+
+export const WithPromise = () => (
+  <Image
+    width={500}
+    height={200}
+    src={Promise.resolve('https://via.placeholder.com/500x200')}
+  />
+);
+
+export const WithUnresolved = () => (
+  <Image
+    width={500}
+    height={200}
+    src={
+      new Promise((_) => {
+        return '';
+      })
+    }
+  />
+);
