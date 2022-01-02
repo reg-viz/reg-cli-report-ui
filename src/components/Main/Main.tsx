@@ -65,10 +65,10 @@ const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({
       >
         {({ item: entity }) => {
           const p = new URL(location.href).searchParams;
-          p.set('id', entity.id);
+          p.delete('id');
           return (
             <Card
-              href={`?${p.toString()}`}
+              href={`?${p.toString()}&id=${entity.id}`}
               entity={entity}
               menus={[]}
               onCopy={handleCopy}

@@ -43,8 +43,8 @@ export const ViewerContainer = createContainer<ViewerValue>(() => {
 
   const open = (id: string) => {
     const params = new URL(location.href).searchParams;
-    params.set('id', id);
-    history.push({ search: `?${params.toString()}` });
+    params.delete('id');
+    history.push({ search: `?${params.toString()}&id=${id}` });
   };
 
   const close = () => {
