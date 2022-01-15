@@ -324,5 +324,5 @@ export const ComparisonView: React.FC<Props> = ({
 };
 
 ComparisonView.defaultProps = {
-  defaultMode: 'slide',
+  defaultMode: 'diff',
 };
