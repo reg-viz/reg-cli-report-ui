@@ -48,11 +48,11 @@ const View = styled.div`
 
 const Before = styled(View)`
   z-index: 0;
-  transform: translate(0, 0);
 `;
 
 const After = styled(View)`
   z-index: 1;
+  transform: translate(0, 0);
 `;
 
 const Handle = styled.span`
@@ -182,37 +182,37 @@ export const Slide: React.FC<Props> = ({
           onChange={handleChange}
         />
 
-        <Frame style={{ width: `${value}%` }}>
-          <Before
-            style={{
-              top: 0,
-              left: canvas.width / 2 - image.before.width / 2,
-              width: image.before.width,
-              height: image.before.height,
-            }}
-          >
-            <Image
-              ref={image.before.ref}
-              src={before}
-              onLoad={image.before.handleLoad}
-            />
-            <Markers variant="before" matching={matching} />
-          </Before>
-        </Frame>
-
-        <After
+        <Before
           style={{
-            width: image.after.width,
-            height: image.after.height,
+            width: image.before.width,
+            height: image.before.height,
           }}
         >
           <Image
-            ref={image.after.ref}
-            src={after}
-            onLoad={image.after.handleLoad}
+            ref={image.before.ref}
+            src={before}
+            onLoad={image.before.handleLoad}
           />
-          <Markers variant="after" matching={matching} />
-        </After>
+          <Markers variant="before" matching={matching} />
+        </Before>
+
+        <Frame style={{ width: `${value}%` }}>
+          <After
+            style={{
+              top: 0,
+              left: canvas.width / 2 - image.after.width / 2,
+              width: image.after.width,
+              height: image.after.height,
+            }}
+          >
+            <Image
+              ref={image.after.ref}
+              src={after}
+              onLoad={image.after.handleLoad}
+            />
+            <Markers variant="after" matching={matching} />
+          </After>
+        </Frame>
 
         <Handle style={{ left: `${value}%` }}>
           <HandleBar />
