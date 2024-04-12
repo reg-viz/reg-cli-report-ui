@@ -1,12 +1,12 @@
 /* eslint-disable no-console, import/newline-after-import */
 import Fuse from 'fuse.js';
+import packageJson from 'x-img-diff-js/package.json';
 import { ModuleClass } from './detector-wrapper';
 import type { WorkerEvent, WorkerEventData } from './types/event';
 import { WorkerEventType } from './types/event';
 import type { RegEntity } from './types/reg';
-const ximgdiffVersionString = require('x-img-diff-js/package.json')
-  .version as string;
 
+const ximgdiffVersionString = packageJson.version as string;
 const _self = self as any;
 
 // // TODO Dynamic embed
@@ -111,7 +111,7 @@ _self.addEventListener('message', ({ data }: WorkerEvent) => {
       break;
   }
 });
-//
+
 // // TODO Dynamic embed
 // importScripts('/cv-wasm_browser.js');
 // // TODO Dynamic embed

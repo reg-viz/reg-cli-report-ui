@@ -28,7 +28,7 @@ const Inner = styled(BaseButton)`
 
 export type Props = BaseButtonProps;
 
-export const Item: React.FC<Props> = ({ children, ...rest }) => {
+export const Item = ({ children, ...rest }: Props) => {
   return (
     <li>
       <Inner {...rest}>

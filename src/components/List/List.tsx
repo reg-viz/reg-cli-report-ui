@@ -19,14 +19,11 @@ const Header = styled.div`
   color: ${Color.TEXT_SUB};
 `;
 
-export type Props = {
+export type Props = React.PropsWithChildren<{
   header?: React.ReactNode;
-};
+}>;
 
-export const List: React.FC<Props> & {
-  Item: typeof Item;
-  Expandable: typeof Expandable;
-} = ({ header, children, ...rest }) => (
+export const List = ({ header, children, ...rest }: Props) => (
   <Wrapper {...rest}>
     {header == null ? null : <Header>{header}</Header>}
     <ul>{children}</ul>

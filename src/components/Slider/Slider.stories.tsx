@@ -1,10 +1,16 @@
-import React from 'react';
-import { withPadding } from '../../styles/storybook-decorators';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Slider } from './';
 
-export default {
-  title: 'Slider',
-  decorators: [withPadding()],
-};
+type Component = typeof Slider;
+type Story = StoryObj<Component>;
 
-export const Overview = () => <Slider min={0} max={1} step={0.01} />;
+export default {
+  component: Slider,
+  args: {
+    min: 0,
+    max: 1,
+    step: 0.01,
+  },
+} satisfies Meta<Component>;
+
+export const Overview: Story = {};

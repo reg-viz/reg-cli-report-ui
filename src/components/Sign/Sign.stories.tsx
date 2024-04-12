@@ -1,17 +1,21 @@
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { withPadding } from '../../styles/storybook-decorators';
 import { Sign } from './';
 
-export default {
-  title: 'Sign',
-  decorators: [withPadding()],
-};
+type Component = typeof Sign;
+type Story = StoryObj<Component>;
 
-export const Overview = () => (
-  <>
-    <Sign variant="passed" />
-    <Sign variant="new" />
-    <Sign variant="changed" />
-    <Sign variant="deleted" />
-  </>
-);
+export default {
+  component: Sign,
+} satisfies Meta<Component>;
+
+export const Overview: Story = {
+  render: () => (
+    <>
+      <Sign variant="passed" />
+      <Sign variant="new" />
+      <Sign variant="changed" />
+      <Sign variant="deleted" />
+    </>
+  ),
+};

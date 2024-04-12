@@ -11,7 +11,7 @@ export type Props = React.ComponentProps<'svg'> & {
   size?: number;
 };
 
-export const Logo: React.FC<Props> = ({ size, ...rest }) => (
+export const Logo = ({ size, ...rest }: Props) => (
   <Wrapper>
     <svg
       width={size}

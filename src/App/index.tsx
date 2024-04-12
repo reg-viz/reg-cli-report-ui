@@ -15,7 +15,7 @@ export type Props = {
   worker: WorkerClient;
 };
 
-export const App: React.FC<Props> = ({ data, worker }) => (
+export const App = ({ data, worker }: Props) => (
   <HistoryContextProvider>
     <AnchorScrollProvider>
       <WorkerContext.Provider value={worker}>

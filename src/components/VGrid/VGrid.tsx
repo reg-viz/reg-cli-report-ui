@@ -251,7 +251,7 @@ export class VGrid<T, K extends keyof T> extends React.Component<
     const { itemKey } = this.props;
     const targetName = hash.slice(1);
     const foundIndex = this.props.items.findIndex((item) => {
-      const key = (item[itemKey] as unknown) as string;
+      const key = item[itemKey] as unknown as string;
       return key === targetName;
     });
     if (foundIndex === -1) return;
@@ -337,7 +337,7 @@ export class VGrid<T, K extends keyof T> extends React.Component<
         <ul style={innerStyle}>
           {this.sliceVisibleItems().map((item, index) => (
             <li
-              key={(item[itemKey] as unknown) as string}
+              key={item[itemKey] as unknown as string}
               style={{ height: cellHeight }}
             >
               {children({ item, index })}

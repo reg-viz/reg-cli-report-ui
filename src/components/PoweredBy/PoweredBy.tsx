@@ -38,7 +38,7 @@ const Text = styled.span`
 
 export type Props = {};
 
-export const PoweredBy: React.FC<Props> = () => (
+export const PoweredBy = () => (
   <aside>
     <Button href={REG_VIS_URL}>
       <Icon>

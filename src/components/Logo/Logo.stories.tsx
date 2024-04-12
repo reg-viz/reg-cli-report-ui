@@ -1,14 +1,18 @@
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { withPadding } from '../../styles/storybook-decorators';
 import { Logo } from './';
 
-export default {
-  title: 'Logo',
-  decorators: [withPadding()],
-};
+type Component = typeof Logo;
+type Story = StoryObj<Component>;
 
-export const Overview = () => (
-  <>
-    <Logo /> <Logo size={30} /> <Logo size={40} />
-  </>
-);
+export default {
+  component: Logo,
+} satisfies Meta<Component>;
+
+export const Overview: Story = {
+  render: () => (
+    <>
+      <Logo /> <Logo size={30} /> <Logo size={40} />
+    </>
+  ),
+};

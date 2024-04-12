@@ -90,7 +90,7 @@ export type Props = {
   onMarkersToggle: (enabled: boolean) => void;
 };
 
-export const Header: React.FC<Props> = ({
+export const Header = ({
   variant,
   title,
   current,
@@ -98,7 +98,7 @@ export const Header: React.FC<Props> = ({
   markersEnabled,
   onRequestClose,
   onMarkersToggle,
-}) => {
+}: Props) => {
   const isSmallViewport = useMedia(`(max-width: ${BreakPoint.SMALL - 1}px)`);
 
   const handleCloseClick = useCallback(

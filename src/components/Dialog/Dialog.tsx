@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useEffect, useState } from 'react';
-import CSSTransition from 'react-transition-group/CSSTransition';
+import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 import { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock';
 import type { FocusTrap } from 'focus-trap';
@@ -172,14 +172,14 @@ export type Props = Omit<React.ComponentPropsWithoutRef<'div'>, 'id'> & {
   onRequestClose: () => void;
 };
 
-export const Dialog: React.FC<Props> = ({
+export const Dialog = ({
   id,
   title,
   open,
   children,
   onRequestClose,
   ...rest
-}) => {
+}: Props) => {
   const [mounted, setMounted] = useState(false);
 
   const bodyRef = useRef<HTMLDivElement>(null);

@@ -14,7 +14,7 @@ export type Props = {
   onRendered?: () => void;
 };
 
-export const Portal: React.FC<Props> = ({ children, onRendered }) => {
+export const Portal = ({ children, onRendered }: Props) => {
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {

@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { toStructualItems, toEntities } from '../transformer';
 import { createRegEntity } from '../../mocks';
 

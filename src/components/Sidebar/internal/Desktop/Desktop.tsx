@@ -11,7 +11,7 @@ import {
 } from '../../../../styles/variables';
 import { SidebarContainer } from '../../../../containers/sidebar/SidebarContainer';
 import { SidebarInner } from '../SidebarInner';
-import { Props } from '../../types';
+import type { Props } from '../../types';
 
 const DEFAULT_WIDTH = 300;
 
@@ -69,9 +69,9 @@ const Wrapper = styled(Resizable)`
   }
 `;
 
-export { Props };
+export type { Props };
 
-export const Desktop: React.FC<Props> = (props) => {
+export const Desktop = (props: Props) => {
   const sidebar = SidebarContainer.useContainer();
 
   return (

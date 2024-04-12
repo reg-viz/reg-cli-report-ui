@@ -62,7 +62,7 @@ const InnerList = styled.ul`
   list-style: none;
 `;
 
-export type Props = {
+export type Props = React.PropsWithChildren<{
   large?: boolean;
   depth?: number;
   open?: boolean;
@@ -71,7 +71,7 @@ export type Props = {
   meta?: React.ReactNode;
   icon?: React.ReactNode;
   onChange?: (open: boolean) => void;
-};
+}>;
 
 type State = {
   open: boolean;

@@ -6,6 +6,8 @@ export type HistoryContextValue = History;
 
 export const HistoryContext = createContext<HistoryContextValue>(history);
 
-export const HistoryContextProvider: React.FC = ({ children }) => (
+export const HistoryContextProvider = ({
+  children,
+}: React.PropsWithChildren) => (
   <HistoryContext.Provider value={history}>{children}</HistoryContext.Provider>
 );

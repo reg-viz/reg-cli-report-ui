@@ -105,13 +105,7 @@ export type Props = {
   onChange: (value: number) => void;
 };
 
-export const Slide: React.FC<Props> = ({
-  before,
-  after,
-  value,
-  matching,
-  onChange,
-}) => {
+export const Slide = ({ before, after, value, matching, onChange }: Props) => {
   const { canvas, image } = useComparisonImage(before, after);
 
   const innerRef = useRef<HTMLDivElement>(null);

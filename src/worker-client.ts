@@ -1,7 +1,11 @@
-import { EventEmitter } from 'events';
-import { debounce } from 'debounce';
+import debounce from 'debounce';
+import mitt from 'mitt';
 import type { XIMGDiffConfig } from './types/reg';
-import type { WorkerEvent, WorkerEventDataPayload } from './types/event';
+import type {
+  WorkerEvent,
+  WorkerEventDataPayload,
+  WorkerEventDataPayloadMap,
+} from './types/event';
 import { WorkerEventType } from './types/event';
 
 const fromCanvas = (img: HTMLImageElement): ImageData => {
@@ -39,7 +43,7 @@ export class WorkerClient {
     [key: string]: WorkerEventDataPayload<WorkerEventType.RESULT_CALC>;
   } = {};
   private _seq = 0;
-  private _emitter = new EventEmitter();
+  private _emitter = mitt<WorkerEventDataPayloadMap>();
   private _worker: Worker | null = null;
 
   public start(config: XIMGDiffConfig) {
@@ -48,7 +52,7 @@ export class WorkerClient {
       return;
     }
 
-    this._worker = new Worker(workerUrl);
+    this._worker = new Worker(workerUrl, {});
 
     this._worker.addEventListener('message', ({ data }: WorkerEvent) => {
       switch (data.type) {

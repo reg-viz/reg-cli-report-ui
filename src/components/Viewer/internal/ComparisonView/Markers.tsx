@@ -46,7 +46,7 @@ export type Props = {
   matching: Matching | null;
 };
 
-export const Markers: React.FC<Props> = ({ variant, matching }) => {
+export const Markers = ({ variant, matching }: Props) => {
   if (matching == null) {
     return null;
   }

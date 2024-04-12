@@ -1,32 +1,40 @@
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { withPadding } from '../../styles/storybook-decorators';
 import { Switch } from './';
 
-const defaultProps = {
-  id: 'switch',
-};
+type Component = typeof Switch;
+type Story = StoryObj<Component>;
 
 export default {
-  title: 'Switch',
-  decorators: [withPadding()],
+  component: Switch,
+  args: {
+    id: 'switch',
+  },
+} satisfies Meta<Component>;
+
+export const Overview: Story = {};
+
+export const WithChecked: Story = {
+  args: {
+    checked: true,
+  },
 };
 
-export const Overview = () => <Switch {...defaultProps} />;
+export const WithPrepend: Story = {
+  args: {
+    prepend: <span>Before</span>,
+  },
+};
 
-export const WithChecked = () => <Switch {...defaultProps} checked={true} />;
+export const WithAppend: Story = {
+  args: {
+    prepend: <span>After</span>,
+  },
+};
 
-export const WithPrepend = () => (
-  <Switch {...defaultProps} prepend={<span>Before</span>} />
-);
-
-export const WithAppend = () => (
-  <Switch {...defaultProps} append={<span>After</span>} />
-);
-
-export const WithPrependAndAppend = () => (
-  <Switch
-    {...defaultProps}
-    prepend={<span>Before</span>}
-    append={<span>After</span>}
-  />
-);
+export const WithPrependAndAppend: Story = {
+  args: {
+    prepend: <span>Before</span>,
+    append: <span>After</span>,
+  },
+};

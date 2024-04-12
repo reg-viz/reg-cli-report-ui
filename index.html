@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -19,11 +19,16 @@
   </head>
   <body>
     <div id="app"></div>
-    <script type="text/javascript">
+    <script type="module">
+      console.log(import.meta.env.VITE_ENABLED_HUGE);
       window['__reg__'] = {
         type: 'danger',
         hasNew: true,
-        newItems: [{ raw: 'sample/sample.png', encoded: 'sample/sample.png' }],
+        newItems: [
+          { raw: 'sample/sample.png', encoded: 'sample/sample.png' },
+          { raw: 'nest/sample.png?1', encoded: 'nest/sample.png?1' },
+          { raw: 'nest/sample.png?2', encoded: 'nest/sample.png?2' },
+        ],
         hasDeleted: true,
         deletedItems: [
           { raw: 'sample foo bar.png', encoded: 'sample%20foo%20bar.png' },
@@ -35,15 +40,31 @@
           { raw: 'sample.3.png', encoded: 'sample.3.png' },
         ],
         hasFailed: true,
-        failedItems: [...new Uint8Array(1000)].map((_, i) => ({
-          raw: 'sample.png?' + i,
-          encoded: 'sample.png?' + i,
-        })),
+        failedItems:
+          import.meta.env.VITE_ENABLED_HUGE === 'true'
+            ? [...new Uint8Array(1000)].map((_, i) => ({
+                raw: 'sample.png?' + i,
+                encoded: 'sample.png?' + i,
+              }))
+            : [
+                { raw: 'sample.png?1', encoded: 'sample.png?1' },
+                { raw: 'sample.png?2', encoded: 'sample.png?2' },
+                { raw: 'nest/sample.png?3', encoded: 'nest/sample.png?3' },
+                { raw: 'nest/sample.png?4', encoded: 'nest/sample.png?4' },
+                {
+                  raw: 'nest/deep/sample.png?5',
+                  encoded: 'nest/deep/sample.png?5',
+                },
+              ],
         actualDir: './actual',
         expectedDir: './expected',
         diffDir: './diff',
-        ximgdiffConfig: { enabled: true, workerUrl: './worker.js' },
+        ximgdiffConfig: {
+          enabled: true,
+          workerUrl: './worker.js',
+        },
       };
     </script>
+    <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>

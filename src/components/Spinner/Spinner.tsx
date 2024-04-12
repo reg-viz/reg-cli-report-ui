@@ -8,7 +8,7 @@ export type Props = {
   'aria-label': string;
 };
 
-export const Spinner: React.FC<Props> = ({ size, color, ...rest }) => (
+export const Spinner = ({ size, color, ...rest }: Props) => (
   <MDSpinner {...rest} size={size} singleColor={color} />
 );
 

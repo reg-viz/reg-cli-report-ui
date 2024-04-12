@@ -40,4 +40,4 @@ const Renderer: React.FC = () => {
   );
 };
 
-export const Viewer: React.FC<Props> = () => <Renderer />;
+export const Viewer = () => <Renderer />;

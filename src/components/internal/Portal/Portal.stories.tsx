@@ -1,15 +1,19 @@
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { withPadding } from '../../../styles/storybook-decorators';
 import { Portal } from './';
 
-export default {
-  title: 'Portal',
-  decorators: [withPadding()],
-};
+type Component = typeof Portal;
+type Story = StoryObj<Component>;
 
-export const Overview = () => (
-  <>
-    <div>Outside Portal</div>
-    <Portal>Inside Portal</Portal>
-  </>
-);
+export default {
+  component: Portal,
+} satisfies Meta<Component>;
+
+export const Overview: Story = {
+  render: () => (
+    <>
+      <div>Outside Portal</div>
+      <Portal>Inside Portal</Portal>
+    </>
+  ),
+};

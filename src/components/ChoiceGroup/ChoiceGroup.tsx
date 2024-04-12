@@ -37,12 +37,7 @@ export type Props = Omit<React.ComponentPropsWithoutRef<'ul'>, 'onChange'> & {
   onChange: (value: string, index: number) => void;
 };
 
-export const ChoiceGroup: React.FC<Props> = ({
-  value,
-  options,
-  onChange,
-  ...rest
-}) => {
+export const ChoiceGroup = ({ value, options, onChange, ...rest }: Props) => {
   const rootRef = useRef<HTMLUListElement>(null);
 
   const changedByKey = useRef(false);

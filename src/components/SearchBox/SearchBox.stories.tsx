@@ -1,13 +1,16 @@
-import React from 'react';
 import { action } from '@storybook/addon-actions';
-import { withPadding } from '../../styles/storybook-decorators';
+import type { Meta, StoryObj } from '@storybook/react';
 import { SearchBox } from './';
 
-export default {
-  title: 'SearchBox',
-  decorators: [withPadding()],
-};
+type Component = typeof SearchBox;
+type Story = StoryObj<Component>;
 
-export const Overview = () => (
-  <SearchBox placeholder="Filter by file name" onChange={action('onChange')} />
-);
+export default {
+  component: SearchBox,
+  args: {
+    placeholder: 'Filter by file name',
+    onChange: action('onChange'),
+  },
+} satisfies Meta<Component>;
+
+export const Overview: Story = {};
