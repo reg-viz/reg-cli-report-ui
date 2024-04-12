@@ -46,6 +46,12 @@ const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({
   const notification = NotificationContainer.useContainer();
   const title = titles[variant];
 
+  const createLinkToDetail = useCallback((id: string) => {
+    const params = new URL(location.href).searchParams;
+    params.set('id', id);
+    return '?' + params.toString();
+  }, []);
+
   const handleCopy = useCallback(() => {
     notification.notify('Copied URL to clipboard');
   }, [notification]);
@@ -65,7 +71,7 @@ const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({
       >
         {({ item: entity }) => (
           <Card
-            href={`?id=${entity.id}`}
+            href={createLinkToDetail(entity.id)}
             entity={entity}
             menus={[]}
             onCopy={handleCopy}
