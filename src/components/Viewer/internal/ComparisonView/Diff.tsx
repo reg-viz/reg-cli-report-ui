@@ -5,4 +5,4 @@ export type Props = {
   src: string;
 };
 
-export const Diff: React.FC<Props> = ({ src }) => <Image src={src} />;
+export const Diff = ({ src }: Props) => <Image src={src} />;

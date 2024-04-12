@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import CSSTransition from 'react-transition-group/CSSTransition';
+import { CSSTransition } from 'react-transition-group';
 import { Easing } from '../../../styles/variables';
 
 const Wrapper = styled('div')<{ duration: { enter: number; exit: number } }>`

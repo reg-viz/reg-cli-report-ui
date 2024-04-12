@@ -38,7 +38,7 @@ export type Props = {
   matching: Matching | null;
 };
 
-export const Blend: React.FC<Props> = ({ before, after, value, matching }) => {
+export const Blend = ({ before, after, value, matching }: Props) => {
   const { canvas, image } = useComparisonImage(before, after);
 
   return (

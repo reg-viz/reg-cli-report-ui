@@ -52,7 +52,7 @@ export type Props = {
   onClick: () => void;
 };
 
-export const Toggle: React.FC<Props> = ({ open, onClick }) => {
+export const Toggle = ({ open, onClick }: Props) => {
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();

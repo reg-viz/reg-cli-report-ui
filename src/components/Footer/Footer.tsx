@@ -25,7 +25,7 @@ const Wrapper = styled.footer`
 
 export type Props = {};
 
-export const Footer: React.FC<Props> = () => (
+export const Footer = () => (
   <Wrapper>
     <Container>
       <Logo size={40} />

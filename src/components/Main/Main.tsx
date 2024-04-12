@@ -39,9 +39,12 @@ const gridOptions = [
   },
 ];
 
-const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({
+const Content = ({
   variant,
   entities,
+}: {
+  variant: RegVariant;
+  entities: RegEntity[];
 }) => {
   const notification = NotificationContainer.useContainer();
   const title = titles[variant];
@@ -76,7 +79,7 @@ const Content: React.FC<{ variant: RegVariant; entities: RegEntity[] }> = ({
   );
 };
 
-export const Main: React.FC<Props> = () => {
+export const Main = () => {
   const entities = EntityContainer.useContainer();
 
   return (

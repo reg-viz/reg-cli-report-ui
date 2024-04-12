@@ -1,4 +1,4 @@
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { createRegEntity } from '../../../../mocks';
 import { ComparisonView } from './ComparisonView';
 
@@ -20,58 +20,67 @@ const largeAfterEntity = createRegEntity({
   after: 'https://via.placeholder.com/700x400?text=after',
 });
 
-const defaultProps = {
-  entity: defaultEntity,
-  matching: null,
-  defaultMode: 'slide',
-};
+type Component = typeof ComparisonView;
+type Story = StoryObj<Component>;
 
 export default {
-  title: 'Viewer/internal/ComparisonView',
+  component: ComparisonView,
+  args: {
+    entity: defaultEntity,
+    matching: null,
+    defaultMode: 'slide',
+  },
+} satisfies Meta<Component>;
+
+export const WithSlide: Story = {};
+
+export const WithDiff: Story = {
+  args: {
+    defaultMode: 'diff',
+  },
 };
 
-export const WithSlide = () => <ComparisonView {...defaultProps} />;
+export const WithTwoUp: Story = {
+  args: {
+    defaultMode: '2up',
+  },
+};
 
-export const WithDiff = () => (
-  <ComparisonView {...defaultProps} defaultMode="diff" />
-);
+export const WithBlend: Story = {
+  args: {
+    defaultMode: 'blend',
+  },
+};
 
-export const WithTwoUp = () => (
-  <ComparisonView {...defaultProps} defaultMode="2up" />
-);
+export const WithToggle: Story = {
+  args: {
+    defaultMode: 'toggle',
+  },
+};
 
-export const WithBlend = () => (
-  <ComparisonView {...defaultProps} defaultMode="blend" />
-);
+export const WithLargeAfterSlide: Story = {
+  args: {
+    entity: largeAfterEntity,
+  },
+};
 
-export const WithToggle = () => (
-  <ComparisonView {...defaultProps} defaultMode="toggle" />
-);
+export const WithLargeAfterTwoUp: Story = {
+  args: {
+    defaultMode: '2up',
+    entity: largeAfterEntity,
+  },
+};
 
-export const WithLargeAfterSlide = () => (
-  <ComparisonView {...defaultProps} entity={largeAfterEntity} />
-);
+export const WithLargeAfterBlend: Story = {
+  args: {
+    defaultMode: 'blend',
+    entity: largeAfterEntity,
+  },
+};
 
-export const WithLargeAfterTwoUp = () => (
-  <ComparisonView
-    {...defaultProps}
-    defaultMode="2up"
-    entity={largeAfterEntity}
-  />
-);
-
-export const WithLargeAfterBlend = () => (
-  <ComparisonView
-    {...defaultProps}
-    defaultMode="blend"
-    entity={largeAfterEntity}
-  />
-);
-
-export const WithLargeAfterToggle = () => (
-  <ComparisonView
-    {...defaultProps}
-    defaultMode="toggle"
-    entity={largeAfterEntity}
-  />
-);
+export const WithLargeAfterToggle: Story = {
+  args: {
+    defaultMode: 'toggle',
+    entity: largeAfterEntity,
+  },
+};

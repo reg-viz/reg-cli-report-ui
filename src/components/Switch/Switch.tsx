@@ -89,7 +89,7 @@ export type Props = Omit<
   append?: React.ReactNode;
 };
 
-export const Switch: React.FC<Props> = ({ id, prepend, append, ...rest }) => {
+export const Switch = ({ id, prepend, append, ...rest }: Props) => {
   const prependId = `${id}-prepend`;
   const appendId = `${id}-append`;
   const describedby = [];

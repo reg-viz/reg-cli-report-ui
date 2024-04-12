@@ -43,7 +43,7 @@ export type Props = React.ComponentPropsWithoutRef<'input'> & {
   inputRef?: React.Ref<HTMLInputElement>;
 };
 
-export const SearchBox: React.FC<Props> = ({ inputRef, children, ...rest }) => {
+export const SearchBox = ({ inputRef, children, ...rest }: Props) => {
   return (
     <Wrapper>
       <Icon aria-hidden="true">

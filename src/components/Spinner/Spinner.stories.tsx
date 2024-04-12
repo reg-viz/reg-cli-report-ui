@@ -1,17 +1,27 @@
-import React from 'react';
-import { withPadding } from '../../styles/storybook-decorators';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Color } from '../../styles/variables';
 import { Spinner } from './';
 
+type Component = typeof Spinner;
+type Story = StoryObj<Component>;
+
 export default {
-  title: 'Spinner',
-  decorators: [withPadding()],
+  component: Spinner,
+  args: {
+    'aria-label': 'Loading...',
+  },
+} satisfies Meta<Component>;
+
+export const Overview: Story = {};
+
+export const WithLarge: Story = {
+  args: {
+    size: 64,
+  },
 };
 
-export const Overview = () => <Spinner aria-label="Loading..." />;
-
-export const WithLarge = () => <Spinner size={64} aria-label="Loading..." />;
-
-export const WithGray = () => (
-  <Spinner color={Color.TEXT_SUB} aria-label="Loading..." />
-);
+export const WithGray: Story = {
+  args: {
+    color: Color.TEXT_SUB,
+  },
+};

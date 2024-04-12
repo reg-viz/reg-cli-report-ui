@@ -1,4 +1,6 @@
-/dist
+dist
+public/cv-wasm_*
+public/worker-dev.js
 
 # Created by https://www.gitignore.io/api/osx,windows,node
 # Edit at https://www.gitignore.io/?templates=osx,windows,node
@@ -135,3 +137,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/osx,windows,node
+
+*storybook.log

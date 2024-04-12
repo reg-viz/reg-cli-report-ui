@@ -42,12 +42,7 @@ export type Props = {
   matching: Matching | null;
 };
 
-export const Toggle: React.FC<Props> = ({
-  before,
-  after,
-  checked,
-  matching,
-}) => {
+export const Toggle = ({ before, after, checked, matching }: Props) => {
   const { canvas, image } = useComparisonImage(before, after);
 
   return (

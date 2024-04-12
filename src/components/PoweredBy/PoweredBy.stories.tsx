@@ -1,10 +1,11 @@
-import React from 'react';
-import { withPadding } from '../../styles/storybook-decorators';
+import type { Meta, StoryObj } from '@storybook/react';
 import { PoweredBy } from './';
 
-export default {
-  title: 'PoweredBy',
-  decorators: [withPadding()],
-};
+type Component = typeof PoweredBy;
+type Story = StoryObj<Component>;
 
-export const Overview = () => <PoweredBy />;
+export default {
+  component: PoweredBy,
+} satisfies Meta<Component>;
+
+export const Overview: Story = {};

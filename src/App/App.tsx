@@ -45,15 +45,11 @@ const Help = styled.span`
 
 export type Props = {};
 
-export const App: React.FC<Props> = () => {
+export const App = () => {
   const sidebar = SidebarContainer.useContainer();
 
-  const {
-    newItems,
-    failedItems,
-    deletedItems,
-    passedItems,
-  } = EntityContainer.useContainer();
+  const { newItems, failedItems, deletedItems, passedItems } =
+    EntityContainer.useContainer();
 
   const [helpDialogOpen, setHelpDialogOpen] = useState(false);
 

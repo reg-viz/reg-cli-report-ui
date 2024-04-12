@@ -46,7 +46,7 @@ export type Props = {
   variant: RegVariant;
 };
 
-export const Sign: React.FC<Props> = ({ variant, ...rest }) => {
+export const Sign = ({ variant, ...rest }: Props) => {
   const { color, label, icon } = signIconMap[variant];
 
   return (

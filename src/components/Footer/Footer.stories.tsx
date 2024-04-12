@@ -1,10 +1,11 @@
-import React from 'react';
-import { withPadding } from '../../styles/storybook-decorators';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Footer } from './';
 
-export default {
-  title: 'Footer',
-  decorators: [withPadding()],
-};
+type Component = typeof Footer;
+type Story = StoryObj<Component>;
 
-export const Overview = () => <Footer />;
+export default {
+  component: Footer,
+} satisfies Meta<Component>;
+
+export const Overview: Story = {};

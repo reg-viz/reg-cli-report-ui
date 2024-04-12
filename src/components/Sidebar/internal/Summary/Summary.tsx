@@ -26,12 +26,17 @@ export type Props = {
   size: number;
 };
 
-const SummaryListItem: React.FC<{
+const SummaryListItem = ({
+  forceOpen,
+  label,
+  depth,
+  item,
+}: {
   forceOpen: boolean;
   label: string;
   depth: number;
   item: RegStructualItem;
-}> = ({ forceOpen, label, depth, item }) => {
+}) => {
   const [open, setOpen] = useForceOpen(forceOpen);
 
   if (item.children.length > 0) {
@@ -66,12 +71,15 @@ const SummaryListItem: React.FC<{
   );
 };
 
-const SummaryList: React.FC<{
+const SummaryList = ({
+  items,
+  ...rest
+}: {
   forceOpen: boolean;
   label: string;
   depth: number;
   items: RegStructualItem[];
-}> = ({ items, ...rest }) => (
+}) => (
   <>
     {items.map((item) => (
       <SummaryListItem key={item.id} {...rest} item={item} />
@@ -79,13 +87,7 @@ const SummaryList: React.FC<{
   </>
 );
 
-export const Summary: React.FC<Props> = ({
-  forceOpen,
-  label,
-  icon,
-  items,
-  size,
-}) => {
+export const Summary = ({ forceOpen, label, icon, items, size }: Props) => {
   const [open, setOpen] = useForceOpen(forceOpen);
 
   if (items.length < 1) {

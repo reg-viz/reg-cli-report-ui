@@ -1,6 +1,5 @@
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { withPadding } from '../../styles/storybook-decorators';
 import { createRegEntity } from '../../mocks';
 import { Card } from './';
 
@@ -13,46 +12,44 @@ const defaultEntity = createRegEntity({
   after: 'https://via.placeholder.com/700x400?text=after',
 });
 
-const defaultProps = {
-  href: '?id=storybook',
-  entity: defaultEntity,
-  menus: [],
-  onCopy: action('onCopy'),
-};
+type Component = typeof Card;
+type Story = StoryObj<Component>;
 
 export default {
-  title: 'Card',
-  decorators: [withPadding()],
-};
+  component: Card,
+  args: {
+    href: '?id=storybook',
+    entity: defaultEntity,
+    menus: [],
+    onCopy: action('onCopy'),
+  },
+} satisfies Meta<Component>;
 
-export const withChanged = () => <Card {...defaultProps} />;
+export const Overview: Story = {};
 
-export const WithNew = () => (
-  <Card
-    {...defaultProps}
-    entity={{
+export const WithNew: Story = {
+  args: {
+    entity: {
       ...defaultEntity,
       variant: 'new',
-    }}
-  />
-);
+    },
+  },
+};
 
-export const WithDeleted = () => (
-  <Card
-    {...defaultProps}
-    entity={{
+export const WithDeleted: Story = {
+  args: {
+    entity: {
       ...defaultEntity,
       variant: 'deleted',
-    }}
-  />
-);
+    },
+  },
+};
 
-export const WithPassed = () => (
-  <Card
-    {...defaultProps}
-    entity={{
+export const WithPassed: Story = {
+  args: {
+    entity: {
       ...defaultEntity,
       variant: 'passed',
-    }}
-  />
-);
+    },
+  },
+};

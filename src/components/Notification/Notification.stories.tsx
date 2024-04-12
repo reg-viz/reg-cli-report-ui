@@ -1,34 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { withPadding } from '../../styles/storybook-decorators';
+import type { Meta, StoryObj } from '@storybook/react';
+import React, { useEffect, useState } from 'react';
 import { Notification } from './Notification';
 
-const defaultProps = {
-  show: true,
-  message: 'Notification !!',
-};
-
-const Demo: React.FC = () => {
-  const [msg, setMsg] = useState('');
-
-  useEffect(() => {
-    setTimeout(() => {
-      setMsg('');
-    }, 1000);
-  }, [msg]);
-
-  return (
-    <>
-      <button onClick={() => setMsg('Notification !!')}>notify</button>
-      <Notification {...defaultProps} show={msg !== ''} message={msg} />
-    </>
-  );
-};
+type Component = typeof Notification;
+type Story = StoryObj<Component>;
 
 export default {
-  title: 'Notification',
-  decorators: [withPadding()],
+  component: Notification,
+  args: {
+    show: true,
+    message: 'Notification !!',
+  },
+} satisfies Meta<Component>;
+
+export const Overview: Story = {
+  render: (args) => {
+    const [msg, setMsg] = useState('');
+
+    useEffect(() => {
+      setTimeout(() => {
+        setMsg('');
+      }, 1000);
+    }, [msg]);
+
+    return (
+      <>
+        <button onClick={() => setMsg('Notification !!')}>notify</button>
+        <Notification {...args} show={msg !== ''} message={msg} />
+      </>
+    );
+  },
 };
 
-export const Overview = () => <Demo />;
-
-export const WithShow = () => <Notification {...defaultProps} />;
+export const WithShow: Story = {};

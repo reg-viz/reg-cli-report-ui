@@ -59,7 +59,7 @@ export type Props = {
   message: string;
 };
 
-export const Notification: React.FC<Props> = ({ show, message }) => {
+export const Notification = ({ show, message }: Props) => {
   return (
     <Portal>
       <Wrapper>

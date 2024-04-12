@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import * as ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import keycode from 'keycode';
@@ -183,81 +183,51 @@ export type Props = {
   onRequestClose?: () => void;
 };
 
-type State = {};
+export const Menu = ({
+  id,
+  open,
+  anchor,
+  placement = 'bottom',
+  children,
+  onRequestClose,
+  ...rest
+}: Props) => {
+  const wrapperRef = useRef<HTMLDivElement>();
+  const focusIndexRef = useRef(0);
+  const focusableRef = useRef<HTMLElement[]>([]);
+  const originalActiveElementRef = useRef<HTMLElement | null>(null);
 
-export class Menu extends React.Component<Props, State> {
-  public static Item = Item;
-
-  public static defaultProps = {
-    placement: 'bottom',
-  };
-
-  private wrapper = React.createRef<HTMLDivElement>();
-  private focusIndex = 0;
-  private focusable: HTMLElement[] = [];
-  private originalActiveElement: HTMLElement | null = null;
-
-  public componentDidUpdate(prevProps: Props): void {
-    const { open, placement } = this.props;
-    const { open: prevOpen, placement: prevPlacement } = prevProps;
-
-    if (placement !== prevPlacement) {
-      this.updatePosition();
+  const updateFocusable = useCallback(() => {
+    if (wrapperRef.current != null) {
+      focusIndexRef.current = 0;
+      focusableRef.current = findFocusable(wrapperRef.current);
     }
+  }, []);
 
-    if (open !== prevOpen && open && this.wrapper.current != null) {
-      this.originalActiveElement = document.activeElement as any;
-      this.updatePosition();
-      this.updateFocusable();
-      this.watchResize();
-      this.focusTo(0);
-    }
-
-    if (open !== prevOpen && !open) {
-      this.restoreOriginalFocus();
-      this.unwatchResize();
-    }
-  }
-
-  public componentWillUnmount(): void {
-    this.focusable = [];
-    this.originalActiveElement = null;
-  }
-
-  private requestClose(): void {
-    if (this.props.onRequestClose != null) {
-      this.props.onRequestClose();
-    }
-  }
-
-  private updatePosition(): void {
-    const { current: wrapper } = this.wrapper;
-    const { anchor: anchorRef, placement } = this.props;
-
-    if (wrapper == null || anchorRef == null || placement == null) {
+  const updatePosition = useCallback(() => {
+    const { current: wrapper } = wrapperRef;
+    if (wrapper == null || anchor?.current == null) {
       return;
     }
 
     /* eslint-disable-next-line react/no-find-dom-node */
-    const anchor = ReactDOM.findDOMNode(
-      anchorRef.current,
-    ) as HTMLElement | null;
-    if (anchor == null) {
+    const target = ReactDOM.findDOMNode(anchor.current) as HTMLElement | null;
+    if (target == null) {
       return;
     }
 
-    const rect = anchor.getBoundingClientRect();
+    const rect = target.getBoundingClientRect();
     let top: number;
     let left: number;
 
     switch (placement) {
       case 'top-left':
         top = window.pageYOffset + rect.bottom - wrapper.clientHeight;
-        left = rect.left + anchor.clientWidth - wrapper.clientWidth;
+        left = rect.left + target.clientWidth - wrapper.clientWidth;
         break;
       case 'top':
         top = window.pageYOffset + rect.bottom - wrapper.clientHeight;
-        left = rect.left + anchor.clientWidth / 2 - wrapper.clientWidth / 2;
+        left = rect.left + target.clientWidth / 2 - wrapper.clientWidth / 2;
         break;
       case 'top-right':
         top = window.pageYOffset + rect.bottom - wrapper.clientHeight;
@@ -268,7 +238,7 @@ export class Menu extends React.Component<Props, State> {
         top =
           window.pageYOffset +
           rect.top +
-          anchor.clientHeight / 2 -
+          target.clientHeight / 2 -
           wrapper.clientHeight / 2;
         left = rect.left;
         break;
@@ -279,20 +249,20 @@ export class Menu extends React.Component<Props, State> {
         break;
       case 'bottom':
         top = window.pageYOffset + rect.top;
-        left = rect.left + anchor.clientWidth / 2 - wrapper.clientWidth / 2;
+        left = rect.left + target.clientWidth / 2 - wrapper.clientWidth / 2;
         break;
       case 'bottom-left':
         top = window.pageYOffset + rect.top;
-        left = rect.left + anchor.clientWidth - wrapper.clientWidth;
+        left = rect.left + target.clientWidth - wrapper.clientWidth;
         break;
 
       case 'left':
         top =
           window.pageYOffset +
           rect.top +
-          anchor.clientHeight / 2 -
+          target.clientHeight / 2 -
           wrapper.clientHeight / 2;
-        left = rect.left + anchor.clientWidth - wrapper.clientWidth;
+        left = rect.left + target.clientWidth - wrapper.clientWidth;
         break;
 
       default:
@@ -302,147 +272,178 @@ export class Menu extends React.Component<Props, State> {
 
     wrapper.style.top = `${top}px`;
     wrapper.style.left = `${left}px`;
-  }
+  }, [anchor, placement]);
 
-  private restoreOriginalFocus(): void {
-    if (this.originalActiveElement != null) {
-      this.originalActiveElement.focus();
-    }
-  }
+  const handleRendered = useCallback(() => {
+    updateFocusable();
+  }, [updateFocusable]);
 
-  private nextFocus(): void {
-    const { length } = this.focusable;
-    const next = this.focusIndex + 1;
+  const handleResize = useMemo(
+    () =>
+      debounce(() => {
+        updatePosition();
+      }, RESIZE_DEBOUNCE_MS),
+    [updatePosition],
+  );
 
-    this.focusTo(next < length ? next : 0);
-  }
+  const requestClose = useCallback(() => {
+    onRequestClose?.();
+  }, [onRequestClose]);
 
-  private previousFocus(): void {
-    const { length } = this.focusable;
-    const previous = this.focusIndex - 1;
+  const focusTo = useCallback((index: number) => {
+    focusIndexRef.current = index;
+    tryFocus(focusableRef.current[index]);
+  }, []);
 
-    this.focusTo(previous > -1 ? previous : Math.max(0, length - 1));
-  }
-
-  private focusTo(index: number): void {
-    this.focusIndex = index;
-    tryFocus(this.focusable[index]);
-  }
-
-  private updateFocusable(): void {
-    const { current: wrapper } = this.wrapper;
-
-    if (wrapper != null) {
-      this.focusIndex = 0;
-      this.focusable = findFocusable(wrapper);
-    }
-  }
-
-  private watchResize(): void {
-    window.addEventListener('resize', this.handleResize, false);
-  }
-
-  private unwatchResize(): void {
-    window.removeEventListener('resize', this.handleResize, false);
-  }
-
-  public render(): JSX.Element {
-    const {
-      id,
-      open,
-      anchor,
-      placement: _placement,
-      children,
-      onRequestClose,
-      ...rest
-    } = this.props;
-    const placement = _placement as Placement;
-
-    return (
-      <Portal onRendered={this.handleRendered}>
-        <div>
-          <CSSTransition
-            classNames="menu"
-            in={open}
-            timeout={{
-              enter: Duration.MEDIUM_IN,
-              exit: Duration.MEDIUM_OUT,
-            }}
-            unmountOnExit={true}
-          >
-            <Wrapper
-              ref={this.wrapper}
-              {...rest}
-              id={id}
-              placement={placement}
-              onKeyDown={this.handleKeydown}
-            >
-              <Scale placement={placement}>
-                <Opacity placement={placement}>
-                  <List>{children}</List>
-                </Opacity>
-              </Scale>
-            </Wrapper>
-          </CSSTransition>
-
-          {open && (
-            <Backdrop
-              type="button"
-              aria-label="Close menu"
-              aria-controls={id}
-              onFocus={this.handleBackdropFocus}
-              onClick={this.handleBackdropClick}
-            />
-          )}
-        </div>
-      </Portal>
-    );
-  }
-
-  private handleRendered = () => {
-    this.updateFocusable();
-  };
-
-  private handleResize = debounce(() => {
-    this.updatePosition();
-  }, RESIZE_DEBOUNCE_MS);
-
-  private handleKeydown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (!this.props.open) {
+  const nextFocus = useCallback(() => {
+    const { current: focusable } = focusableRef;
+    if (focusable == null) {
       return;
     }
 
-    const cancel = () => {
-      e.preventDefault();
-      e.stopPropagation();
-    };
+    const next = focusIndexRef.current + 1;
 
-    switch (keycode(e as any)) {
-      case 'tab':
-      case 'esc':
-        cancel();
-        this.requestClose();
-        break;
-      case 'down':
-      case 'j':
-        cancel();
-        this.nextFocus();
-        break;
-      case 'up':
-      case 'k':
-        cancel();
-        this.previousFocus();
-        break;
+    focusTo(next < focusable.length ? next : 0);
+  }, [focusTo]);
+
+  const previousFocus = useCallback(() => {
+    const { current: focusable } = focusableRef;
+    if (focusable == null) {
+      return;
     }
-  };
 
-  private handleBackdropFocus = (e: React.FocusEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    this.requestClose();
-  };
+    const previous = focusIndexRef.current - 1;
 
-  private handleBackdropClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    this.requestClose();
-  };
-}
+    focusTo(previous > -1 ? previous : Math.max(0, focusable.length - 1));
+  }, [focusTo]);
+
+  const restoreOriginalFocus = useCallback(() => {
+    const { current: el } = originalActiveElementRef;
+    if (el != null) {
+      el.focus();
+    }
+  }, []);
+
+  const watchResize = useCallback(() => {
+    window.addEventListener('resize', handleResize, false);
+  }, [handleResize]);
+
+  const unwatchResize = useCallback(() => {
+    window.removeEventListener('resize', handleResize, false);
+  }, [handleResize]);
+
+  const handleKeydown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (!open) {
+        return;
+      }
+
+      const cancel = () => {
+        e.preventDefault();
+        e.stopPropagation();
+      };
+
+      switch (keycode(e as any)) {
+        case 'tab':
+        case 'esc':
+          cancel();
+          requestClose();
+          break;
+        case 'down':
+        case 'j':
+          cancel();
+          nextFocus();
+          break;
+        case 'up':
+        case 'k':
+          cancel();
+          previousFocus();
+          break;
+      }
+    },
+    [open, nextFocus, previousFocus, requestClose],
+  );
+
+  const handleBackdropFocus = useCallback(
+    (e: React.FocusEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      requestClose();
+    },
+    [requestClose],
+  );
+
+  const handleBackdropClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      requestClose();
+    },
+    [requestClose],
+  );
+
+  useEffect(() => {
+    updatePosition();
+  }, [placement, updatePosition]);
+
+  useEffect(() => {
+    if (open) {
+      originalActiveElementRef.current = document.activeElement as any;
+      updatePosition();
+      updateFocusable();
+      watchResize();
+      focusTo(0);
+    } else {
+      restoreOriginalFocus();
+      unwatchResize();
+    }
+  }, [
+    updatePosition,
+    updateFocusable,
+    watchResize,
+    focusTo,
+    open,
+    restoreOriginalFocus,
+    unwatchResize,
+  ]);
+
+  return (
+    <Portal onRendered={handleRendered}>
+      <div>
+        <CSSTransition
+          classNames="menu"
+          in={open}
+          timeout={{
+            enter: Duration.MEDIUM_IN,
+            exit: Duration.MEDIUM_OUT,
+          }}
+          unmountOnExit={true}
+        >
+          <Wrapper
+            ref={wrapperRef as any}
+            {...rest}
+            id={id}
+            placement={placement}
+            onKeyDown={handleKeydown}
+          >
+            <Scale placement={placement}>
+              <Opacity placement={placement}>
+                <List>{children}</List>
+              </Opacity>
+            </Scale>
+          </Wrapper>
+        </CSSTransition>
+
+        {open && (
+          <Backdrop
+            type="button"
+            aria-label="Close menu"
+            aria-controls={id}
+            onFocus={handleBackdropFocus}
+            onClick={handleBackdropClick}
+          />
+        )}
+      </div>
+    </Portal>
+  );
+};
+
+Menu.Item = Item;

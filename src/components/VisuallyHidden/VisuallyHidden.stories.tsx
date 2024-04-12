@@ -1,10 +1,14 @@
-import React from 'react';
-import { withPadding } from '../../styles/storybook-decorators';
+import type { Meta, StoryObj } from '@storybook/react';
 import { VisuallyHidden } from './';
 
-export default {
-  title: 'VisuallyHidden',
-  decorators: [withPadding()],
-};
+type Component = typeof VisuallyHidden;
+type Story = StoryObj<Component>;
 
-export const Overview = () => <VisuallyHidden>Hidden</VisuallyHidden>;
+export default {
+  component: VisuallyHidden,
+  args: {
+    children: 'Hidden',
+  },
+} satisfies Meta<Component>;
+
+export const Overview: Story = {};

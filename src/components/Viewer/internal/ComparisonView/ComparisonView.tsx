@@ -174,12 +174,12 @@ export type Props = {
   defaultMode?: string;
 };
 
-export const ComparisonView: React.FC<Props> = ({
+export const ComparisonView = ({
   scrollerRef,
   entity,
   matching,
   defaultMode,
-}) => {
+}: Props) => {
   const [mode, setMode] = useState(defaultMode!);
   const [slideValue, setSlideValue] = useState(50);
   const [blendValue, setBlendValue] = useState(0.5);

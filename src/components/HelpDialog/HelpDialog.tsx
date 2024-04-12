@@ -46,16 +46,19 @@ const Wrapper = styled.div`
   }
 `;
 
-const Title: React.FC = ({ children }) => (
+const Title = ({ children }: React.PropsWithChildren) => (
   <tr>
     <th colSpan={2}>{children}</th>
   </tr>
 );
 
-const Item: React.FC<{
+const Item = ({
+  description,
+  shortcuts,
+}: {
   description: React.ReactNode;
   shortcuts: (string | string[])[];
-}> = ({ description, shortcuts }) => {
+}) => {
   return (
     <tr>
       <td>{description}</td>
@@ -83,7 +86,7 @@ const Item: React.FC<{
 
 export type Props = Omit<DialogProps, 'id' | 'title'>;
 
-export const HelpDialog: React.FC<Props> = ({ ...rest }) => (
+export const HelpDialog = ({ ...rest }: Props) => (
   <Dialog {...rest} id="help-dialog" title="Keyboard shortcuts">
     <Wrapper>
       <table>

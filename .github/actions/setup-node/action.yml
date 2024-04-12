@@ -1,0 +1,12 @@
+name: Setup Node
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version-file: '.node-version'
+        cache: 'yarn'
+
+    - shell: bash
+      run: yarn --frozen-lockfile --check-files

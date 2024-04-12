@@ -1,10 +1,14 @@
-import React from 'react';
-import { withPadding } from '../../styles/storybook-decorators';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Snackbar } from './';
 
-export default {
-  title: 'Snackbar',
-  decorators: [withPadding()],
-};
+type Component = typeof Snackbar;
+type Story = StoryObj<Component>;
 
-export const Overview = () => <Snackbar>Snackbar</Snackbar>;
+export default {
+  component: Snackbar,
+  args: {
+    children: 'Snackbar',
+  },
+} satisfies Meta<Component>;
+
+export const Overview: Story = {};

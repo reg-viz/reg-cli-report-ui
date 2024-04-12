@@ -44,11 +44,7 @@ export type Props = {
   listRef?: React.RefObject<HTMLDivElement>;
 };
 
-export const SidebarInner: React.FC<Props> = ({
-  scrollerRef,
-  inputRef,
-  listRef,
-}) => {
+export const SidebarInner = ({ scrollerRef, inputRef, listRef }: Props) => {
   const entities = EntityContainer.useContainer();
   const sidebar = SidebarContainer.useContainer();
   const innerRef = scrollerRef || createRef();

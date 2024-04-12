@@ -27,7 +27,7 @@ export type Props = {
   matching: Matching | null;
 };
 
-export const TwoUp: React.FC<Props> = ({ before, after, matching }) => {
+export const TwoUp = ({ before, after, matching }: Props) => {
   return (
     <Wrapper>
       <div>

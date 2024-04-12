@@ -19,8 +19,8 @@ const Wrapper = styled.div`
   opacity: 0 !important;
 `;
 
-export type Props = {};
+export type Props = React.PropsWithChildren<{}>;
 
-export const VisuallyHidden: React.FC<Props> = ({ children, ...rest }) => (
+export const VisuallyHidden = ({ children, ...rest }: Props) => (
   <Wrapper {...rest}>{children}</Wrapper>
 );

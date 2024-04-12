@@ -31,9 +31,9 @@ const Wrapper = styled.div`
   margin: ${Space}px;
 `;
 
-export type Props = {};
+export type Props = React.PropsWithChildren<{}>;
 
-export const {{ name }}: React.FC<Props> = ({ children, ...rest }) => (
+export const {{ name }} = ({ children, ...rest }: Props) => (
   <Wrapper {...rest}>{children}</Wrapper>
 );
 ```
@@ -41,14 +41,16 @@ export const {{ name }}: React.FC<Props> = ({ children, ...rest }) => (
 # `{{ name }}/{{ name }}.stories.tsx`
 
 ```typescript
-import { storiesOf } from '@storybook/react';
-import React from 'react';
-import { withPadding } from '{{ relative "../src/styles/storybook-decorators" }}';
+import type { Meta, StoryObj } from '@storybook/react';
 import { {{ name }} } from './';
 
-storiesOf('{{ name }}', module)
-  .addDecorator(withPadding())
-  .add('overview', () => (
-    <{{ name }}>TODO</{{ name }}>
-  ));
+type Component = typeof {{ name }};
+type Story = StoryObj<Component>;
+
+export default {
+  component: {{ name }},
+  args: {},
+} satisfies Meta<Component>;
+
+export const Overview: Story = {};
 ```

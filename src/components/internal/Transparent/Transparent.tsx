@@ -16,6 +16,4 @@ const Wrapper = styled.span`
 
 export type Props = React.ComponentPropsWithoutRef<'span'>;
 
-export const Transparent: React.FC<Props> = ({ ...rest }) => (
-  <Wrapper {...rest} />
-);
+export const Transparent = ({ ...rest }: Props) => <Wrapper {...rest} />;

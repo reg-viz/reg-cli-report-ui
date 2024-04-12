@@ -1,6 +1,6 @@
-import React from 'react';
 import { action } from '@storybook/addon-actions';
-import { withPadding } from '../../styles/storybook-decorators';
+import React, { useState } from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Spacer } from '../Spacer';
 import { ChoiceGroup } from './';
 
@@ -27,66 +27,55 @@ const options4 = [
   },
 ];
 
-const defaultProps = {
-  options: options3,
-  onChange: action('onChange'),
-};
-
-const Demo: React.FC = () => {
-  const [value, setValue] = React.useState(options3[1].value);
-
-  return (
-    <ChoiceGroup
-      value={value}
-      options={options3}
-      onChange={(val) => {
-        setValue(val);
-      }}
-    />
-  );
-};
+type Component = typeof ChoiceGroup;
+type Story = StoryObj<Component>;
 
 export default {
-  title: 'ChoiceGroup',
-  decorators: [withPadding()],
+  component: ChoiceGroup,
+  args: {
+    options: options3,
+    onChange: action('onChange'),
+  },
+} satisfies Meta<Component>;
+
+export const Overview: Story = {
+  render: () => {
+    const [value, setValue] = useState(options3[1].value);
+
+    return (
+      <ChoiceGroup
+        value={value}
+        options={options3}
+        onChange={(val) => {
+          setValue(val);
+        }}
+      />
+    );
+  },
 };
 
-export const Overview = () => <Demo />;
+export const WithSelected: Story = {
+  render: (args) => (
+    <>
+      <ChoiceGroup {...args} value={options3[0].value} />
+      <Spacer variant="margin" x={2} />
+      <ChoiceGroup {...args} value={options3[1].value} />
+      <Spacer variant="margin" x={2} />
+      <ChoiceGroup {...args} value={options3[2].value} />
+    </>
+  ),
+};
 
-export const WithSelected = () => (
-  <>
-    <ChoiceGroup {...defaultProps} value={options3[0].value} />
-    <Spacer variant="margin" x={2} />
-    <ChoiceGroup {...defaultProps} value={options3[1].value} />
-    <Spacer variant="margin" x={2} />
-    <ChoiceGroup {...defaultProps} value={options3[2].value} />
-  </>
-);
-
-export const With4Options = () => (
-  <>
-    <ChoiceGroup
-      {...defaultProps}
-      options={options4}
-      value={options4[0].value}
-    />
-    <Spacer variant="margin" x={2} />
-    <ChoiceGroup
-      {...defaultProps}
-      options={options4}
-      value={options4[1].value}
-    />
-    <Spacer variant="margin" x={2} />
-    <ChoiceGroup
-      {...defaultProps}
-      options={options4}
-      value={options4[2].value}
-    />
-    <Spacer variant="margin" x={2} />
-    <ChoiceGroup
-      {...defaultProps}
-      options={options4}
-      value={options4[3].value}
-    />
-  </>
-);
+export const With4Options: Story = {
+  render: (args) => (
+    <>
+      <ChoiceGroup {...args} options={options4} value={options4[0].value} />
+      <Spacer variant="margin" x={2} />
+      <ChoiceGroup {...args} options={options4} value={options4[1].value} />
+      <Spacer variant="margin" x={2} />
+      <ChoiceGroup {...args} options={options4} value={options4[2].value} />
+      <Spacer variant="margin" x={2} />
+      <ChoiceGroup {...args} options={options4} value={options4[3].value} />
+    </>
+  ),
+};

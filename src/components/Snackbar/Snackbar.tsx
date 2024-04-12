@@ -18,7 +18,7 @@ const Content = styled.p`
 
 export type Props = React.ComponentPropsWithoutRef<'div'> & {};
 
-export const Snackbar: React.FC<Props> = ({ children, ...rest }) => (
+export const Snackbar = ({ children, ...rest }: Props) => (
   <Wrapper {...rest}>
     <Content>{children}</Content>
   </Wrapper>

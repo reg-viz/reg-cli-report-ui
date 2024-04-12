@@ -152,7 +152,7 @@ export type Props = {
   onMarkersToggle: (enabled: boolean) => void;
 };
 
-export const Viewer: React.FC<Props> = ({
+export const Viewer = ({
   total,
   current,
   entity,
@@ -162,7 +162,7 @@ export const Viewer: React.FC<Props> = ({
   onNext,
   onRequestClose,
   onMarkersToggle,
-}) => {
+}: Props) => {
   const [mounted, setMounted] = useState(false);
 
   const rootRef = useRef<HTMLDivElement>(null);

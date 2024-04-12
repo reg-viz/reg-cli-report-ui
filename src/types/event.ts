@@ -11,7 +11,7 @@ export enum WorkerEventType {
   RESULT_FILTER = 'res_filter',
 }
 
-type WorkerEventDataPayloadMap = {
+export type WorkerEventDataPayloadMap = {
   [WorkerEventType.INIT_CALC]: void;
 
   [WorkerEventType.REQUEST_CALC]: {
@@ -47,20 +47,18 @@ type WorkerEventDataPayloadMap = {
   };
 };
 
-export type WorkerEventDataPayload<
-  T extends WorkerEventType
-> = WorkerEventDataPayloadMap[T];
+export type WorkerEventDataPayload<T extends WorkerEventType> =
+  WorkerEventDataPayloadMap[T];
 
-export type WorkerEventData<
-  T extends WorkerEventType
-> = WorkerEventDataPayload<T> extends void
-  ? {
-      type: T;
-    }
-  : {
-      type: T;
-      payload: WorkerEventDataPayload<T>;
-    };
+export type WorkerEventData<T extends WorkerEventType> =
+  WorkerEventDataPayload<T> extends void
+    ? {
+        type: T;
+      }
+    : {
+        type: T;
+        payload: WorkerEventDataPayload<T>;
+      };
 
 export type WorkerEvent = {
   [P in keyof WorkerEventDataPayloadMap]: {

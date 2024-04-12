@@ -16,7 +16,7 @@ import {
   Shadow,
   Color,
 } from '../../../../styles/variables';
-import { Props } from '../../types';
+import type { Props } from '../../types';
 import { SidebarContainer } from '../../../../containers/sidebar/SidebarContainer';
 import { SidebarInner } from '../SidebarInner';
 import { useMousetrap } from '../../../../hooks/useMousetrap';
@@ -102,9 +102,9 @@ const Backdrop = styled.button`
   }
 `;
 
-export { Props };
+export type { Props };
 
-export const Mobile: React.FC<Props> = (props) => {
+export const Mobile = (props: Props) => {
   const sidebar = SidebarContainer.useContainer();
 
   const focusRef = useRef<FocusTrap | null>(null);

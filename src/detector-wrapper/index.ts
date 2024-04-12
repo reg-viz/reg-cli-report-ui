@@ -27,11 +27,9 @@ export class ModuleClass {
     imports: any,
     callback: (instance: WebAssembly.Instance) => void,
   ) {
-    instantiateCachedURL(
-      this._version,
-      this._wasmUrl,
-      imports,
-    ).then((instance) => callback(instance));
+    instantiateCachedURL(this._version, this._wasmUrl, imports).then(
+      (instance) => callback(instance),
+    );
 
     return {};
   }

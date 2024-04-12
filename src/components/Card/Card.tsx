@@ -110,7 +110,7 @@ export type Props = {
   onCopy: () => void;
 };
 
-export const Card: React.FC<Props> = ({ href, entity, menus, onCopy }) => {
+export const Card = ({ href, entity, menus, onCopy }: Props) => {
   const anchor = React.useRef<any>(null);
   const [open, setOpen] = React.useState(false);
 

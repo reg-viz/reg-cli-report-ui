@@ -1,16 +1,16 @@
-import React from 'react';
 import { action } from '@storybook/addon-actions';
-import { withPadding } from '../../styles/storybook-decorators';
+import type { Meta, StoryObj } from '@storybook/react';
 import { HelpDialog } from './';
 
-const defaultProps = {
-  open: true,
-  onRequestClose: action('onRequestClose'),
-};
+type Component = typeof HelpDialog;
+type Story = StoryObj<Component>;
 
 export default {
-  title: 'HelpDialog',
-  decorators: [withPadding()],
-};
+  component: HelpDialog,
+  args: {
+    open: true,
+    onRequestClose: action('onRequestClose'),
+  },
+} satisfies Meta<Component>;
 
-export const Overview = () => <HelpDialog {...defaultProps} />;
+export const Overview: Story = {};
