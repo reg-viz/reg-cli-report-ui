@@ -1,42 +1,20 @@
 import React, { createRef, useCallback } from 'react';
-import styled from 'styled-components';
-import { Space, Color } from '../../../../styles/variables';
+import { EntityContainer } from '../../../../containers/entity/EntityContainer';
+import { SidebarContainer } from '../../../../containers/sidebar/SidebarContainer';
+import { useMousetrap } from '../../../../hooks/useMousetrap';
+import { Color } from '../../../../styles/variables.css';
+import { tryNextFocus, tryPreviousFocus } from '../../../../utils/focus';
+import { List } from '../../../List';
+import { PoweredBy } from '../../../PoweredBy';
 import { SearchBox } from '../../../SearchBox';
 import { Spacer } from '../../../Spacer';
-import { Summary } from '../Summary';
-import { List } from '../../../List';
 import { SignChangedIcon } from '../../../icons/SignChangedIcon';
-import { SidebarContainer } from '../../../../containers/sidebar/SidebarContainer';
-import { SignNewIcon } from '../../../icons/SignNewIcon';
 import { SignDeletedIcon } from '../../../icons/SignDeletedIcon';
+import { SignNewIcon } from '../../../icons/SignNewIcon';
 import { SignPassedIcon } from '../../../icons/SignPassedIcon';
-import { PoweredBy } from '../../../PoweredBy';
+import { Summary } from '../Summary';
 import { Toggle } from '../Toggle';
-import { useMousetrap } from '../../../../hooks/useMousetrap';
-import { tryPreviousFocus, tryNextFocus } from '../../../../utils/focus';
-import { EntityContainer } from '../../../../containers/entity/EntityContainer';
-
-const Inner = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1;
-  overflow-x: visible;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-
-  .sidebar-exit-done & {
-    display: none;
-  }
-`;
-
-const ToggleWrapper = styled.div`
-  position: absolute;
-  top: ${Space * 2}px;
-  left: calc(100% + ${Space * 2}px);
-`;
+import * as styles from './SidebarInner.css';
 
 export type Props = {
   scrollerRef?: React.RefObject<HTMLDivElement>;
@@ -70,7 +48,7 @@ export const SidebarInner = ({ scrollerRef, inputRef, listRef }: Props) => {
 
   return (
     <>
-      <Inner ref={innerRef} id="sidebar">
+      <div ref={innerRef} className={styles.inner} id="sidebar">
         <SearchBox
           inputRef={inputRef}
           placeholder="Filter by file name"
@@ -127,11 +105,11 @@ export const SidebarInner = ({ scrollerRef, inputRef, listRef }: Props) => {
         <Spacer variant="margin" x={3} />
 
         <PoweredBy />
-      </Inner>
+      </div>
 
-      <ToggleWrapper>
+      <div className={styles.toggleWrapper}>
         <Toggle open={sidebar.isOpen} onClick={sidebar.toggle} />
-      </ToggleWrapper>
+      </div>
     </>
   );
 };

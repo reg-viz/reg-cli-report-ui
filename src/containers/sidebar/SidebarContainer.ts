@@ -4,7 +4,7 @@ import { toStructualItems } from '../../utils/transformer';
 import type { RegStructualItem, RegLink } from '../../types/reg';
 import { EntityContainer } from '../entity/EntityContainer';
 import { useMedia } from '../../hooks/useMedia';
-import { BreakPoint } from '../../styles/variables';
+import { BreakPoint } from '../../styles/variables.css';
 
 export type SidebarValue = {
   isDesktop: boolean;

@@ -1,8 +1,9 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   build: {
     emptyOutDir: false,
     copyPublicDir: false,
@@ -13,5 +14,10 @@ export default defineConfig({
       fileName: () => 'report.js',
     },
   },
-  plugins: [react()],
-});
+  plugins: [
+    react(),
+    vanillaExtractPlugin({
+      identifiers: mode === 'development' ? 'debug' : 'short',
+    }),
+  ],
+}));

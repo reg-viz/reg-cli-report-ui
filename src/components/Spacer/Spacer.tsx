@@ -1,17 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Space } from '../../styles/variables';
-
-const Wrapper = styled.span`
-  display: block;
-`;
-
-type Variant = 'margin' | 'padding';
-
-const variantMap: { [P in Variant]: string } = {
-  margin: 'marginTop',
-  padding: 'paddingTop',
-};
+import * as styles from './Spacer.css';
 
 export type Props = {
   variant: 'margin' | 'padding';
@@ -19,5 +7,12 @@ export type Props = {
 };
 
 export const Spacer = ({ variant, x }: Props) => (
-  <Wrapper style={{ [variantMap[variant]]: Space * x }} />
+  <span
+    className={styles.wrapper[variant]}
+    style={
+      {
+        '--spacer-x': x,
+      } as React.CSSProperties
+    }
+  />
 );

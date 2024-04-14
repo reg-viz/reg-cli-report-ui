@@ -1,0 +1,33 @@
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+:root {
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(51, 166, 232, 0.4);
+  outline-offset: 1px;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  padding: 0;
+  background: #f7f8f8;
+  color: #00303c;
+  font-family: 'Work Sans', sans-serif;
+  line-height: 1.5;
+}
+
+body,
+#app {
+  min-height: 100vh;
+}

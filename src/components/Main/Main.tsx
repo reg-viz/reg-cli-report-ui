@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
-import { Space, BreakPoint, Size } from '../../styles/variables';
-import type { RegVariant, RegEntity } from '../../types/reg';
-import { Container } from '../Container';
-import { Card } from '../Card';
 import { EntityContainer } from '../../containers/entity/EntityContainer';
 import { NotificationContainer } from '../../containers/notification/NotificationContainer';
+import { BreakPoint, Size, Space } from '../../styles/variables.css';
+import type { RegEntity, RegVariant } from '../../types/reg';
+import { Card } from '../Card';
+import { Container } from '../Container';
 import { VGrid } from '../VGrid';
+import * as styles from './Main.css';
 
 const titles: { [K in RegVariant]: string } = {
   new: 'NEW ITEMS',
@@ -59,7 +60,9 @@ const Content = ({
 
   return (
     <>
-      <h2 id={variant}>{title}</h2>
+      <h2 id={variant} className={styles.sectionTitle}>
+        {title}
+      </h2>
       <VGrid
         items={entities}
         itemKey="id"
@@ -84,10 +87,11 @@ export const Main = () => {
 
   return (
     <Container>
-      <h1>REPORT DETAIL</h1>
+      <h1 className={styles.title}>REPORT DETAIL</h1>
+
       {entities.filtering && entities.allItems.length === 0 ? (
         <>
-          <h2>Not found</h2>
+          <h2 className={styles.sectionTitle}>Not found</h2>
           <p>
             No items found that match the text entered.
             <br />

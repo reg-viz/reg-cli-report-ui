@@ -1,39 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Image } from '../../../Image';
 import type { Matching } from '../../../../types/reg';
+import { Image } from '../../../Image';
 import { Markers } from './Markers';
+import * as styles from './Toggle.css';
 import { useComparisonImage } from './useComparisonImage';
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  & > div {
-    position: relative;
-  }
-`;
-
-const Inner = styled.div`
-  position: relative;
-`;
-
-const View = styled.div`
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 100%;
-  transform: translate(-50%, 0);
-`;
-
-const Before = styled(View)`
-  z-index: 0;
-`;
-
-const After = styled(View)`
-  z-index: 1;
-`;
 
 export type Props = {
   before: string;
@@ -46,9 +16,13 @@ export const Toggle = ({ before, after, checked, matching }: Props) => {
   const { canvas, image } = useComparisonImage(before, after);
 
   return (
-    <Wrapper style={{ visibility: image.loaded ? 'visible' : 'hidden' }}>
-      <Inner style={canvas}>
-        <Before
+    <div
+      className={styles.wrapper}
+      style={{ visibility: image.loaded ? 'visible' : 'hidden' }}
+    >
+      <div className={styles.inner} style={canvas}>
+        <div
+          className={styles.before}
           style={{
             visibility: checked ? 'hidden' : 'visible',
             width: image.before.width,
@@ -61,9 +35,10 @@ export const Toggle = ({ before, after, checked, matching }: Props) => {
             onLoad={image.before.handleLoad}
           />
           <Markers variant="before" matching={matching} />
-        </Before>
+        </div>
 
-        <After
+        <div
+          className={styles.after}
           style={{
             visibility: checked ? 'visible' : 'hidden',
             width: image.after.width,
@@ -76,8 +51,8 @@ export const Toggle = ({ before, after, checked, matching }: Props) => {
             onLoad={image.after.handleLoad}
           />
           <Markers variant="after" matching={matching} />
-        </After>
-      </Inner>
-    </Wrapper>
+        </div>
+      </div>
+    </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import MDSpinner from 'react-md-spinner';
-import { Color } from '../../styles/variables';
+import { Color } from '../../styles/variables.css';
 
 export type Props = {
   size?: number;
@@ -8,11 +8,8 @@ export type Props = {
   'aria-label': string;
 };
 
-export const Spinner = ({ size, color, ...rest }: Props) => (
-  <MDSpinner {...rest} size={size} singleColor={color} />
-);
-
-Spinner.defaultProps = {
-  size: 32,
-  color: Color.BRAND_PRIMARY,
-};
+export const Spinner = ({
+  size = 32,
+  color = Color.BRAND_PRIMARY,
+  ...rest
+}: Props) => <MDSpinner {...rest} size={size} singleColor={color} />;

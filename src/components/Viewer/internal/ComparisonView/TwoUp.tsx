@@ -1,25 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Image } from '../../../Image';
-import { Space, BreakPoint } from '../../../../styles/variables';
 import type { Matching } from '../../../../types/reg';
+import { Image } from '../../../Image';
 import { Markers } from './Markers';
-
-const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: ${Space * 1}px;
-  justify-content: center;
-  align-items: start;
-
-  @media (min-width: ${BreakPoint.MEDIUM}px) {
-    grid-gap: ${Space * 3}px;
-  }
-
-  & > div {
-    position: relative;
-  }
-`;
+import * as styles from './TwoUp.css';
 
 export type Props = {
   before: string;
@@ -29,15 +12,16 @@ export type Props = {
 
 export const TwoUp = ({ before, after, matching }: Props) => {
   return (
-    <Wrapper>
-      <div>
+    <div className={styles.wrapper}>
+      <div className={styles.view}>
         <Image src={before} />
         <Markers variant="before" matching={matching} />
       </div>
-      <div>
+
+      <div className={styles.view}>
         <Image src={after} />
         <Markers variant="after" matching={matching} />
       </div>
-    </Wrapper>
+    </div>
   );
 };

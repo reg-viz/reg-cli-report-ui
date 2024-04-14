@@ -1,26 +1,30 @@
-import styled, { css } from 'styled-components';
+import { clsx } from 'clsx';
+import React from 'react';
+import type { Modify } from '../../../utils/types';
+import * as styles from './Ellipsis.css';
 
-export type Props = {
-  line?: number;
-};
+export type Props = Modify<
+  React.ComponentPropsWithoutRef<'span'>,
+  {
+    line?: number;
+  }
+>;
 
-const single = css`
-  display: block;
-  white-space: nowrap;
-`;
-
-const multiple = (line: number) => css`
-  display: -webkit-box;
-  -webkit-line-clamp: ${line};
-  -webkit-box-orient: vertical;
-`;
-
-export const Ellipsis = styled.span<Props>`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  ${({ line }) => (line == null || line === 1 ? single : multiple(line))};
-`;
-
-Ellipsis.defaultProps = {
-  line: 1,
+export const Ellipsis = ({ line = 1, children, ...rest }: Props) => {
+  return (
+    <span
+      {...rest}
+      style={
+        {
+          '--ellipsis-line': line,
+        } as React.CSSProperties
+      }
+      className={clsx(styles.wrapper, {
+        [styles.variants.single]: line === 1,
+        [styles.variants.multiple]: line > 1,
+      })}
+    >
+      {children}
+    </span>
+  );
 };

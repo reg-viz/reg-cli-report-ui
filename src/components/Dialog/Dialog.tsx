@@ -1,176 +1,27 @@
-import React, { useRef, useCallback, useEffect, useState } from 'react';
-import { CSSTransition } from 'react-transition-group';
-import styled from 'styled-components';
-import { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import type { FocusTrap } from 'focus-trap';
 import { createFocusTrap } from 'focus-trap';
-import {
-  Space,
-  Duration,
-  Depth,
-  Easing,
-  Focus,
-  BreakPoint,
-  Shadow,
-  Color,
-} from '../../styles/variables';
-import { Portal } from '../internal/Portal';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { CSSTransition } from 'react-transition-group';
+import { useMousetrap } from '../../hooks/useMousetrap';
+import type { Modify } from '../../utils/types';
 import { IconButton } from '../IconButton';
 import { CloseIcon } from '../icons/CloseIcon';
-import { useMousetrap } from '../../hooks/useMousetrap';
-
-const Delay = {
-  ENTER: 120,
-  EXIT: 160,
-};
+import { Portal } from '../internal/Portal';
+import { Color, Duration } from '../../styles/variables.css';
+import * as styles from './Dialog.css';
 
 const allowOutsideClick = () => true;
 
-const Wrapper = styled.div`
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: ${Depth.DIALOG};
-  transition-property: opacity;
-  transition-timing-function: ease-out;
-
-  &.dialog-enter {
-    opacity: 0;
-    transition-duration: ${Duration.FADE_IN}ms;
+export type Props = Modify<
+  React.ComponentPropsWithoutRef<'div'>,
+  {
+    id: string;
+    open: boolean;
+    title: React.ReactNode;
+    onRequestClose: () => void;
   }
-
-  &.dialog-enter-active {
-    opacity: 1;
-  }
-
-  &.dialog-exit {
-    opacity: 1;
-    transition-duration: ${Duration.FADE_OUT}ms;
-    transition-delay: ${Delay.EXIT}ms;
-  }
-
-  &.dialog-exit-active {
-    opacity: 0;
-  }
-`;
-
-const Body = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 60px 0 30px;
-  backface-visibility: hidden;
-`;
-
-const Inner = styled.div`
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  margin: auto ${Space * 2}px;
-
-  @media (min-width: ${BreakPoint.MEDIUM}px) {
-    min-width: 600px;
-    max-width: 1000px;
-    width: auto;
-  }
-`;
-
-const Content = styled.div`
-  position: relative;
-  margin-bottom: ${Space * 3}px;
-  padding: ${Space * 5}px;
-  background: ${Color.WHITE};
-  border-radius: 4px;
-  box-shadow: ${Shadow.LEVEL2};
-  transition-property: opacity, transform;
-  -webkit-tap-highlight-color: transparent;
-
-  &:focus {
-    outline: none;
-  }
-
-  &:focus-visible {
-    box-shadow: ${Focus};
-  }
-
-  & > * {
-    -webkit-tap-highlight-color: initial;
-  }
-
-  & > div {
-    & > h2:first-child {
-      margin: 0 0 ${Space * 5}px;
-    }
-
-    & > *:last-child {
-      margin-bottom: 0 !important;
-    }
-  }
-
-  .dialog-enter & {
-    opacity: 0;
-    transform: scale(1.03);
-    transition-duration: ${Duration.FADE_IN}ms;
-    transition-delay: ${Delay.ENTER}ms;
-  }
-
-  .dialog-enter-active & {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  .dialog-exit & {
-    opacity: 1;
-    transition-duration: ${Duration.FADE_OUT}ms;
-  }
-
-  .dialog-exit-active & {
-    opacity: 0;
-  }
-`;
-
-const Close = styled.div`
-  position: absolute;
-  top: ${Space * 2}px;
-  right: ${Space * 2}px;
-`;
-
-const Backdrop = styled.button`
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1;
-  display: block;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-  background: rgba(255, 255, 255, 0.9);
-  will-change: opacity;
-  transition-timing-function: ${Easing.STANDARD};
-  transition-property: opacity;
-`;
-
-export type Props = Omit<React.ComponentPropsWithoutRef<'div'>, 'id'> & {
-  id: string;
-  open: boolean;
-  title: React.ReactNode;
-  onRequestClose: () => void;
-};
+>;
 
 export const Dialog = ({
   id,
@@ -251,22 +102,23 @@ export const Dialog = ({
   return (
     <Portal>
       <CSSTransition
-        classNames="dialog"
-        in={open}
         mountOnEnter
         unmountOnExit
+        classNames="dialog"
+        in={open}
         timeout={{
-          enter: Duration.FADE_IN + Delay.ENTER,
-          exit: Duration.FADE_OUT + Delay.EXIT,
+          enter: Duration.FADE_IN + styles.delay.enter,
+          exit: Duration.FADE_OUT + styles.delay.exit,
         }}
         onEnter={handleEnter}
         onExit={handleExit}
       >
-        <Wrapper>
-          <Body ref={bodyRef}>
-            <Inner ref={innerRef}>
-              <Content
+        <div className={styles.wrapper}>
+          <div ref={bodyRef} className={styles.body}>
+            <div ref={innerRef} className={styles.inner}>
+              <div
                 {...rest}
+                className={styles.content}
                 id={id}
                 tabIndex={open ? 0 : -1}
                 role="dialog"
@@ -274,10 +126,10 @@ export const Dialog = ({
                 aria-hidden={open ? 'false' : 'true'}
               >
                 <div role="document">
-                  <h2>{title}</h2>
+                  <h2 className={styles.heading}>{title}</h2>
                   {children}
                 </div>
-                <Close>
+                <div className={styles.close}>
                   <IconButton
                     aria-controls={id}
                     aria-label="Close dialog"
@@ -285,18 +137,19 @@ export const Dialog = ({
                   >
                     <CloseIcon fill={Color.TEXT_SUB} />
                   </IconButton>
-                </Close>
-              </Content>
-            </Inner>
+                </div>
+              </div>
+            </div>
 
-            <Backdrop
+            <button
+              className={styles.backdrop}
               type="button"
               aria-controls={id}
               aria-label="Close dialog"
               onClick={handleCloseClick}
             />
-          </Body>
-        </Wrapper>
+          </div>
+        </div>
       </CSSTransition>
     </Portal>
   );

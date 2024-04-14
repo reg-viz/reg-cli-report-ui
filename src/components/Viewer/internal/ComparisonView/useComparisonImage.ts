@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import debounce from 'debounce';
-import { Space, BreakPoint } from '../../../../styles/variables';
+import { Space, BreakPoint } from '../../../../styles/variables.css';
 import { useMedia } from '../../../../hooks/useMedia';
 
 const RESIZE_DEBOUNCE_MS = 32;

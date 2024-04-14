@@ -1,45 +1,6 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
 import type { Matching, Rect } from '../../../../types/reg';
-
-const Wrapper = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 10;
-`;
-
-const Inner = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-`;
-
-const rectStyles = css`
-  position: absolute;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 2px;
-`;
-
-const Bounding = styled.div`
-  ${rectStyles};
-  border-width: 1px;
-  border-color: #4183c4;
-`;
-
-const Diff = styled.div`
-  ${rectStyles};
-  border-color: #ff108a;
-`;
-
-const Straying = styled.div`
-  ${rectStyles};
-  border-color: #2aacea;
-`;
+import * as styles from './Markers.css';
 
 export type Props = {
   variant: 'before' | 'after';
@@ -66,11 +27,12 @@ export const Markers = ({ variant, matching }: Props) => {
   const sh2 = (rect: Rect) => `${(rect.height / h) * 100}%`;
 
   return variant === 'before' ? (
-    <Wrapper>
-      <Inner style={{ maxWidth: w1 }}>
+    <div className={styles.wrapper}>
+      <div className={styles.inner} style={{ maxWidth: w1 }}>
         {matching.matches.map((m, i) => (
           <React.Fragment key={i}>
-            <Bounding
+            <div
+              className={styles.bounding}
               style={{
                 top: sy1(m[1].bounding),
                 left: sx1(m[1].bounding),
@@ -80,7 +42,8 @@ export const Markers = ({ variant, matching }: Props) => {
             />
             {m[1].diffMarkers.map((r, n) => (
               <React.Fragment key={n}>
-                <Diff
+                <div
+                  className={styles.diff}
                   style={{
                     top: sy2(r),
                     left: sx2(r),
@@ -93,8 +56,9 @@ export const Markers = ({ variant, matching }: Props) => {
           </React.Fragment>
         ))}
         {matching.strayingRects[1].map((r, i) => (
-          <Straying
+          <div
             key={i}
+            className={styles.straying}
             style={{
               top: sy2(r),
               left: sx2(r),
@@ -103,14 +67,15 @@ export const Markers = ({ variant, matching }: Props) => {
             }}
           />
         ))}
-      </Inner>
-    </Wrapper>
+      </div>
+    </div>
   ) : (
-    <Wrapper>
-      <Inner style={{ maxWidth: w2 }}>
+    <div className={styles.wrapper}>
+      <div className={styles.inner} style={{ maxWidth: w2 }}>
         {matching.matches.map((m, i) => (
           <React.Fragment key={i}>
-            <Bounding
+            <div
+              className={styles.bounding}
               style={{
                 top: sy1(m[0].bounding),
                 left: sx1(m[0].bounding),
@@ -120,7 +85,8 @@ export const Markers = ({ variant, matching }: Props) => {
             />
             {m[0].diffMarkers.map((r, n) => (
               <React.Fragment key={n}>
-                <Diff
+                <div
+                  className={styles.diff}
                   style={{
                     top: sy1(r),
                     left: sx1(r),
@@ -133,8 +99,9 @@ export const Markers = ({ variant, matching }: Props) => {
           </React.Fragment>
         ))}
         {matching.strayingRects[0].map((r, i) => (
-          <Straying
+          <div
             key={i}
+            className={styles.straying}
             style={{
               top: sy1(r),
               left: sx1(r),
@@ -143,7 +110,7 @@ export const Markers = ({ variant, matching }: Props) => {
             }}
           />
         ))}
-      </Inner>
-    </Wrapper>
+      </div>
+    </div>
   );
 };

@@ -1,5 +1,7 @@
-import React from 'react';
-import * as ReactDOM from 'react-dom';
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { MainAppId } from '../../../constants';
 
 const portal: {
   el: HTMLDivElement | null;
@@ -15,13 +17,20 @@ export type Props = {
 };
 
 export const Portal = ({ children, onRendered }: Props) => {
-  const [mounted, setMounted] = React.useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    const app =
+      document.getElementById(MainAppId) ??
+      document.getElementById('storybook-root');
+    if (app == null) {
+      return;
+    }
+
     if (portal.el == null) {
       portal.el = document.createElement('div');
       portal.el.classList.add('portal');
-      document.body.appendChild(portal.el);
+      app.appendChild(portal.el);
     }
 
     portal.count++;
@@ -32,14 +41,14 @@ export const Portal = ({ children, onRendered }: Props) => {
       portal.count--;
 
       if (portal.count <= 0 && portal.el != null) {
-        document.body.removeChild(portal.el);
+        app.removeChild(portal.el);
         portal.count = 0;
         portal.el = null;
       }
     };
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (mounted && onRendered != null) {
       onRendered();
     }
@@ -49,5 +58,5 @@ export const Portal = ({ children, onRendered }: Props) => {
     return null;
   }
 
-  return ReactDOM.createPortal(children, portal.el);
+  return createPortal(children, portal.el);
 };

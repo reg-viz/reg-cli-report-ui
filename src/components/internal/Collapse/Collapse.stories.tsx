@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { Color, Space } from '../../../styles/variables';
+import { Color, Space } from '../../../styles/variables.css';
 import { Collapse } from './';
 
 type Component = typeof Collapse;
