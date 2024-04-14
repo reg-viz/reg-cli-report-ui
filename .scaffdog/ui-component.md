@@ -24,18 +24,25 @@ export * from './{{ name }}';
 
 ```typescript
 import React from 'react';
-import styled from 'styled-components';
-import { Space } from '{{ relative "../src/styles/variables" }}';
-
-const Wrapper = styled.div`
-  margin: ${Space}px;
-`;
+import * as styles from './{{ name }}.css';
 
 export type Props = React.PropsWithChildren<{}>;
 
-export const {{ name }} = ({ children, ...rest }: Props) => (
-  <Wrapper {...rest}>{children}</Wrapper>
-);
+export const {{ name }} = ({ children, ...rest }: Props) => {
+  return (
+    <div {...rest} className={styles.wrapper}>{children}</div>
+  );
+};
+```
+
+# `{{ name }}/{{ name }}.css.ts`
+
+```typescript
+import { style } from '@vanilla-extract/css';
+
+export const wrapper = style({
+  // TODO: Add styles
+});
 ```
 
 # `{{ name }}/{{ name }}.stories.tsx`
