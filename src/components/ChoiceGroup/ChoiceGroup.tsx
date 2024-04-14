@@ -1,26 +1,14 @@
-import React, { createRef, useEffect, useMemo, useRef } from 'react';
-import styled from 'styled-components';
+import React, {
+  createRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import { useMousetrap } from '../../hooks/useMousetrap';
-import { Space, Shadow, Color, BreakPoint } from '../../styles/variables';
+import type { Modify } from '../../utils/types';
+import * as styles from './ChoiceGroup.css';
 import { ChoiceButton } from './internal/ChoiceButton';
-
-const List = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
-  grid-gap: ${Space * 0.5}px;
-  margin: 0;
-  padding: ${Space * 0.5}px;
-  border-radius: 26px;
-  background: ${Color.WHITE};
-  box-shadow: ${Shadow.LEVEL2};
-  list-style: none;
-
-  @media (min-width: ${BreakPoint.SMALL}px) {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  }
-`;
-
-const ListItem = styled.li``;
 
 const getValueIndex = (options: ChoiceOption[], value: string) => {
   return options.findIndex((opts) => opts.value === value);
@@ -31,11 +19,14 @@ export type ChoiceOption = {
   label: React.ReactNode;
 };
 
-export type Props = Omit<React.ComponentPropsWithoutRef<'ul'>, 'onChange'> & {
-  value: string;
-  options: ChoiceOption[];
-  onChange: (value: string, index: number) => void;
-};
+export type Props = Modify<
+  React.ComponentPropsWithoutRef<'ul'>,
+  {
+    value: string;
+    options: ChoiceOption[];
+    onChange: (value: string, index: number) => void;
+  }
+>;
 
 export const ChoiceGroup = ({ value, options, onChange, ...rest }: Props) => {
   const rootRef = useRef<HTMLUListElement>(null);
@@ -47,7 +38,7 @@ export const ChoiceGroup = ({ value, options, onChange, ...rest }: Props) => {
     );
   }, [options]);
 
-  const handleItemClick = React.useCallback(
+  const handleItemClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       e.stopPropagation();
@@ -110,9 +101,9 @@ export const ChoiceGroup = ({ value, options, onChange, ...rest }: Props) => {
   );
 
   return (
-    <List {...rest} ref={rootRef}>
+    <ul {...rest} ref={rootRef} className={styles.wrapper}>
       {options.map((opts, index) => (
-        <ListItem key={opts.value}>
+        <li key={opts.value}>
           <ChoiceButton
             ref={buttonRefList[index]}
             value={opts.value}
@@ -121,8 +112,8 @@ export const ChoiceGroup = ({ value, options, onChange, ...rest }: Props) => {
           >
             {opts.label}
           </ChoiceButton>
-        </ListItem>
+        </li>
       ))}
-    </List>
+    </ul>
   );
 };

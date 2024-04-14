@@ -37,7 +37,7 @@ export const Overview: Story = {
             setOpen(false);
           }}
         >
-          Dialog content
+          <p>Dialog content</p>
         </Dialog>
       </>
     );

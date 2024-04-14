@@ -1,144 +1,21 @@
-import React, { useRef, useEffect, useCallback, useState } from 'react';
-import CSSTransition from 'react-transition-group/CSSTransition';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
-import styled, { css } from 'styled-components';
+import { clearAllBodyScrollLocks, disableBodyScroll } from 'body-scroll-lock';
 import type { FocusTrap } from 'focus-trap';
 import { createFocusTrap } from 'focus-trap';
-import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
-import {
-  Space,
-  Depth,
-  Size,
-  Duration,
-  Easing,
-  Color,
-} from '../../styles/variables';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import CSSTransition from 'react-transition-group/CSSTransition';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import { useMousetrap } from '../../hooks/useMousetrap';
+import { Color, Duration } from '../../styles/variables.css';
+import type { Matching, RegEntity } from '../../types/reg';
+import { Header } from '../Header';
 import { IconButton } from '../IconButton';
 import { ArrowLeftIcon } from '../icons/ArrowLeftIcon';
 import { ArrowRightIcon } from '../icons/ArrowRightIcon';
-import { Transparent } from '../internal/Transparent';
-import { Header } from '../Header';
 import { Portal } from '../internal/Portal';
-import type { RegEntity, Matching } from '../../types/reg';
-import { useMousetrap } from '../../hooks/useMousetrap';
-import { ComparisonView } from './internal/ComparisonView';
+import { Transparent } from '../internal/Transparent';
+import * as styles from './Viewer.css';
 import { OPEN_DELAY } from './constants';
-
-const Wrapper = styled.div`
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: ${Depth.VIEWER};
-  min-width: 320px;
-  min-height: 400px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  transition-property: opacity;
-  transition-timing-function: ease-out;
-
-  .viewer-enter & {
-    opacity: 0;
-    transition-duration: ${Duration.LARGE_IN}ms;
-  }
-
-  .viewer-enter-active & {
-    opacity: 1;
-  }
-
-  .viewer-exit & {
-    opacity: 1;
-    transition-duration: ${Duration.LARGE_OUT}ms;
-  }
-
-  .viewer-exit-active & {
-    opacity: 0;
-  }
-`;
-
-const HeaderWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 10;
-  transition-property: opacity, transform;
-  transition-timing-function: ${Easing.STANDARD};
-
-  .viewer-enter & {
-    opacity: 0;
-    transform: translateY(-20px);
-    transition-duration: ${Duration.LARGE_IN}ms;
-    transition-delay: ${OPEN_DELAY}ms;
-  }
-
-  .viewer-enter-active & {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
-const Body = styled.div`
-  position: absolute;
-  top: ${Size.HEADER_HEIGHT}px;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 5;
-`;
-
-const navigationStyles = css`
-  position: absolute;
-  top: 50%;
-  z-index: 10;
-  transform: translate(0, -50%);
-  transition-property: opacity, transform;
-  transition-timing-function: ${Easing.STANDARD};
-`;
-
-const Previous = styled.div`
-  ${navigationStyles}
-  left: ${Space * 2}px;
-
-  .viewer-enter & {
-    opacity: 0;
-    transform: translate(-10px, -50%);
-    transition-duration: ${Duration.LARGE_IN}ms;
-    transition-delay: ${OPEN_DELAY}ms;
-  }
-
-  .viewer-enter-active & {
-    opacity: 1;
-    transform: translate(0, -50%);
-  }
-`;
-
-const Next = styled.div`
-  ${navigationStyles}
-  right: ${Space * 2}px;
-
-  .viewer-enter & {
-    opacity: 0;
-    transform: translate(10px, -50%);
-    transition-duration: ${Duration.LARGE_IN}ms;
-    transition-delay: ${OPEN_DELAY}ms;
-  }
-
-  .viewer-enter-active & {
-    opacity: 1;
-    transform: translate(0, -50%);
-  }
-`;
-
-const Background = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 0;
-`;
+import { ComparisonView } from './internal/ComparisonView';
 
 export type Props = {
   total: number;
@@ -290,8 +167,8 @@ export const Viewer = ({
             aria-hidden={entity != null ? 'false' : 'true'}
           >
             {entity == null ? null : (
-              <Wrapper>
-                <HeaderWrapper>
+              <div className={styles.wrapper}>
+                <div className={styles.headerWrapper}>
                   <Header
                     variant={entity.variant}
                     title={entity.name}
@@ -301,38 +178,38 @@ export const Viewer = ({
                     onRequestClose={onRequestClose}
                     onMarkersToggle={onMarkersToggle}
                   />
-                </HeaderWrapper>
+                </div>
 
-                <Body>
+                <div className={styles.body}>
                   <ComparisonView
                     scrollerRef={scrollerRef}
                     entity={entity}
                     matching={matching}
                   />
 
-                  <Previous>
+                  <div className={styles.previous}>
                     <IconButton
                       aria-label="Previous Item"
                       onClick={handlePreviousClick}
                     >
                       <ArrowLeftIcon fill={Color.TEXT_BASE} />
                     </IconButton>
-                  </Previous>
+                  </div>
 
-                  <Next>
+                  <div className={styles.next}>
                     <IconButton
                       aria-label="Next Item"
                       onClick={handleNextClick}
                     >
                       <ArrowRightIcon fill={Color.TEXT_BASE} />
                     </IconButton>
-                  </Next>
-                </Body>
+                  </div>
+                </div>
 
-                <Background>
+                <div className={styles.background}>
                   <Transparent />
-                </Background>
-              </Wrapper>
+                </div>
+              </div>
             )}
           </div>
         </CSSTransition>

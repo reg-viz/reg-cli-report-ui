@@ -1,21 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Space, BreakPoint } from '../../styles/variables';
+import type { Modify } from '../../utils/types';
+import * as styles from './Container.css';
 
-const Wrapper = styled.div`
-  padding-right: ${Space * 3}px;
-  padding-left: ${Space * 3}px;
-
-  @media (min-width: ${BreakPoint.MEDIUM}px) {
-    padding-right: ${Space * 5}px;
-    padding-left: ${Space * 5}px;
+export type Props = Modify<
+  React.HTMLAttributes<HTMLDivElement>,
+  {
+    children: React.ReactNode;
   }
-`;
-
-export type Props = React.HTMLAttributes<HTMLDivElement> & {
-  children: React.ReactNode;
-};
+>;
 
 export const Container = ({ children, ...rest }: Props) => (
-  <Wrapper {...rest}>{children}</Wrapper>
+  <div className={styles.wrapper} {...rest}>
+    {children}
+  </div>
 );

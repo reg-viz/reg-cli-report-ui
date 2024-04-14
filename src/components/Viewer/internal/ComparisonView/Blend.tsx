@@ -1,35 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Image } from '../../../Image';
 import type { Matching } from '../../../../types/reg';
-import { useComparisonImage } from './useComparisonImage';
+import { Image } from '../../../Image';
+import * as styles from './Blend.css';
 import { Markers } from './Markers';
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Inner = styled.div`
-  position: relative;
-`;
-
-const View = styled.div`
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 100%;
-  transform: translate(-50%, 0);
-`;
-
-const Before = styled(View)`
-  z-index: 0;
-`;
-
-const After = styled(View)`
-  z-index: 1;
-`;
+import { useComparisonImage } from './useComparisonImage';
 
 export type Props = {
   before: string;
@@ -42,9 +16,13 @@ export const Blend = ({ before, after, value, matching }: Props) => {
   const { canvas, image } = useComparisonImage(before, after);
 
   return (
-    <Wrapper style={{ visibility: image.loaded ? 'visible' : 'hidden' }}>
-      <Inner style={canvas}>
-        <Before
+    <div
+      className={styles.wrapper}
+      style={{ visibility: image.loaded ? 'visible' : 'hidden' }}
+    >
+      <div className={styles.inner} style={canvas}>
+        <div
+          className={styles.before}
           style={{
             width: image.before.width,
             height: image.before.height,
@@ -56,9 +34,10 @@ export const Blend = ({ before, after, value, matching }: Props) => {
             onLoad={image.before.handleLoad}
           />
           <Markers variant="before" matching={matching} />
-        </Before>
+        </div>
 
-        <After
+        <div
+          className={styles.after}
           style={{
             width: image.after.width,
             height: image.after.height,
@@ -71,8 +50,8 @@ export const Blend = ({ before, after, value, matching }: Props) => {
             onLoad={image.after.handleLoad}
           />
           <Markers variant="after" matching={matching} />
-        </After>
-      </Inner>
-    </Wrapper>
+        </div>
+      </div>
+    </div>
   );
 };

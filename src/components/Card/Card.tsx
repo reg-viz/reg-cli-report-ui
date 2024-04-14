@@ -1,95 +1,16 @@
-import React, { useCallback } from 'react';
-import styled from 'styled-components';
 import * as clipboard from 'clipboard-polyfill';
-import {
-  Space,
-  Shadow,
-  Focus,
-  BreakPoint,
-  Typography,
-  Color,
-  Duration,
-  Easing,
-} from '../../styles/variables';
+import React, { useCallback, useRef, useState } from 'react';
 import type { RegEntity } from '../../types/reg';
-import { Image } from '../Image';
-import { Ellipsis } from '../internal/Ellipsis';
 import { IconButton } from '../IconButton';
-import { MoreIcon } from '../icons/MoreIcon';
-import { Sign } from '../Sign';
+import { Image } from '../Image';
 import { Menu } from '../Menu';
-import { Transparent } from '../internal/Transparent';
+import { Sign } from '../Sign';
+import { MoreIcon } from '../icons/MoreIcon';
 import { BaseButton } from '../internal/BaseButton';
-
-const Wrapper = styled.div`
-  position: relative;
-`;
-
-const Inner = styled(BaseButton)`
-  display: block;
-  width: 100%;
-  border: none;
-  border-radius: 6px;
-  background: ${Color.WHITE};
-  box-shadow: ${Shadow.LEVEL3};
-  color: ${Color.TEXT_BASE};
-  font-size: inherit;
-  text-decoration: none;
-  cursor: pointer;
-  transition: box-shadow ${Duration.FADE_IN}ms ${Easing.STANDARD};
-
-  &:hover {
-    box-shadow: ${Shadow.LEVEL1};
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  &:focus-visible {
-    box-shadow: ${Focus};
-  }
-`;
-
-const CardSign = styled.div`
-  position: absolute;
-  top: ${Space * 1}px;
-  left: ${Space * 1}px;
-  z-index: 10;
-`;
-
-const CardImage = styled.div`
-  position: relative;
-  overflow: hidden;
-  height: 260px;
-  border-radius: 6px 6px 0 0;
-`;
-
-const CardImageInner = styled.span`
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 2;
-`;
-
-const CardText = styled.div`
-  ${Typography.SUBTITLE3};
-  padding: ${Space * 2}px;
-  text-align: left;
-
-  @media (min-width: ${BreakPoint.MEDIUM}px) {
-    padding: ${Space * 3}px;
-  }
-`;
-
-const CardMenu = styled.div`
-  position: absolute;
-  top: ${Space * 0.5}px;
-  right: ${Space * 0.5}px;
-  z-index: 10;
-`;
+import { Ellipsis } from '../internal/Ellipsis';
+import { Transparent } from '../internal/Transparent';
+import { Color } from '../../styles/variables.css';
+import * as styles from './Card.css';
 
 const imageSrc = (entity: RegEntity) => {
   switch (entity.variant) {
@@ -111,8 +32,8 @@ export type Props = {
 };
 
 export const Card = ({ href, entity, menus, onCopy }: Props) => {
-  const anchor = React.useRef<any>(null);
-  const [open, setOpen] = React.useState(false);
+  const anchor = useRef<any>(null);
+  const [open, setOpen] = useState(false);
 
   const handleMenuOpen = useCallback(
     (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
@@ -144,14 +65,18 @@ export const Card = ({ href, entity, menus, onCopy }: Props) => {
   );
 
   return (
-    <Wrapper id={entity.id}>
-      <Inner href={href} onClick={handleOpenClick}>
-        <CardSign>
+    <div id={entity.id} className={styles.wrapper}>
+      <BaseButton
+        className={styles.inner}
+        href={href}
+        onClick={handleOpenClick}
+      >
+        <div className={styles.sign}>
           <Sign variant={entity.variant} />
-        </CardSign>
+        </div>
 
-        <CardImage>
-          <CardImageInner>
+        <div className={styles.image}>
+          <span className={styles.imageInner}>
             <Image
               lazy={true}
               src={imageSrc(entity)}
@@ -159,23 +84,25 @@ export const Card = ({ href, entity, menus, onCopy }: Props) => {
               height="100%"
               fit="scale-down"
             />
-          </CardImageInner>
+          </span>
           <Transparent />
-        </CardImage>
+        </div>
 
-        <CardText title={entity.name}>
+        <div title={entity.name} className={styles.title}>
           <Ellipsis line={2}>{entity.name}</Ellipsis>
-        </CardText>
-      </Inner>
+        </div>
+      </BaseButton>
 
-      <CardMenu>
+      <div className={styles.menu}>
         <IconButton
           ref={anchor}
           aria-owns={`${entity.id}-menu`}
+          aria-label="Open menu"
           onClick={handleMenuOpen}
         >
           <MoreIcon fill={Color.TEXT_BASE} />
         </IconButton>
+
         <Menu
           id={`${entity.id}-menu`}
           placement="bottom-left"
@@ -186,14 +113,16 @@ export const Card = ({ href, entity, menus, onCopy }: Props) => {
           <Menu.Item href={href} onClick={handleOpenClick}>
             Open
           </Menu.Item>
+
           <Menu.Item onClick={handleCopyClick}>Copy Link</Menu.Item>
+
           {menus.map(({ label, href }, i) => (
             <Menu.Item key={i} href={href}>
               {label}
             </Menu.Item>
           ))}
         </Menu>
-      </CardMenu>
-    </Wrapper>
+      </div>
+    </div>
   );
 };

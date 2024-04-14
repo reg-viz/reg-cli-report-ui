@@ -1,8 +1,9 @@
-import React, { useState, useEffect, forwardRef, useRef } from 'react';
-import styled from 'styled-components';
+import { clsx } from 'clsx';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { useIntersection } from 'use-intersection';
-import { Spinner } from '../Spinner';
 import { supportsLoading } from '../../supports';
+import { Spinner } from '../Spinner';
+import * as styles from './Image.css';
 
 const srcCache = new Set();
 
@@ -17,37 +18,6 @@ const size2str = (size: SizeValue | undefined) => {
 
   return size;
 };
-
-const Wrapper = styled.span`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Loading = styled.span`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 2;
-  line-height: 0;
-  transform: translate(-50%, -50%);
-`;
-
-// FIXME Remove patch when `loading` is added to the type definition.
-const Img = styled.img<{
-  fit: ObjectFitValue | undefined;
-  full: boolean;
-  loading?: string;
-}>`
-  position: relative;
-  z-index: 1;
-  max-width: 100%;
-  width: ${({ full }) => (full ? '100%' : undefined)};
-  height: ${({ full }) => (full ? '100%' : undefined)};
-  vertical-align: bottom;
-  object-fit: ${({ fit }) => fit};
-`;
 
 type SizeValue = number | string;
 type ObjectFitValue = 'contain' | 'cover' | 'fill' | 'none' | 'scale-down';
@@ -89,29 +59,37 @@ const ImmediatelyImage = forwardRef<HTMLImageElement, InnerProps>(
       };
     }, [loaded, src]);
 
+    const full = width != null && height != null;
+
     return (
-      <Wrapper
+      <span
         ref={wrapperRef}
+        className={styles.wrapper}
         style={{
           width: size2str(width),
           height: size2str(height),
         }}
       >
-        <Img
+        <img
           ref={ref as any}
+          className={clsx({
+            [styles.image.default]: !full,
+            [styles.image.full]: full,
+          })}
+          style={{
+            objectFit: fit,
+          }}
           loading="lazy"
           src={src}
-          fit={fit}
-          full={width != null && height != null}
           {...rest}
         />
 
         {!loaded && (
-          <Loading>
+          <span className={styles.loading}>
             <Spinner aria-label="Loading..." />
-          </Loading>
+          </span>
         )}
-      </Wrapper>
+      </span>
     );
   },
 );
@@ -131,14 +109,10 @@ const LazyImage = forwardRef<HTMLImageElement, InnerProps>((props, ref) => {
 });
 
 export const Image = forwardRef<HTMLImageElement, Props>(
-  ({ lazy, ...rest }, ref) =>
+  ({ lazy = false, ...rest }, ref) =>
     lazy && !supportsLoading ? (
       <LazyImage ref={ref as any} {...rest} />
     ) : (
       <ImmediatelyImage ref={ref as any} {...rest} />
     ),
 );
-
-Image.defaultProps = {
-  lazy: false,
-};

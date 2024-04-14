@@ -1,47 +1,19 @@
-import React, { useState, useCallback, useRef } from 'react';
-import styled from 'styled-components';
-import { Sidebar } from '../components/Sidebar';
-import { GlobalStyle } from '../styles/global-styles';
-import { Logo } from '../components/Logo';
-import { Space, Shadow, Color } from '../styles/variables';
-import { Main } from '../components/Main';
+import React, { useCallback, useRef, useState } from 'react';
 import { Footer } from '../components/Footer';
-import { Viewer } from '../components/Viewer';
-import { Notification } from '../components/Notification';
-import { IconButton } from '../components/IconButton';
-import { HelpIcon } from '../components/icons/HelpIcon';
 import { HelpDialog } from '../components/HelpDialog';
-import { SidebarContainer } from '../containers/sidebar/SidebarContainer';
-import { findFirstFocusable } from '../utils/selector';
-import { useMousetrap } from '../hooks/useMousetrap';
+import { IconButton } from '../components/IconButton';
+import { Logo } from '../components/Logo';
+import { Main } from '../components/Main';
+import { Notification } from '../components/Notification';
+import { Sidebar } from '../components/Sidebar';
+import { Viewer } from '../components/Viewer';
+import { HelpIcon } from '../components/icons/HelpIcon';
 import { EntityContainer } from '../containers/entity/EntityContainer';
-
-const Layout = styled.main`
-  display: flex;
-  height: 100%;
-  isolation: isolate;
-`;
-
-const Content = styled.div`
-  flex: 1 0 auto;
-  max-width: 100%;
-`;
-
-const Brand = styled.span`
-  position: absolute;
-  top: ${Space * 3}px;
-  right: ${Space * 3}px;
-`;
-
-const Help = styled.span`
-  position: fixed;
-  right: ${Space * 3}px;
-  bottom: ${Space * 3}px;
-  border-radius: 50%;
-  background: ${Color.BRAND_SECONDARY};
-  box-shadow: ${Shadow.LEVEL2};
-  z-index: 10;
-`;
+import { SidebarContainer } from '../containers/sidebar/SidebarContainer';
+import { useMousetrap } from '../hooks/useMousetrap';
+import { findFirstFocusable } from '../utils/selector';
+import { Color } from '../styles/variables.css';
+import * as styles from './App.css';
 
 export type Props = {};
 
@@ -146,25 +118,23 @@ export const App = () => {
 
   return (
     <>
-      <GlobalStyle />
-
-      <Brand>
+      <span className={styles.brand}>
         <Logo size={40} />
-      </Brand>
+      </span>
 
-      <Layout>
+      <main className={styles.layout}>
         <Sidebar inputRef={filterRef} listRef={listRef} />
-        <Content>
+        <div className={styles.content}>
           <Main />
           <Footer />
-        </Content>
-      </Layout>
+        </div>
+      </main>
 
-      <Help>
+      <span className={styles.help}>
         <IconButton variant="dark" onClick={handleHelpClick}>
           <HelpIcon fill={Color.WHITE} />
         </IconButton>
-      </Help>
+      </span>
       <HelpDialog open={helpDialogOpen} onRequestClose={handleHelpClose} />
 
       <Viewer />

@@ -1,18 +1,12 @@
 import React from 'react';
-import styled from 'styled-components';
-
-const Wrapper = styled.span`
-  display: inline-block;
-  font-size: 0;
-  vertical-align: bottom;
-`;
+import * as styles from './Logo.css';
 
 export type Props = React.ComponentProps<'svg'> & {
   size?: number;
 };
 
-export const Logo = ({ size, ...rest }: Props) => (
-  <Wrapper>
+export const Logo = ({ size = 24, ...rest }: Props) => (
+  <span className={styles.wrapper}>
     <svg
       width={size}
       height={size}
@@ -50,9 +44,5 @@ export const Logo = ({ size, ...rest }: Props) => (
         fill="#FF4438"
       />
     </svg>
-  </Wrapper>
+  </span>
 );
-
-Logo.defaultProps = {
-  size: 24,
-};

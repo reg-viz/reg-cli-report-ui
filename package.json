@@ -43,11 +43,14 @@
     "singleQuote": true
   },
   "resolutions": {
+    "jackspeak": "2.1.1",
     "strip-ansi": "6.0.1"
   },
   "dependencies": {
+    "@vanilla-extract/css": "^1.14.2",
     "body-scroll-lock": "^3.1.5",
     "clipboard-polyfill": "^3.0.2",
+    "clsx": "^2.1.0",
     "debounce": "^2.0.0",
     "focus-trap": "^7.5.4",
     "fuse.js": "^7.0.0",
@@ -62,7 +65,6 @@
     "react-dom": "18.2.0",
     "react-md-spinner": "^1.0.0",
     "react-transition-group": "^4.4.5",
-    "styled-components": "6.1.8",
     "unstated-next": "^1.1.0",
     "use-intersection": "^0.2.1",
     "x-img-diff-js": "^0.3.5"
@@ -82,6 +84,7 @@
     "@types/react-dom": "^18.2.24",
     "@types/react-measure": "^2.0.12",
     "@types/react-transition-group": "^4.4.10",
+    "@vanilla-extract/vite-plugin": "^4.0.7",
     "@vitejs/plugin-react": "^4.2.1",
     "cross-env": "^7.0.3",
     "eslint": "8.57.0",

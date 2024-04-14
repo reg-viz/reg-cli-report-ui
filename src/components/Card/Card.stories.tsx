@@ -27,6 +27,15 @@ export default {
 
 export const Overview: Story = {};
 
+export const WithLongName: Story = {
+  args: {
+    entity: {
+      ...defaultEntity,
+      name: 'abcdef'.repeat(20),
+    },
+  },
+};
+
 export const WithNew: Story = {
   args: {
     entity: {

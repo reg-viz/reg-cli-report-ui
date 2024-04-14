@@ -1,101 +1,9 @@
-import React, { useRef, useEffect } from 'react';
-import styled from 'styled-components';
-import { Image } from '../../../Image';
-import { Color } from '../../../../styles/variables';
+import React, { useEffect, useRef } from 'react';
 import type { Matching } from '../../../../types/reg';
-import { useComparisonImage } from './useComparisonImage';
+import { Image } from '../../../Image';
 import { Markers } from './Markers';
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Inner = styled.div`
-  position: relative;
-`;
-
-const Range = styled.input`
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 5;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  appearance: none;
-  touch-action: auto;
-`;
-
-const Frame = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 2;
-  overflow: hidden;
-`;
-
-const View = styled.div`
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 100%;
-  transform: translate(-50%, 0);
-`;
-
-const Before = styled(View)`
-  z-index: 0;
-`;
-
-const After = styled(View)`
-  z-index: 1;
-  transform: translate(0, 0);
-`;
-
-const Handle = styled.span`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  margin-left: -22px;
-  width: 44px;
-  z-index: 5;
-  cursor: ew-resize;
-`;
-
-const HandleBar = styled.span`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  margin-left: -1px;
-  width: 2px;
-  background: #fff;
-
-  &::before,
-  &::after {
-    position: absolute;
-    left: 50%;
-    display: block;
-    margin-left: -6px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 3px solid ${Color.BRAND_PRIMARY};
-    background: transparent;
-    content: '';
-  }
-
-  &::before {
-    bottom: 100%;
-  }
-
-  &::after {
-    top: 100%;
-  }
-`;
+import * as styles from './Slide.css';
+import { useComparisonImage } from './useComparisonImage';
 
 export type Props = {
   before: string;
@@ -120,7 +28,7 @@ export const Slide = ({ before, after, value, matching, onChange }: Props) => {
 
     const handleMousemove = (e: MouseEvent | TouchEvent) => {
       const pageX =
-        ('touches' in e ? e.touches[0].pageX : e.pageX) - window.pageXOffset;
+        ('touches' in e ? e.touches[0].pageX : e.pageX) - window.scrollX;
 
       const { left } = inner.getBoundingClientRect();
       const x = Math.min(Math.max(0, pageX - left), image.width);
@@ -160,10 +68,14 @@ export const Slide = ({ before, after, value, matching, onChange }: Props) => {
   }, [image.width, onChange]);
 
   return (
-    <Wrapper style={{ visibility: image.loaded ? 'visible' : 'hidden' }}>
-      <Inner ref={innerRef} style={canvas}>
-        <Range
+    <div
+      className={styles.wrapper}
+      style={{ visibility: image.loaded ? 'visible' : 'hidden' }}
+    >
+      <div className={styles.inner} ref={innerRef} style={canvas}>
+        <input
           ref={rangeRef}
+          className={styles.range}
           type="range"
           min={0}
           max={100}
@@ -176,7 +88,8 @@ export const Slide = ({ before, after, value, matching, onChange }: Props) => {
           onChange={handleChange}
         />
 
-        <Before
+        <div
+          className={styles.before}
           style={{
             width: image.before.width,
             height: image.before.height,
@@ -188,10 +101,11 @@ export const Slide = ({ before, after, value, matching, onChange }: Props) => {
             onLoad={image.before.handleLoad}
           />
           <Markers variant="before" matching={matching} />
-        </Before>
+        </div>
 
-        <Frame style={{ width: `${value}%` }}>
-          <After
+        <div className={styles.frame} style={{ width: `${value}%` }}>
+          <div
+            className={styles.after}
             style={{
               top: 0,
               left: canvas.width / 2 - image.after.width / 2,
@@ -205,13 +119,13 @@ export const Slide = ({ before, after, value, matching, onChange }: Props) => {
               onLoad={image.after.handleLoad}
             />
             <Markers variant="after" matching={matching} />
-          </After>
-        </Frame>
+          </div>
+        </div>
 
-        <Handle style={{ left: `${value}%` }}>
-          <HandleBar />
-        </Handle>
-      </Inner>
-    </Wrapper>
+        <span className={styles.handle} style={{ left: `${value}%` }}>
+          <span className={styles.handleBar} />
+        </span>
+      </div>
+    </div>
   );
 };

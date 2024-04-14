@@ -1,93 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
-import {
-  Space,
-  Shadow,
-  Duration,
-  Easing,
-  Focus,
-  Typography,
-  Color,
-} from '../../styles/variables';
+import type { Modify } from '../../utils/types';
+import * as styles from './Switch.css';
 
-const Wrapper = styled.span`
-  display: inline-flex;
-  align-items: center;
-`;
-
-const Checkbox = styled.span`
-  position: relative;
-
-  & > input {
-    position: absolute;
-    top: -25%;
-    left: -25%;
-    width: 150%;
-    height: 150%;
-    z-index: 2;
-    margin: 0;
-    padding: 0;
-    opacity: 0;
-    cursor: pointer;
+export type Props = Modify<
+  Omit<React.ComponentPropsWithoutRef<'input'>, 'type'>,
+  {
+    id: string;
+    prepend?: React.ReactNode;
+    append?: React.ReactNode;
   }
-
-  & > span {
-    position: relative;
-    z-index: 1;
-    display: block;
-    width: 42px;
-    height: 22px;
-    border-radius: 11px;
-    background: ${Color.BORDER};
-    transition: transform ${Duration.SMALL_OUT}ms ${Easing.STANDARD};
-
-    &::before {
-      position: absolute;
-      top: 1px;
-      left: 1px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: ${Color.WHITE};
-      box-shadow: ${Shadow.LEVEL1};
-      transition: transform ${Duration.SMALL_OUT}ms ${Easing.STANDARD};
-      content: '';
-    }
-  }
-
-  & > input:checked + span {
-    background: ${Color.BRAND_PRIMARY};
-
-    &::before {
-      transform: translateX(20px);
-    }
-  }
-
-  & > input:focus-visible + span {
-    box-shadow: ${Focus};
-  }
-`;
-
-const Prepend = styled.span`
-  ${Typography.SUBTITLE3};
-  margin-right: ${Space * 1}px;
-  text-align: right;
-`;
-
-const Append = styled.span`
-  ${Typography.SUBTITLE3};
-  margin-left: ${Space * 1}px;
-  text-align: left;
-`;
-
-export type Props = Omit<
-  React.ComponentPropsWithoutRef<'input'>,
-  'id' | 'type'
-> & {
-  id: string;
-  prepend?: React.ReactNode;
-  append?: React.ReactNode;
-};
+>;
 
 export const Switch = ({ id, prepend, append, ...rest }: Props) => {
   const prependId = `${id}-prepend`;
@@ -103,18 +25,29 @@ export const Switch = ({ id, prepend, append, ...rest }: Props) => {
   }
 
   return (
-    <Wrapper>
-      {prepend && <Prepend id={prependId}>{prepend}</Prepend>}
-      <Checkbox>
+    <span className={styles.wrapper}>
+      {prepend && (
+        <span className={styles.prepend} id={prependId}>
+          {prepend}
+        </span>
+      )}
+
+      <span className={styles.checkbox}>
         <input
           {...rest}
+          className={styles.checkboxInput}
           id={id}
           type="checkbox"
           aria-describedby={describedby.join(' ')}
         />
-        <span />
-      </Checkbox>
-      {append && <Append id={appendId}>{append}</Append>}
-    </Wrapper>
+        <span className={styles.checkboxVisual} />
+      </span>
+
+      {append && (
+        <span className={styles.append} id={appendId}>
+          {append}
+        </span>
+      )}
+    </span>
   );
 };
