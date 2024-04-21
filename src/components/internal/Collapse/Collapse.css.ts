@@ -13,9 +13,6 @@ export const wrapper = style({
       height: 0,
       transitionDuration: 'var(--collapse-duration-enter)',
     },
-    '&.collapse-enter-active': {
-      transitionDuration: 'var(--collapse-duration-enter)',
-    },
     '&.collapse-exit': {
       overflow: 'auto',
       height: 'auto',
