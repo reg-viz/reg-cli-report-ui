@@ -1,11 +1,11 @@
 import React from 'react';
-import { NotificationContainer } from '../../containers/notification/NotificationContainer';
+import { useNotificationMessage } from '../../states/notification';
 import { Notification as Component } from './Notification';
 
 export type Props = {};
 
 export const Notification = () => {
-  const notification = NotificationContainer.useContainer();
+  const message = useNotificationMessage();
 
-  return <Component show={notification.show} message={notification.message} />;
+  return <Component show={message != null} message={message ?? ''} />;
 };

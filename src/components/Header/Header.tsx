@@ -16,7 +16,7 @@ export type Props = {
   max: number;
   markersEnabled: boolean;
   onRequestClose: () => void;
-  onMarkersToggle: (enabled: boolean) => void;
+  onMarkersToggle: () => void;
 };
 
 export const Header = ({
@@ -38,12 +38,9 @@ export const Header = ({
     [onRequestClose],
   );
 
-  const handleToggle = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      onMarkersToggle(e.currentTarget.checked);
-    },
-    [onMarkersToggle],
-  );
+  const handleToggle = useCallback(() => {
+    onMarkersToggle();
+  }, [onMarkersToggle]);
 
   return (
     <header className={styles.wrapper}>

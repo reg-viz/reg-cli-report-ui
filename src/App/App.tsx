@@ -8,20 +8,19 @@ import { Notification } from '../components/Notification';
 import { Sidebar } from '../components/Sidebar';
 import { Viewer } from '../components/Viewer';
 import { HelpIcon } from '../components/icons/HelpIcon';
-import { EntityContainer } from '../containers/entity/EntityContainer';
-import { SidebarContainer } from '../containers/sidebar/SidebarContainer';
-import { useMousetrap } from '../hooks/useMousetrap';
-import { findFirstFocusable } from '../utils/selector';
+import { useKey } from '../hooks/useKey';
+import { useEntities } from '../states/entity';
+import { useSidebarMutators } from '../states/sidebar';
 import { Color } from '../styles/variables.css';
+import { findFirstFocusable } from '../utils/selector';
 import * as styles from './App.css';
 
 export type Props = {};
 
 export const App = () => {
-  const sidebar = SidebarContainer.useContainer();
+  const { toggle: toggleSidebar } = useSidebarMutators();
 
-  const { newItems, failedItems, deletedItems, passedItems } =
-    EntityContainer.useContainer();
+  const { newItems, failedItems, deletedItems, passedItems } = useEntities();
 
   const [helpDialogOpen, setHelpDialogOpen] = useState(false);
 
@@ -37,7 +36,7 @@ export const App = () => {
     setHelpDialogOpen(false);
   }, []);
 
-  useMousetrap(['/', 's'], null, (e) => {
+  useKey(null, ['/', 's'], (e) => {
     e.preventDefault();
 
     if (filterRef.current != null) {
@@ -45,7 +44,7 @@ export const App = () => {
     }
   });
 
-  useMousetrap('g s', null, () => {
+  useKey(null, ['g s'], () => {
     const { current: list } = listRef;
     if (list == null) {
       return;
@@ -59,60 +58,35 @@ export const App = () => {
     first.focus();
   });
 
-  useMousetrap(
-    'g c',
-    null,
-    () => {
-      if (failedItems.length > 0) {
-        window.location.hash = 'changed';
-      }
-    },
-    [failedItems],
-  );
+  useKey(null, ['g c'], () => {
+    if (failedItems.length > 0) {
+      window.location.hash = 'changed';
+    }
+  });
 
-  useMousetrap(
-    'g n',
-    null,
-    () => {
-      if (newItems.length > 0) {
-        window.location.hash = 'new';
-      }
-    },
-    [newItems],
-  );
+  useKey(null, ['g n'], () => {
+    if (newItems.length > 0) {
+      window.location.hash = 'new';
+    }
+  });
 
-  useMousetrap(
-    'g d',
-    null,
-    () => {
-      if (deletedItems.length > 0) {
-        window.location.hash = 'deleted';
-      }
-    },
-    [deletedItems],
-  );
+  useKey(null, ['g d'], () => {
+    if (deletedItems.length > 0) {
+      window.location.hash = 'deleted';
+    }
+  });
 
-  useMousetrap(
-    'g p',
-    null,
-    () => {
-      if (passedItems.length > 0) {
-        window.location.hash = 'passed';
-      }
-    },
-    [passedItems],
-  );
+  useKey(null, ['g p'], () => {
+    if (passedItems.length > 0) {
+      window.location.hash = 'passed';
+    }
+  });
 
-  useMousetrap(
-    'f',
-    null,
-    () => {
-      sidebar.toggle();
-    },
-    [sidebar],
-  );
+  useKey(null, ['f'], () => {
+    toggleSidebar();
+  });
 
-  useMousetrap('?', null, () => {
+  useKey(null, ['Shift+?'], () => {
     setHelpDialogOpen(true);
   });
 

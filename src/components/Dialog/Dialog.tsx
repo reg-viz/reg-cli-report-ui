@@ -1,14 +1,14 @@
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import type { FocusTrap } from 'focus-trap';
 import { createFocusTrap } from 'focus-trap';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { useMousetrap } from '../../hooks/useMousetrap';
+import { useKey } from '../../hooks/useKey';
+import { Color, Duration } from '../../styles/variables.css';
 import type { Modify } from '../../utils/types';
 import { IconButton } from '../IconButton';
 import { CloseIcon } from '../icons/CloseIcon';
 import { Portal } from '../internal/Portal';
-import { Color, Duration } from '../../styles/variables.css';
 import * as styles from './Dialog.css';
 
 const allowOutsideClick = () => true;
@@ -31,8 +31,6 @@ export const Dialog = ({
   onRequestClose,
   ...rest
 }: Props) => {
-  const [mounted, setMounted] = useState(false);
-
   const bodyRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const focusRef = useRef<FocusTrap | null>(null);
@@ -49,8 +47,6 @@ export const Dialog = ({
     focusRef.current.activate();
 
     disableBodyScroll(body);
-
-    setMounted(true);
   }, []);
 
   const handleExit = useCallback(() => {
@@ -63,8 +59,6 @@ export const Dialog = ({
 
     focus.deactivate();
     enableBodyScroll(body);
-
-    setMounted(false);
   }, []);
 
   const handleCloseClick = useCallback(
@@ -90,14 +84,9 @@ export const Dialog = ({
     [],
   );
 
-  useMousetrap(
-    'esc',
-    bodyRef.current,
-    () => {
-      onRequestClose();
-    },
-    [mounted, onRequestClose],
-  );
+  useKey(bodyRef, ['Escape'], () => {
+    onRequestClose();
+  });
 
   return (
     <Portal>
