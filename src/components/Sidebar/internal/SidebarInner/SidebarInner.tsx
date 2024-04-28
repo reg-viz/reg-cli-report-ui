@@ -1,5 +1,6 @@
-import React, { createRef, useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { useKey } from '../../../../hooks/useKey';
+import { useMergeRefs } from '../../../../hooks/useMergeRefs';
 import { useEntities, useEntityFilter } from '../../../../states/entity';
 import {
   useSidebarEntities,
@@ -32,7 +33,7 @@ export const SidebarInner = ({ scrollerRef, inputRef, listRef }: Props) => {
   const { toggle } = useSidebarMutators();
   const sidebarEntity = useSidebarEntities();
   const entity = useEntities();
-  const innerRef = scrollerRef || createRef();
+  const innerRef = useRef<HTMLDivElement>(null);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,9 +54,11 @@ export const SidebarInner = ({ scrollerRef, inputRef, listRef }: Props) => {
     tryNextFocus(innerRef.current);
   });
 
+  const ref = useMergeRefs(innerRef, scrollerRef);
+
   return (
     <>
-      <div ref={innerRef} className={styles.inner} id="sidebar">
+      <div ref={ref} className={styles.inner} id="sidebar">
         <SearchBox
           inputRef={inputRef}
           placeholder="Filter by file name"

@@ -1,10 +1,15 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { tinykeys } from 'tinykeys';
 
+const ignore = new Set(['input', 'select', 'textarea']);
+
 export type UseKeyCallback = (e: KeyboardEvent) => void;
 
 export const useKey = (
-  target: React.RefObject<HTMLElement> | null,
+  target:
+    | React.RefObject<HTMLElement>
+    | React.MutableRefObject<HTMLElement>
+    | null,
   keys: string[],
   callback: UseKeyCallback,
 ) => {
@@ -20,7 +25,19 @@ export const useKey = (
     return tinykeys(
       target?.current ?? window,
       Object.fromEntries(
-        keys.map((key) => [key, (e) => callbackRef.current(e)]),
+        keys.map((key) => [
+          key,
+          (e) => {
+            const el = e.target;
+            if (
+              el instanceof HTMLElement &&
+              ignore.has(el.tagName.toLowerCase())
+            ) {
+              return;
+            }
+            callbackRef.current(e);
+          },
+        ]),
       ),
     );
   }, [target, keys]);
