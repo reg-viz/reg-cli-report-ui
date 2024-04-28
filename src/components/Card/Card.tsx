@@ -1,4 +1,3 @@
-import * as clipboard from 'clipboard-polyfill';
 import React, { useCallback, useRef, useState } from 'react';
 import type { RegEntity } from '../../types/reg';
 import { IconButton } from '../IconButton';
@@ -58,7 +57,9 @@ export const Card = ({ href, entity, menus, onCopy }: Props) => {
       e.stopPropagation();
       setOpen(false);
       const { origin, pathname } = window.location;
-      await clipboard.writeText(`${origin}${pathname}?id=${entity.id}`);
+      await window.navigator.clipboard.writeText(
+        `${origin}${pathname}?id=${entity.id}`,
+      );
       onCopy();
     },
     [entity.id, onCopy],
