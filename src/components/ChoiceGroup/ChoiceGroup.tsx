@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useRef,
 } from 'react';
-import { useMousetrap } from '../../hooks/useMousetrap';
+import { useKey } from '../../hooks/useKey';
 import type { Modify } from '../../utils/types';
 import * as styles from './ChoiceGroup.css';
 import { ChoiceButton } from './internal/ChoiceButton';
@@ -64,41 +64,31 @@ export const ChoiceGroup = ({ value, options, onChange, ...rest }: Props) => {
     changedByKey.current = false;
   }, [buttonRefList, options, value]);
 
-  useMousetrap(
-    ['right', 'l'],
-    rootRef.current,
-    (e) => {
-      e.stopPropagation();
+  useKey(rootRef, ['right', 'l'], (e) => {
+    e.stopPropagation();
 
-      const current = getValueIndex(options, value);
-      const next = current + 1;
-      if (next >= options.length) {
-        return;
-      }
+    const current = getValueIndex(options, value);
+    const next = current + 1;
+    if (next >= options.length) {
+      return;
+    }
 
-      changedByKey.current = true;
-      onChange(options[next].value, next);
-    },
-    [options, value, onChange],
-  );
+    changedByKey.current = true;
+    onChange(options[next].value, next);
+  });
 
-  useMousetrap(
-    ['left', 'h'],
-    rootRef.current,
-    (e) => {
-      e.stopPropagation();
+  useKey(rootRef, ['left', 'h'], (e) => {
+    e.stopPropagation();
 
-      const current = getValueIndex(options, value);
-      const previous = current - 1;
-      if (previous < 0) {
-        return;
-      }
+    const current = getValueIndex(options, value);
+    const previous = current - 1;
+    if (previous < 0) {
+      return;
+    }
 
-      changedByKey.current = true;
-      onChange(options[previous].value, previous);
-    },
-    [options, value, onChange],
-  );
+    changedByKey.current = true;
+    onChange(options[previous].value, previous);
+  });
 
   return (
     <ul {...rest} ref={rootRef} className={styles.wrapper}>

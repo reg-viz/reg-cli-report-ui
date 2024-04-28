@@ -1,7 +1,11 @@
 import React, { createRef, useCallback } from 'react';
-import { EntityContainer } from '../../../../containers/entity/EntityContainer';
-import { SidebarContainer } from '../../../../containers/sidebar/SidebarContainer';
-import { useMousetrap } from '../../../../hooks/useMousetrap';
+import { useKey } from '../../../../hooks/useKey';
+import { useEntities, useEntityFilter } from '../../../../states/entity';
+import {
+  useSidebarEntities,
+  useSidebarMutators,
+  useSidebarState,
+} from '../../../../states/sidebar';
 import { Color } from '../../../../styles/variables.css';
 import { tryNextFocus, tryPreviousFocus } from '../../../../utils/focus';
 import { List } from '../../../List';
@@ -23,24 +27,27 @@ export type Props = {
 };
 
 export const SidebarInner = ({ scrollerRef, inputRef, listRef }: Props) => {
-  const entities = EntityContainer.useContainer();
-  const sidebar = SidebarContainer.useContainer();
+  const [isFiltered, filter] = useEntityFilter();
+  const { isOpen, links } = useSidebarState();
+  const { toggle } = useSidebarMutators();
+  const sidebarEntity = useSidebarEntities();
+  const entity = useEntities();
   const innerRef = scrollerRef || createRef();
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      entities.filter(e.target.value);
+      filter(e.target.value);
     },
-    [entities],
+    [filter],
   );
 
-  useMousetrap(['up', 'k'], innerRef.current, (e) => {
+  useKey(innerRef, ['ArrowUp', 'k'], (e) => {
     e.preventDefault();
     e.stopPropagation();
     tryPreviousFocus(innerRef.current);
   });
 
-  useMousetrap(['down', 'j'], innerRef.current, (e) => {
+  useKey(innerRef, ['ArrowDown', 'j'], (e) => {
     e.preventDefault();
     e.stopPropagation();
     tryNextFocus(innerRef.current);
@@ -60,41 +67,41 @@ export const SidebarInner = ({ scrollerRef, inputRef, listRef }: Props) => {
         <div ref={listRef}>
           <List header="SUMMARY">
             <Summary
-              forceOpen={entities.filtering}
+              forceOpen={isFiltered}
               label="CHANGED"
               icon={<SignChangedIcon fill={Color.SIGN_CHANGED} />}
-              items={sidebar.failedItems}
-              size={entities.failedItems.length}
+              items={sidebarEntity.failedItems}
+              size={entity.failedItems.length}
             />
             <Summary
-              forceOpen={entities.filtering}
+              forceOpen={isFiltered}
               label="NEW"
               icon={<SignNewIcon fill={Color.SIGN_NEW} />}
-              items={sidebar.newItems}
-              size={entities.newItems.length}
+              items={sidebarEntity.newItems}
+              size={entity.newItems.length}
             />
             <Summary
-              forceOpen={entities.filtering}
+              forceOpen={isFiltered}
               label="DELETED"
               icon={<SignDeletedIcon fill={Color.SIGN_DELETED} />}
-              items={sidebar.deletedItems}
-              size={entities.deletedItems.length}
+              items={sidebarEntity.deletedItems}
+              size={entity.deletedItems.length}
             />
             <Summary
-              forceOpen={entities.filtering}
+              forceOpen={isFiltered}
               label="PASSED"
               icon={<SignPassedIcon fill={Color.SIGN_PASSED} />}
-              items={sidebar.passedItems}
-              size={entities.passedItems.length}
+              items={sidebarEntity.passedItems}
+              size={entity.passedItems.length}
             />
           </List>
         </div>
 
         <Spacer variant="margin" x={3} />
 
-        {sidebar.links.length > 0 && (
+        {links.length > 0 && (
           <List header="LINKS">
-            {sidebar.links.map(({ label, href }) => (
+            {links.map(({ label, href }) => (
               <List.Item key={label} href={href}>
                 {label}
               </List.Item>
@@ -108,7 +115,7 @@ export const SidebarInner = ({ scrollerRef, inputRef, listRef }: Props) => {
       </div>
 
       <div className={styles.toggleWrapper}>
-        <Toggle open={sidebar.isOpen} onClick={sidebar.toggle} />
+        <Toggle open={isOpen} onClick={toggle} />
       </div>
     </>
   );

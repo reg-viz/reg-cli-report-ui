@@ -1,7 +1,7 @@
 import { Resizable } from 're-resizable';
 import React from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { SidebarContainer } from '../../../../containers/sidebar/SidebarContainer';
+import { useSidebarState } from '../../../../states/sidebar';
 import { Duration } from '../../../../styles/variables.css';
 import type { Props } from '../../types';
 import { SidebarInner } from '../SidebarInner';
@@ -12,13 +12,13 @@ const DEFAULT_WIDTH = 300;
 export type { Props };
 
 export const Desktop = (props: Props) => {
-  const sidebar = SidebarContainer.useContainer();
+  const { isOpen } = useSidebarState();
 
   return (
     <CSSTransition
       appear
       classNames="sidebar"
-      in={sidebar.isOpen}
+      in={isOpen}
       timeout={{
         enter: Duration.SLIDE_IN,
         exit: Duration.SLIDE_OUT,
@@ -43,7 +43,7 @@ export const Desktop = (props: Props) => {
           top: false,
           topRight: false,
           topLeft: false,
-          right: sidebar.isOpen,
+          right: isOpen,
           bottom: false,
           bottomRight: false,
           bottomLeft: false,

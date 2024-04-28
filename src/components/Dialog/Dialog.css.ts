@@ -71,6 +71,7 @@ export const content = style({
   padding: Space * 5,
   borderRadius: 4,
   boxShadow: tokens.shadow.lv2,
+  background: tokens.color.white,
   transitionProperty: 'opacity, transform',
   WebkitTapHighlightColor: 'transparent',
   ':focus': {

@@ -3,8 +3,7 @@ import type { FocusTrap } from 'focus-trap';
 import { createFocusTrap } from 'focus-trap';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { useMousetrap } from '../../hooks/useMousetrap';
+import { useKey } from '../../hooks/useKey';
 import { Color, Duration } from '../../styles/variables.css';
 import type { Matching, RegEntity } from '../../types/reg';
 import { Header } from '../Header';
@@ -13,6 +12,7 @@ import { ArrowLeftIcon } from '../icons/ArrowLeftIcon';
 import { ArrowRightIcon } from '../icons/ArrowRightIcon';
 import { Portal } from '../internal/Portal';
 import { Transparent } from '../internal/Transparent';
+import { usePrevious } from '../../hooks/usePrevious';
 import * as styles from './Viewer.css';
 import { OPEN_DELAY } from './constants';
 import { ComparisonView } from './internal/ComparisonView';
@@ -26,7 +26,7 @@ export type Props = {
   onNext: () => void;
   onPrevious: () => void;
   onRequestClose: () => void;
-  onMarkersToggle: (enabled: boolean) => void;
+  onMarkersToggle: () => void;
 };
 
 export const Viewer = ({
@@ -45,6 +45,7 @@ export const Viewer = ({
   const rootRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const focusRef = useRef<FocusTrap | null>(null);
+  const previousEntity = usePrevious(entity);
 
   const handleEnter = useCallback(() => {
     const { current: root } = rootRef;
@@ -57,12 +58,12 @@ export const Viewer = ({
 
   const handleExit = useCallback(() => {
     const { current: root } = rootRef;
-    if (entity == null || root == null) {
+    if (root == null) {
       return;
     }
 
     setMounted(false);
-  }, [entity]);
+  }, []);
 
   const handlePreviousClick = useCallback(
     (e: React.MouseEvent) => {
@@ -80,29 +81,19 @@ export const Viewer = ({
     [onNext],
   );
 
-  useEffect(
-    () => () => {
-      const { current: trap } = focusRef;
-      if (trap != null) {
-        trap.deactivate();
-      }
-
-      clearAllBodyScrollLocks();
-    },
-    [],
-  );
-
   useEffect(() => {
     const { current: root } = rootRef;
     const { current: scroller } = scrollerRef;
-    if (root == null || scroller == null) {
+    if (root == null) {
       return;
     }
 
     if (mounted) {
       focusRef.current = createFocusTrap(root, {});
       focusRef.current.activate();
-      disableBodyScroll(scroller);
+      if (scroller != null) {
+        disableBodyScroll(scroller);
+      }
     } else {
       if (focusRef.current != null) {
         focusRef.current.deactivate();
@@ -111,109 +102,99 @@ export const Viewer = ({
     }
   }, [mounted]);
 
-  useMousetrap(
-    'esc',
-    rootRef.current,
-    () => {
-      if (mounted) {
-        onRequestClose();
-      }
-    },
-    [mounted, onRequestClose],
-  );
+  useKey(rootRef, ['Escape'], () => {
+    if (mounted) {
+      onRequestClose();
+    }
+  });
 
-  useMousetrap(
-    ['right', 'l'],
-    rootRef.current,
-    () => {
-      if (mounted) {
-        onNext();
-      }
-    },
-    [mounted, onNext],
-  );
+  useKey(rootRef, ['m'], () => {
+    if (mounted) {
+      onMarkersToggle();
+    }
+  });
 
-  useMousetrap(
-    ['left', 'h'],
-    rootRef.current,
-    () => {
-      if (mounted) {
-        onPrevious();
-      }
-    },
-    [mounted, onPrevious],
-  );
+  useKey(rootRef, ['ArrowRight', 'l'], () => {
+    if (mounted) {
+      onNext();
+    }
+  });
+
+  useKey(rootRef, ['ArrowLeft', 'h'], () => {
+    if (mounted) {
+      onPrevious();
+    }
+  });
+
+  const displayEntity = entity ?? previousEntity;
 
   return (
     <Portal>
-      <TransitionGroup>
-        <CSSTransition
-          key={entity != null ? 'open' : 'close'}
-          classNames="viewer"
-          mountOnEnter
-          unmountOnExit
-          timeout={{
-            enter: Duration.LARGE_IN + OPEN_DELAY,
-            exit: Duration.LARGE_OUT,
-          }}
-          onEnter={handleEnter}
-          onExit={handleExit}
+      <CSSTransition
+        in={entity != null}
+        classNames="viewer"
+        mountOnEnter
+        unmountOnExit
+        timeout={{
+          enter: Duration.LARGE_IN + OPEN_DELAY,
+          exit: Duration.LARGE_OUT,
+        }}
+        onEnter={handleEnter}
+        onExit={handleExit}
+      >
+        <div
+          ref={rootRef}
+          tabIndex={entity == null ? -1 : 0}
+          role="dialog"
+          aria-modal="true"
+          aria-hidden={entity != null ? 'false' : 'true'}
         >
-          <div
-            ref={rootRef}
-            tabIndex={entity == null ? -1 : 0}
-            role="dialog"
-            aria-modal="true"
-            aria-hidden={entity != null ? 'false' : 'true'}
-          >
-            {entity == null ? null : (
-              <div className={styles.wrapper}>
-                <div className={styles.headerWrapper}>
-                  <Header
-                    variant={entity.variant}
-                    title={entity.name}
-                    current={current}
-                    max={total}
-                    markersEnabled={markersEnabled}
-                    onRequestClose={onRequestClose}
-                    onMarkersToggle={onMarkersToggle}
-                  />
-                </div>
+          <div className={styles.wrapper}>
+            <div className={styles.headerWrapper}>
+              {displayEntity != null && (
+                <Header
+                  variant={displayEntity.variant}
+                  title={displayEntity.name}
+                  current={current}
+                  max={total}
+                  markersEnabled={markersEnabled}
+                  onRequestClose={onRequestClose}
+                  onMarkersToggle={onMarkersToggle}
+                />
+              )}
+            </div>
 
-                <div className={styles.body}>
-                  <ComparisonView
-                    scrollerRef={scrollerRef}
-                    entity={entity}
-                    matching={matching}
-                  />
+            <div className={styles.body}>
+              {displayEntity != null && (
+                <ComparisonView
+                  scrollerRef={scrollerRef}
+                  entity={displayEntity}
+                  matching={matching}
+                />
+              )}
 
-                  <div className={styles.previous}>
-                    <IconButton
-                      aria-label="Previous Item"
-                      onClick={handlePreviousClick}
-                    >
-                      <ArrowLeftIcon fill={Color.TEXT_BASE} />
-                    </IconButton>
-                  </div>
-
-                  <div className={styles.next}>
-                    <IconButton
-                      aria-label="Next Item"
-                      onClick={handleNextClick}
-                    >
-                      <ArrowRightIcon fill={Color.TEXT_BASE} />
-                    </IconButton>
-                  </div>
-                </div>
-
-                <div className={styles.background}>
-                  <Transparent />
-                </div>
+              <div className={styles.previous}>
+                <IconButton
+                  aria-label="Previous Item"
+                  onClick={handlePreviousClick}
+                >
+                  <ArrowLeftIcon fill={Color.TEXT_BASE} />
+                </IconButton>
               </div>
-            )}
+
+              <div className={styles.next}>
+                <IconButton aria-label="Next Item" onClick={handleNextClick}>
+                  <ArrowRightIcon fill={Color.TEXT_BASE} />
+                </IconButton>
+              </div>
+            </div>
+
+            <div className={styles.background}>
+              <Transparent />
+            </div>
           </div>
-        </CSSTransition>
-      </TransitionGroup>
+        </div>
+      </CSSTransition>
     </Portal>
   );
 };

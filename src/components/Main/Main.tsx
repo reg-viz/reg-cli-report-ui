@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { EntityContainer } from '../../containers/entity/EntityContainer';
-import { NotificationContainer } from '../../containers/notification/NotificationContainer';
+import { useEntities, useEntityFilter } from '../../states/entity';
+import { useNotify } from '../../states/notification';
 import { BreakPoint, Size, Space } from '../../styles/variables.css';
 import type { RegEntity, RegVariant } from '../../types/reg';
 import { Card } from '../Card';
@@ -47,12 +47,12 @@ const Content = ({
   variant: RegVariant;
   entities: RegEntity[];
 }) => {
-  const notification = NotificationContainer.useContainer();
+  const notify = useNotify();
   const title = titles[variant];
 
   const handleCopy = useCallback(() => {
-    notification.notify('Copied URL to clipboard');
-  }, [notification]);
+    notify('Copied URL to clipboard');
+  }, [notify]);
 
   if (entities.length < 1) {
     return null;
@@ -83,13 +83,14 @@ const Content = ({
 };
 
 export const Main = () => {
-  const entities = EntityContainer.useContainer();
+  const entity = useEntities();
+  const [isFiltering] = useEntityFilter();
 
   return (
     <Container>
       <h1 className={styles.title}>REPORT DETAIL</h1>
 
-      {entities.filtering && entities.allItems.length === 0 ? (
+      {isFiltering && entity.allItems.length === 0 ? (
         <>
           <h2 className={styles.sectionTitle}>Not found</h2>
           <p>
@@ -100,10 +101,10 @@ export const Main = () => {
         </>
       ) : (
         <>
-          <Content variant="changed" entities={entities.failedItems} />
-          <Content variant="new" entities={entities.newItems} />
-          <Content variant="deleted" entities={entities.deletedItems} />
-          <Content variant="passed" entities={entities.passedItems} />
+          <Content variant="changed" entities={entity.failedItems} />
+          <Content variant="new" entities={entity.newItems} />
+          <Content variant="deleted" entities={entity.deletedItems} />
+          <Content variant="passed" entities={entity.passedItems} />
         </>
       )}
     </Container>

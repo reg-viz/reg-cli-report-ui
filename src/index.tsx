@@ -1,10 +1,13 @@
-import './global.css';
-import React from 'react';
+import { createStore } from 'jotai';
+import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import type { RegData } from './types/reg';
 import { App } from './App';
-import { WorkerClient } from './worker-client';
 import { MainAppId } from './constants';
+import './global.css';
+import type { RegData } from './types/reg';
+import { WorkerClient } from './worker-client';
+import { initializeEntityState } from './states/entity';
+import { initializeWorkerState } from './states/worker';
 
 const regData = (window as any)['__reg__'] as RegData;
 
@@ -14,7 +17,16 @@ const ximgdiffConfig = regData.ximgdiffConfig || { enabled: false };
 
 workerClient.start(ximgdiffConfig);
 
+// Store
+const store = createStore();
+initializeWorkerState(store, workerClient);
+initializeEntityState(store, regData, workerClient);
+
 // Report App
 const app = document.getElementById(MainAppId);
 const root = createRoot(app!);
-root.render(<App data={regData} worker={workerClient} />);
+root.render(
+  <StrictMode>
+    <App store={store} />
+  </StrictMode>,
+);

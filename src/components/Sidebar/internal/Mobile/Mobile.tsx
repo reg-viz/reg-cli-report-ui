@@ -7,17 +7,21 @@ import type { FocusTrap } from 'focus-trap';
 import { createFocusTrap } from 'focus-trap';
 import React, { useCallback, useEffect, useRef } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { SidebarContainer } from '../../../../containers/sidebar/SidebarContainer';
-import { useMousetrap } from '../../../../hooks/useMousetrap';
+import { useKey } from '../../../../hooks/useKey';
+import {
+  useSidebarMutators,
+  useSidebarState,
+} from '../../../../states/sidebar';
+import { Duration } from '../../../../styles/variables.css';
 import type { Props } from '../../types';
 import { SidebarInner } from '../SidebarInner';
-import { Duration } from '../../../../styles/variables.css';
 import * as styles from './Mobile.css';
 
 export type { Props };
 
 export const Mobile = (props: Props) => {
-  const sidebar = SidebarContainer.useContainer();
+  const { isOpen } = useSidebarState();
+  const { close } = useSidebarMutators();
 
   const focusRef = useRef<FocusTrap | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -26,9 +30,9 @@ export const Mobile = (props: Props) => {
   const handleBackdropClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      sidebar.close();
+      close();
     },
-    [sidebar],
+    [close],
   );
 
   useEffect(() => {
@@ -55,31 +59,26 @@ export const Mobile = (props: Props) => {
       return;
     }
 
-    if (sidebar.isOpen) {
+    if (isOpen) {
       focus.activate();
       disableBodyScroll(scroller);
     } else {
       focus.deactivate();
       enableBodyScroll(scroller);
     }
-  }, [sidebar.isOpen]);
+  }, [isOpen]);
 
-  useMousetrap(
-    'esc',
-    wrapperRef.current,
-    () => {
-      if (sidebar.isOpen) {
-        sidebar.close();
-      }
-    },
-    [sidebar.isOpen],
-  );
+  useKey(wrapperRef, ['Escape'], () => {
+    if (isOpen) {
+      close();
+    }
+  });
 
   return (
     <CSSTransition
       appear
       classNames="sidebar"
-      in={sidebar.isOpen}
+      in={isOpen}
       timeout={{
         enter: Duration.SLIDE_IN,
         exit: Duration.SLIDE_OUT,
