@@ -7,6 +7,11 @@ export default defineConfig(({ mode }) => {
 
   return {
     clearScreen: false,
+    define: {
+      'process.env.NODE_ENV': JSON.stringify(
+        value('development', 'production'),
+      ),
+    },
     build: {
       emptyOutDir: false,
       copyPublicDir: false,
