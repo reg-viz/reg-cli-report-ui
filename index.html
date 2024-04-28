@@ -20,7 +20,6 @@
   <body>
     <div id="app"></div>
     <script type="module">
-      console.log(import.meta.env.VITE_ENABLED_HUGE);
       window['__reg__'] = {
         type: 'danger',
         hasNew: true,
@@ -42,10 +41,18 @@
         hasFailed: true,
         failedItems:
           import.meta.env.VITE_ENABLED_HUGE === 'true'
-            ? [...new Uint8Array(1000)].map((_, i) => ({
-                raw: 'sample.png?' + i,
-                encoded: 'sample.png?' + i,
-              }))
+            ? [
+                ...Array.from({ length: 1000 }).map((_, i) => ({
+                  raw: 'sample.png?' + i,
+                  encoded: 'sample.png?' + i,
+                })),
+                { raw: 'nest/sample.png?3', encoded: 'nest/sample.png?3' },
+                { raw: 'nest/sample.png?4', encoded: 'nest/sample.png?4' },
+                {
+                  raw: 'nest/deep/sample.png?5',
+                  encoded: 'nest/deep/sample.png?5',
+                },
+              ]
             : [
                 { raw: 'sample.png?1', encoded: 'sample.png?1' },
                 { raw: 'sample.png?2', encoded: 'sample.png?2' },

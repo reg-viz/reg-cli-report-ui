@@ -7,6 +7,7 @@ export enum WorkerEventType {
   RESULT_CALC = 'res_calc',
 
   // filter
+  INIT_FILTER = 'init_filter',
   REQUEST_FILTER = 'req_filter',
   RESULT_FILTER = 'res_filter',
 }
@@ -32,11 +33,13 @@ export type WorkerEventDataPayloadMap = {
     result: Matching;
   };
 
-  [WorkerEventType.REQUEST_FILTER]: {
+  [WorkerEventType.INIT_FILTER]: {
     newItems: RegEntity[];
     passedItems: RegEntity[];
     failedItems: RegEntity[];
     deletedItems: RegEntity[];
+  };
+  [WorkerEventType.REQUEST_FILTER]: {
     input: string;
   };
   [WorkerEventType.RESULT_FILTER]: {
