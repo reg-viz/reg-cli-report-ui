@@ -80,9 +80,14 @@ const filter = ({
 
   const search = (entities: RegEntity[]) => {
     const fuse = new Fuse(entities, {
+      shouldSort: false,
       isCaseSensitive: false,
+      findAllMatches: true,
+      location: 0,
+      distance: 100,
+      minMatchCharLength: 1,
+      threshold: 0.2,
       keys: ['name'],
-      threshold: 0.3,
     });
 
     return fuse.search(input).map(({ item }) => item);
