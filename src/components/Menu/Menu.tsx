@@ -1,6 +1,5 @@
 import { clsx } from 'clsx';
 import debounce from 'debounce';
-import keycode from 'keycode';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { findDOMNode } from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
@@ -191,18 +190,18 @@ export const Menu = ({
         e.stopPropagation();
       };
 
-      switch (keycode(e as any)) {
-        case 'tab':
-        case 'esc':
+      switch (e.key) {
+        case 'Tab':
+        case 'Escape':
           cancel();
           requestClose();
           break;
-        case 'down':
+        case 'ArrowDown':
         case 'j':
           cancel();
           nextFocus();
           break;
-        case 'up':
+        case 'ArrowUp':
         case 'k':
           cancel();
           previousFocus();
