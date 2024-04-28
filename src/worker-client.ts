@@ -42,17 +42,18 @@ export class WorkerClient {
   private _cache: {
     [key: string]: WorkerEventDataPayload<WorkerEventType.RESULT_CALC>;
   } = {};
+  private _ximgdiffEnabled = false;
   private _seq = 0;
   private _emitter = mitt<WorkerEventDataPayloadMap>();
   private _worker: Worker | null = null;
 
   public start(config: XIMGDiffConfig) {
-    const { enabled, workerUrl } = config;
-    if (!enabled || !workerUrl) {
+    if (!config.workerUrl) {
       return;
     }
 
-    this._worker = new Worker(workerUrl, {});
+    this._ximgdiffEnabled = config.enabled;
+    this._worker = new Worker(config.workerUrl, {});
 
     this._worker.addEventListener('message', ({ data }: WorkerEvent) => {
       switch (data.type) {
@@ -74,7 +75,7 @@ export class WorkerClient {
       'raw' | 'actualSrc' | 'expectedSrc'
     >,
   ) {
-    if (this._worker == null) {
+    if (!this._ximgdiffEnabled || this._worker == null) {
       return 0;
     }
 
@@ -111,6 +112,19 @@ export class WorkerClient {
     });
 
     return seq;
+  }
+
+  public requestFilterInit(
+    payload: WorkerEventDataPayload<WorkerEventType.INIT_FILTER>,
+  ) {
+    if (this._worker == null) {
+      return;
+    }
+
+    this._worker.postMessage({
+      type: WorkerEventType.INIT_FILTER,
+      payload,
+    });
   }
 
   public requestFilter = debounce(

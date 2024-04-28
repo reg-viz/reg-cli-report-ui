@@ -27,6 +27,18 @@ function version2number(version: string) {
 let loaded = false;
 let lastCalcData: WorkerEventData<WorkerEventType.REQUEST_CALC> | null = null;
 
+const cachedEntity: {
+  new: RegEntity[];
+  passed: RegEntity[];
+  failed: RegEntity[];
+  deleted: RegEntity[];
+} = {
+  new: [],
+  passed: [],
+  failed: [],
+  deleted: [],
+};
+
 const calc = ({
   payload: { raw, img1, img2, actualSrc, expectedSrc, seq },
 }: WorkerEventData<WorkerEventType.REQUEST_CALC>) => {
@@ -51,13 +63,18 @@ const calc = ({
 };
 
 const filter = ({
-  payload: { input, newItems, passedItems, failedItems, deletedItems },
+  payload: { input },
 }: WorkerEventData<WorkerEventType.REQUEST_FILTER>) => {
   // Return all items when empty input
   if (!input) {
     return _self.postMessage({
       type: WorkerEventType.RESULT_FILTER,
-      payload: { newItems, passedItems, failedItems, deletedItems },
+      payload: {
+        newItems: cachedEntity.new,
+        passedItems: cachedEntity.passed,
+        failedItems: cachedEntity.failed,
+        deletedItems: cachedEntity.deleted,
+      },
     });
   }
 
@@ -74,10 +91,10 @@ const filter = ({
   _self.postMessage({
     type: WorkerEventType.RESULT_FILTER,
     payload: {
-      newItems: search(newItems),
-      passedItems: search(passedItems),
-      failedItems: search(failedItems),
-      deletedItems: search(deletedItems),
+      newItems: search(cachedEntity.new),
+      passedItems: search(cachedEntity.passed),
+      failedItems: search(cachedEntity.failed),
+      deletedItems: search(cachedEntity.deleted),
     },
   });
 };
@@ -104,6 +121,13 @@ _self.addEventListener('message', ({ data }: WorkerEvent) => {
       } else {
         lastCalcData = data;
       }
+      break;
+
+    case WorkerEventType.INIT_FILTER:
+      cachedEntity.new = data.payload.newItems;
+      cachedEntity.passed = data.payload.passedItems;
+      cachedEntity.failed = data.payload.failedItems;
+      cachedEntity.deleted = data.payload.deletedItems;
       break;
 
     case WorkerEventType.REQUEST_FILTER:

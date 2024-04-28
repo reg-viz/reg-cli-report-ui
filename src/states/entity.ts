@@ -53,8 +53,18 @@ export const initializeEntityState = (
     deleted: toEntities('deleted', dirs, data.deletedItems),
   });
 
+  const defaultEntity = store.get(defaultEntityAtom);
+
   store.set(entityAtom, {
+    ...defaultEntity,
     ...store.get(defaultEntityAtom),
+  });
+
+  worker.requestFilterInit({
+    newItems: defaultEntity.new,
+    passedItems: defaultEntity.passed,
+    failedItems: defaultEntity.failed,
+    deletedItems: defaultEntity.deleted,
   });
 
   worker.subscribe(WorkerEventType.RESULT_FILTER, (payload) => {
@@ -83,7 +93,6 @@ export const useEntities = () => {
 export const useEntityFilter = () => {
   const worker = useWorkerClient();
   const [isFiltered, setIsFiltered] = useAtom(filteredAtom);
-  const defaults = useAtomValue(defaultEntityAtom);
 
   const filter = useCallback(
     (input: string) => {
@@ -97,13 +106,9 @@ export const useEntityFilter = () => {
 
       worker.requestFilter({
         input: value,
-        newItems: defaults.new,
-        passedItems: defaults.passed,
-        failedItems: defaults.failed,
-        deletedItems: defaults.deleted,
       });
     },
-    [worker, setIsFiltered, defaults],
+    [worker, setIsFiltered],
   );
 
   return [isFiltered, filter] as const;
