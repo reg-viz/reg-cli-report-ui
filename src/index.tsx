@@ -15,6 +15,12 @@ const regData = (window as any)['__reg__'] as RegData;
 const workerClient = new WorkerClient();
 const ximgdiffConfig = regData.ximgdiffConfig || { enabled: false };
 
+// INFO: set false on file: protocol
+// ref: https://github.com/reg-viz/reg-cli/issues/506
+if (window.location.protocol.startsWith('file')) {
+  ximgdiffConfig.enabled = false;
+}
+
 workerClient.start(ximgdiffConfig);
 
 // Store
