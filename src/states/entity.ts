@@ -46,11 +46,13 @@ export const initializeEntityState = (
     actual: data.actualDir,
   };
 
+  const diffExtension = data.diffImageExtension ?? 'png';
+
   store.set(defaultEntityAtom, {
-    new: toEntities('new', dirs, data.newItems),
-    passed: toEntities('passed', dirs, data.passedItems),
-    failed: toEntities('changed', dirs, data.failedItems),
-    deleted: toEntities('deleted', dirs, data.deletedItems),
+    new: toEntities('new', dirs, data.newItems, diffExtension),
+    passed: toEntities('passed', dirs, data.passedItems, diffExtension),
+    failed: toEntities('changed', dirs, data.failedItems, diffExtension),
+    deleted: toEntities('deleted', dirs, data.deletedItems, diffExtension),
   });
 
   const defaultEntity = store.get(defaultEntityAtom);

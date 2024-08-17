@@ -30,6 +30,7 @@ export type RegData = {
   deletedItems: RegItem[];
   ximgdiffConfig?: XIMGDiffConfig;
   links?: RegLink[];
+  diffImageExtension?: 'webp' | 'png';
 };
 
 export type RegEntity = {
