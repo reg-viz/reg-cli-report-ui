@@ -15,6 +15,7 @@ export const toEntities = (
   variant: RegVariant,
   dirs: Dirs,
   items: RegItem[],
+  diffExtension: 'png' | 'webp' = 'png',
 ): RegEntity[] => {
   const join = (key: keyof Dirs, to: string) =>
     dirs[key].replace(/\/$/, '') + '/' + to.replace(/^\//, '');
@@ -26,7 +27,7 @@ export const toEntities = (
       id,
       variant,
       name: item.raw,
-      diff: join('diff', item.encoded).replace(/\.[^.]+$/, '.png'),
+      diff: join('diff', item.encoded).replace(/\.[^.]+$/, `.${diffExtension}`),
       before: join('expected', item.encoded),
       after: join('actual', item.encoded),
     };
