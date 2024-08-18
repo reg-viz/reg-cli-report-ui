@@ -53,9 +53,14 @@ export class WorkerClient {
     }
 
     this._ximgdiffEnabled = config.enabled;
-    this._worker = new Worker(config.workerUrl, {});
+    try {
+      this._worker = new Worker(config.workerUrl, {});
+    } catch (reason) {
+      // NOP: ignore error if failed to instantiate worker.
+      // ref: https://github.com/reg-viz/reg-cli/issues/506
+    }
 
-    this._worker.addEventListener('message', ({ data }: WorkerEvent) => {
+    this._worker?.addEventListener('message', ({ data }: WorkerEvent) => {
       switch (data.type) {
         case WorkerEventType.RESULT_CALC:
           this._cache[data.payload.raw] = data.payload;
