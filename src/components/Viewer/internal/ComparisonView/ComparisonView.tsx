@@ -146,6 +146,7 @@ export const ComparisonView = ({
                         step={1}
                         value={slideValue}
                         onChange={handleSlideChange}
+                        reverse={true}
                       />
                     </span>
                     <span className={typography.subTitle3}>After</span>

@@ -4,7 +4,6 @@ import { tokens } from '../../styles/variables.css';
 const barStyles = {
   position: 'absolute',
   top: '50%',
-  left: 0,
   marginTop: -2,
   height: 4,
   borderRadius: 2,

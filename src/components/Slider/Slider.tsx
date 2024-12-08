@@ -9,6 +9,7 @@ export type Props = {
   value?: number;
   defaultValue?: number;
   onChange?: (value: number) => void;
+  reverse?: boolean;
 };
 
 export const Slider = ({ onChange, ...rest }: Props) => (

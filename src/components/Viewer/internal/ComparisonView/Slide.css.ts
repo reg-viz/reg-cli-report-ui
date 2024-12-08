@@ -40,14 +40,14 @@ const view = style({
   transform: 'translate(-50%, 0)',
 });
 
-export const before = style([
+export const after = style([
   view,
   {
     zIndex: 0,
   },
 ]);
 
-export const after = style([
+export const before = style([
   view,
   {
     zIndex: 1,
@@ -59,8 +59,6 @@ export const handle = style({
   position: 'absolute',
   top: 0,
   bottom: 0,
-  marginLeft: -22,
-  width: 44,
   zIndex: 5,
   cursor: 'ew-resize',
 });

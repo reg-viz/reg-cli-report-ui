@@ -20,7 +20,7 @@ export const Slide = ({ before, after, value, matching, onChange }: Props) => {
   const rangeRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(parseInt(e.target.value, 10));
+    onChange(100 - parseInt(e.target.value, 10));
   };
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export const Slide = ({ before, after, value, matching, onChange }: Props) => {
       const { left } = inner.getBoundingClientRect();
       const x = Math.min(Math.max(0, pageX - left), image.width);
 
-      onChange((x / image.width) * 100);
+      onChange(100 - (x / image.width) * 100);
     };
 
     const handleMousedown = (e: MouseEvent | TouchEvent) => {
@@ -89,40 +89,40 @@ export const Slide = ({ before, after, value, matching, onChange }: Props) => {
         />
 
         <div
-          className={styles.before}
+          className={styles.after}
           style={{
-            width: image.before.width,
-            height: image.before.height,
+            width: image.after.width,
+            height: image.after.height,
           }}
         >
           <Image
-            ref={image.before.ref}
-            src={before}
-            onLoad={image.before.handleLoad}
+            ref={image.after.ref}
+            src={after}
+            onLoad={image.after.handleLoad}
           />
-          <Markers variant="before" matching={matching} />
+          <Markers variant="after" matching={matching} />
         </div>
 
-        <div className={styles.frame} style={{ width: `${value}%` }}>
+        <div className={styles.frame} style={{ width: `${100 - value}%` }}>
           <div
-            className={styles.after}
+            className={styles.before}
             style={{
               top: 0,
-              left: canvas.width / 2 - image.after.width / 2,
-              width: image.after.width,
-              height: image.after.height,
+              left: canvas.width / 2 - image.before.width / 2,
+              width: image.before.width,
+              height: image.before.height,
             }}
           >
             <Image
-              ref={image.after.ref}
-              src={after}
-              onLoad={image.after.handleLoad}
+              ref={image.before.ref}
+              src={before}
+              onLoad={image.before.handleLoad}
             />
-            <Markers variant="after" matching={matching} />
+            <Markers variant="before" matching={matching} />
           </div>
         </div>
 
-        <span className={styles.handle} style={{ left: `${value}%` }}>
+        <span className={styles.handle} style={{ right: `${value}%` }}>
           <span className={styles.handleBar} />
         </span>
       </div>
