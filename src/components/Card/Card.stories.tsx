@@ -36,6 +36,17 @@ export const WithLongName: Story = {
   },
 };
 
+export const WithFlakeMark: Story = {
+  args: {
+    entity: {
+      ...defaultEntity,
+      modificationCount: 9,
+      totalCommitCount: 27,
+      periodInDays: 10,
+    },
+  },
+};
+
 export const WithNew: Story = {
   args: {
     entity: {

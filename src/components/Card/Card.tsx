@@ -65,6 +65,11 @@ export const Card = ({ href, entity, menus, onCopy }: Props) => {
     [entity.id, onCopy],
   );
 
+  const showFlakeMark =
+    entity.modificationCount &&
+    entity.modificationCount > 1 &&
+    entity.modificationCount / (entity.totalCommitCount || 1) >= 0.1;
+
   return (
     <div id={entity.id} className={styles.wrapper}>
       <BaseButton
@@ -74,6 +79,17 @@ export const Card = ({ href, entity, menus, onCopy }: Props) => {
       >
         <div className={styles.sign}>
           <Sign variant={entity.variant} />
+          {showFlakeMark && (
+            <span>
+              {Math.round(
+                ((entity.modificationCount || 1) * 100) /
+                  (entity.totalCommitCount || 1),
+              )}
+              % flaky
+              {entity.periodInDays &&
+                ` over the past ${entity.periodInDays} days(0).`}
+            </span>
+          )}
         </div>
 
         <div className={styles.image}>

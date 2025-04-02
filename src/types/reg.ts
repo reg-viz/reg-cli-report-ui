@@ -5,10 +5,16 @@ export type XIMGDiffConfig = {
   workerUrl?: string;
 };
 
+type FlakeData = {
+  modificationCount?: number;
+  totalCommitCount?: number;
+  periodInDays?: number;
+};
+
 export type RegItem = {
   raw: string;
   encoded: string;
-};
+} & FlakeData;
 
 export type RegLink = {
   href: string;
@@ -40,7 +46,7 @@ export type RegEntity = {
   diff: string;
   before: string;
   after: string;
-};
+} & FlakeData;
 
 export type RegStructualItem = {
   id: string;
