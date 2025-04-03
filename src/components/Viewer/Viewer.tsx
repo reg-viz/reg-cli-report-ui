@@ -13,6 +13,7 @@ import { ArrowRightIcon } from '../icons/ArrowRightIcon';
 import { Portal } from '../internal/Portal';
 import { Transparent } from '../internal/Transparent';
 import { usePrevious } from '../../hooks/usePrevious';
+import { FlakeMark } from '../FlakeMark';
 import * as styles from './Viewer.css';
 import { OPEN_DELAY } from './constants';
 import { ComparisonView } from './internal/ComparisonView';
@@ -160,7 +161,9 @@ export const Viewer = ({
                   markersEnabled={markersEnabled}
                   onRequestClose={onRequestClose}
                   onMarkersToggle={onMarkersToggle}
-                />
+                >
+                  <FlakeMark {...displayEntity} />
+                </Header>
               )}
             </div>
 

@@ -5,7 +5,7 @@ export type XIMGDiffConfig = {
   workerUrl?: string;
 };
 
-type FlakeData = {
+export type FlakeData = {
   modificationCount?: number;
   totalCommitCount?: number;
   periodInDays?: number;

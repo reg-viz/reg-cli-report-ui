@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { useMedia } from '../../hooks/useMedia';
 import type { RegVariant } from '../../types/reg';
 import { IconButton } from '../IconButton';
@@ -19,7 +20,7 @@ export type Props = {
   onMarkersToggle: () => void;
 };
 
-export const Header = ({
+export const Header: FC<PropsWithChildren<Props>> = ({
   variant,
   title,
   current,
@@ -27,7 +28,8 @@ export const Header = ({
   markersEnabled,
   onRequestClose,
   onMarkersToggle,
-}: Props) => {
+  children,
+}) => {
   const isSmallViewport = useMedia(`(max-width: ${BreakPoint.SMALL - 1}px)`);
 
   const handleCloseClick = useCallback(
@@ -72,6 +74,8 @@ export const Header = ({
             onChange={handleToggle}
           />
         </div>
+
+        {children}
       </div>
     </header>
   );
