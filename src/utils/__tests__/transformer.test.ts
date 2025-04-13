@@ -7,6 +7,9 @@ describe('transformer', () => {
     const variant = 'new';
     const raw = 'raw';
     const encoded = 'encoded.jpg';
+    const modificationCount = 9;
+    const totalCommitCount = 30;
+    const periodInDays = 10;
 
     let dirs = {
       diff: 'diff/',
@@ -14,7 +17,11 @@ describe('transformer', () => {
       actual: 'actual/',
     };
 
-    expect(toEntities(variant, dirs, [{ raw, encoded }])).toEqual([
+    expect(
+      toEntities(variant, dirs, [
+        { raw, encoded, modificationCount, totalCommitCount },
+      ]),
+    ).toEqual([
       {
         id: `${variant}-${encoded}`,
         variant,
@@ -22,6 +29,9 @@ describe('transformer', () => {
         diff: `${dirs.diff}encoded.png`,
         before: `${dirs.expected}${encoded}`,
         after: `${dirs.actual}${encoded}`,
+        modificationCount,
+        totalCommitCount,
+        periodInDays,
       },
     ]);
 

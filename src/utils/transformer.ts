@@ -22,6 +22,7 @@ export const toEntities = (
 
   return items.map((item) => {
     const id = `${variant}-${item.encoded}`.replace(/[=?]/g, '-');
+    const { modificationCount, totalCommitCount, periodInDays } = item;
 
     return {
       id,
@@ -30,6 +31,9 @@ export const toEntities = (
       diff: join('diff', item.encoded).replace(/\.[^.]+$/, `.${diffExtension}`),
       before: join('expected', item.encoded),
       after: join('actual', item.encoded),
+      modificationCount,
+      totalCommitCount,
+      periodInDays,
     };
   });
 };

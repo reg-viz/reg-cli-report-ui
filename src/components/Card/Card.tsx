@@ -9,6 +9,7 @@ import { BaseButton } from '../internal/BaseButton';
 import { Ellipsis } from '../internal/Ellipsis';
 import { Transparent } from '../internal/Transparent';
 import { Color } from '../../styles/variables.css';
+import { FlakeMark } from '../FlakeMark';
 import * as styles from './Card.css';
 
 const imageSrc = (entity: RegEntity) => {
@@ -74,6 +75,7 @@ export const Card = ({ href, entity, menus, onCopy }: Props) => {
       >
         <div className={styles.sign}>
           <Sign variant={entity.variant} />
+          <FlakeMark {...entity} />
         </div>
 
         <div className={styles.image}>
