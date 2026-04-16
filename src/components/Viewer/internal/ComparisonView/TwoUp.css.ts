@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { style, globalStyle } from '@vanilla-extract/css';
 import { BreakPoint, Space } from '../../../../styles/variables.css';
 
 export const wrapper = style({
@@ -16,4 +16,8 @@ export const wrapper = style({
 
 export const view = style({
   position: 'relative',
+});
+
+globalStyle(`${view} img`, {
+  maxHeight: 'calc(100vh - 220px)',
 });

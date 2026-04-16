@@ -83,7 +83,7 @@ export const Card = ({ href, entity, menus, onCopy }: Props) => {
               src={imageSrc(entity)}
               width="100%"
               height="100%"
-              fit="scale-down"
+              fit="cover"
             />
           </span>
           <Transparent />

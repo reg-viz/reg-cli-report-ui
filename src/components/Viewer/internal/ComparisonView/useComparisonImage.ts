@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import debounce from 'debounce';
-import { Space, BreakPoint } from '../../../../styles/variables.css';
+import { Space, BreakPoint, Size } from '../../../../styles/variables.css';
 import { useMedia } from '../../../../hooks/useMedia';
 
 const RESIZE_DEBOUNCE_MS = 32;
@@ -12,18 +12,22 @@ export const useComparisonImage = (before: string, after: string) => {
 
   // canvas
   const [width, setWidth] = useState(0);
+  const [maxHeight, setMaxHeight] = useState(0);
 
   useEffect(() => {
-    const updateWidth = debounce(() => {
+    const updateDimensions = debounce(() => {
       setWidth(window.innerWidth - (isDesktop ? Space * 5 : Space * 1) * 2);
+      setMaxHeight(
+        window.innerHeight - Size.HEADER_HEIGHT - Space * 3 - Space * 17,
+      );
     }, RESIZE_DEBOUNCE_MS);
 
-    updateWidth();
+    updateDimensions();
 
-    window.addEventListener('resize', updateWidth, false);
+    window.addEventListener('resize', updateDimensions, false);
 
     return () => {
-      window.removeEventListener('resize', updateWidth, false);
+      window.removeEventListener('resize', updateDimensions, false);
     };
   }, [isDesktop]);
 
@@ -71,12 +75,23 @@ export const useComparisonImage = (before: string, after: string) => {
   }, []);
 
   // calculate
-  const w = safe(Math.min(width, Math.max(bSize.width, aSize.width)));
-  const bw = Math.min(w, bSize.width);
-  const bh = safe((bw / bSize.width) * bSize.height);
-  const aw = Math.min(w, aSize.width);
-  const ah = safe((aw / aSize.width) * aSize.height);
-  const h = Math.max(bh, ah);
+  let w = safe(Math.min(width, Math.max(bSize.width, aSize.width)));
+  let bw = Math.min(w, bSize.width);
+  let bh = safe((bw / bSize.width) * bSize.height);
+  let aw = Math.min(w, aSize.width);
+  let ah = safe((aw / aSize.width) * aSize.height);
+  let h = Math.max(bh, ah);
+
+  // Constrain by available height so portrait images fit in the viewport
+  if (maxHeight > 0 && h > maxHeight) {
+    const scale = maxHeight / h;
+    w = Math.round(w * scale);
+    bw = Math.round(bw * scale);
+    bh = Math.round(bh * scale);
+    aw = Math.round(aw * scale);
+    ah = Math.round(ah * scale);
+    h = Math.round(maxHeight);
+  }
 
   return {
     canvas: {
